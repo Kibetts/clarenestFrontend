@@ -1,10 +1,10 @@
 import React from 'react';
-import '../Contact.css';
+import '../css/Contact.css'
 
 const ContactForm = () => {
   return (
     <div className="contact-form">
-      <h2>Let's Get in Touch</h2>
+      <h2 className='in-touch-heading'>Let's Get in Touch</h2>
       
       <form>
         <div className="row">

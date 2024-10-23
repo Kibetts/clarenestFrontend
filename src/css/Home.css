@@ -1,0 +1,109 @@
+.home {
+    font-family: 'Arial', sans-serif;
+    color: #333333;
+}
+
+.hero {
+    background-image: url('../img/homeschol.jpeg');
+    background-size: cover;
+    background-position: center;
+    height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.hero h1 {
+    color: #ffffff;
+    font-size: 48px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.about-section,
+.features-section,
+.stats-section,
+.events-section {
+    max-width: 1200px;
+    margin: 50px auto;
+    padding: 0 20px;
+}
+
+.about-section h2,
+.features-section h2,
+.events-section h2 {
+    color: #003366;
+    border-bottom: 2px solid #003366;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.feature {
+    background-color: #f0f8ff;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.feature h3 {
+    color: #0066cc;
+    margin-bottom: 10px;
+}
+
+.stats-section {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.stat {
+    background-color: #003366;
+    color: #ffffff;
+    padding: 20px;
+    border-radius: 5px;
+    width: 22%;
+}
+
+.stat p:first-child {
+    font-size: 36px;
+    font-weight: bold;
+}
+
+.events-section .event {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.events-section .event img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-right: 20px;
+    border-radius: 5px;
+}
+
+.newsletter-section {
+    background-color: #f0f8ff;
+    padding: 50px 0;
+    text-align: center;
+}
+
+.newsletter-section input[type="email"] {
+    padding: 10px;
+    width: 300px;
+    margin-right: 10px;
+}
+
+.newsletter-section button {
+    background-color: #0066cc;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.newsletter-section button:hover {
+    background-color: #004c99;
+}

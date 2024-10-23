@@ -1,0 +1,45 @@
+/* SuccessPage.css */
+
+.success-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f4f8;
+  }
+  
+  .success-box {
+    text-align: center;
+    background-color: #ffffff;
+    padding: 50px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  .success-title {
+    font-size: 2.5rem;
+    color: #4caf50;
+    margin-bottom: 20px;
+  }
+  
+  .success-message {
+    font-size: 1.2rem;
+    color: #555555;
+    margin-bottom: 30px;
+  }
+  
+  .success-button {
+    font-size: 1rem;
+    padding: 10px 20px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .success-button:hover {
+    background-color: #45a049;
+  }
+  

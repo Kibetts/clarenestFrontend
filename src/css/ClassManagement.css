@@ -1,0 +1,391 @@
+.class-management {
+    padding: 20px;
+    position: relative;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  
+  .add-button {
+    background-color: #1a237e;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    transition: background-color 0.2s;
+  }
+  
+  .add-button:hover {
+    background-color: #2832a8;
+  }
+  
+  .table-container {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: auto;
+  }
+  
+  .classes-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+  }
+  
+  .classes-table th,
+  .classes-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .classes-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    color: #444;
+    white-space: nowrap;
+  }
+  
+  .classes-table tr:hover {
+    background-color: #f8f9fa;
+  }
+  
+  .enrollment-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .enrollment-bar {
+    flex: 1;
+    height: 8px;
+    background-color: #eee;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  
+  .enrollment-fill {
+    height: 100%;
+    background-color: #1a237e;
+    transition: width 0.3s ease;
+  }
+  
+  .actions {
+    display: flex;
+    gap: 8px;
+  }
+  
+  .edit-button,
+  .delete-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+  }
+  
+  .edit-button:hover {
+    background-color: #e3f2fd;
+  }
+  
+  .delete-button:hover {
+    background-color: #ffebee;
+  }
+  
+  /* Modal Styles */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .modal {
+    background: white;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    animation: slideIn 0.3s ease-out;
+  }
+  
+  @keyframes slideIn {
+    from {
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    border-bottom: 1px solid #eee;
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 1;
+  }
+  
+  .close-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s;
+  }
+  
+  .close-button:hover {
+    background-color: #f5f5f5;
+    color: #333;
+  }
+  
+  .modal form {
+    padding: 24px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #444;
+    font-weight: 500;
+  }
+  
+  .form-group input,
+  .form-group select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .form-group input:focus,
+  .form-group select:focus {
+    border-color: #1a237e;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(26, 35, 126, 0.1);
+  }
+  
+  .form-group input[type="number"] {
+    width: 100px;
+  }
+  
+  .modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  
+  .cancel-button {
+    padding: 8px 16px;
+    background: none;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+  
+  .cancel-button:hover {
+    background-color: #f5f5f5;
+    border-color: #ccc;
+  }
+  
+  .submit-button {
+    padding: 8px 16px;
+    background-color: #1a237e;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.2s;
+  }
+  
+  .submit-button:hover {
+    background-color: #2832a8;
+  }
+  
+  /* Alert Styles */
+  .alert {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    padding: 12px 24px;
+    border-radius: 4px;
+    color: white;
+    font-size: 14px;
+    animation: slideIn 0.3s ease-out;
+    z-index: 1000;
+  }
+  
+  .alert.success {
+    background-color: #4caf50;
+  }
+  
+  .alert.error {
+    background-color: #f44336;
+  }
+  
+  /* Dark Mode Support */
+  @media (prefers-color-scheme: dark) {
+    .table-container,
+    .modal {
+      background-color: #1a1a1a;
+    }
+  
+    .modal-header {
+      border-color: #333;
+      background-color: #1a1a1a;
+    }
+  
+    .classes-table th {
+      background-color: #262626;
+      color: #fff;
+    }
+  
+    .classes-table td {
+      border-color: #333;
+      color: #fff;
+    }
+  
+    .classes-table tr:hover {
+      background-color: #262626;
+    }
+  
+    .enrollment-bar {
+      background-color: #333;
+    }
+  
+    .form-group label {
+      color: #fff;
+    }
+  
+    .form-group input,
+    .form-group select {
+      background-color: #262626;
+      border-color: #444;
+      color: #fff;
+    }
+  
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: #1a237e;
+      box-shadow: 0 0 0 2px rgba(26, 35, 126, 0.2);
+    }
+  
+    .cancel-button {
+      border-color: #444;
+      color: #fff;
+    }
+  
+    .cancel-button:hover {
+      background-color: #262626;
+    }
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 1200px) {
+    .classes-table {
+      font-size: 14px;
+    }
+  }
+  
+  @media (max-width: 992px) {
+    .header {
+      flex-direction: column;
+      gap: 16px;
+      align-items: stretch;
+    }
+  
+    .add-button {
+      text-align: center;
+      justify-content: center;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .class-management {
+      padding: 16px;
+    }
+  
+    .table-container {
+      margin: 0 -16px;
+      border-radius: 0;
+    }
+  
+    .classes-table th,
+    .classes-table td {
+      padding: 8px;
+    }
+  
+    .modal {
+      width: 95%;
+      margin: 16px;
+    }
+  
+    .form-group input[type="number"] {
+      width: 100%;
+    }
+  }
+  
+  /* Print Styles */
+  @media print {
+    .class-management {
+      padding: 0;
+    }
+  
+    .header,
+    .actions,
+    .modal-overlay {
+      display: none;
+    }
+  
+    .table-container {
+      box-shadow: none;
+    }
+  
+    .classes-table {
+      border: 1px solid #ddd;
+    }
+  
+    .classes-table th,
+    .classes-table td {
+      border: 1px solid #ddd;
+    }
+  
+    .enrollment-bar {
+      border: 1px solid #ddd;
+    }
+  }

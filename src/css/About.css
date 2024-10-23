@@ -1,0 +1,340 @@
+/* 
+.professional-instructors-container{
+    background-image: url('../img/homeschol.jpeg');
+    background-repeat: no-repeat; 
+    background-size: cover; 
+    height: 350px;
+    width: 100%;
+    margin-top: 0;  
+    position: relative;
+}
+
+.professional-heading{
+    font-size: 40px;
+    padding: 0;  
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    font-weight:bolder;
+}
+
+.mission-container{
+    display: flex;
+    margin-top: 100px;
+    margin-left: 23%;
+}
+.mission-image{
+    height: 500px;
+    width: 400px;
+    margin-right: 100px;
+}
+.mission-h3{
+    font-size: 24px;
+}
+.mission-container p{
+    max-width: 350px;
+
+}
+
+.vision-container {
+    display: flex;
+    justify-content: flex-start;  
+    /* width: 100%; *
+    max-width: 100%;
+    margin: 100px auto;
+    padding: 0 10%;              
+}
+
+.vision-h3 {
+    margin-bottom: 10px;
+    margin-top: 80px;
+    padding: 0;
+    font-size: 24px;
+    margin-left: 180px;
+}
+
+.vision-container p {
+    max-width: 350px;            
+    margin-right: 30px;  
+    margin-left: 180px;         
+}
+
+.vision-image {
+    height: 200px;
+    width: auto;                  
+    margin-left: -50px;           
+}
+
+
+.services-container{
+    display: flex;
+    text-align: center; 
+    width: 100%;
+    padding: 0;
+}
+.service{
+    border: 2px solid black;
+    margin: auto;
+    width: 200px;
+    height: 250px;
+    margin-top: 20px;    
+}
+.service-icon {
+    font-size: 24px;
+    margin-bottom: 10px; 
+    margin-top: 20px;   
+    margin-bottom: 0;   
+}
+.service-container-line{
+    height: 2px;
+    background-color: black;
+    width: 90%;
+    margin: auto;
+    
+}
+.tutoring-services-heading{
+    text-align: center;
+}
+.service-name{
+    text-align: center;
+}
+.service-info{
+    text-align: center;
+}
+
+.open-learning-container{
+    border: 2px solid black;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+    max-width: 80%;
+    height: 300px;
+    align-items: center;
+    margin-left: 9.8%;    
+    border-radius: 20px;
+    padding: 0;
+    background-color: #00A89F;
+    position: relative;
+}
+
+.open-learning-container img{
+height: 300px;
+border-radius: 20px;
+margin-top: 1px;
+margin-bottom: -1px;
+}
+.open-p-div{
+    margin-bottom: -10px;
+    margin-top: -20px;
+    margin-left: 50px;
+    border: 2px solid #E71F69;
+    border-radius: 8px;
+    background-color: #E71F69;
+    width: 250px;
+    height: 40px;
+}
+.open-p{
+    align-items: center;
+    text-align: center;
+    margin-top: 10px;
+    padding: 0;
+    font-weight: bolder;
+    
+}
+.learn-experts{
+    font-size: 60px;
+    padding: 0;
+    margin-left:50px;
+    margin-top: 10px;
+    margin-bottom: -20px;
+}
+
+.testimonials-section{
+    max-width: 90%;
+    text-align: center;
+    margin: auto;
+}
+
+.testimonials-cards{
+    display: flex;
+    justify-content: space-between;
+  
+}
+.testimonial-user > p{
+   
+} */
+
+/* ************************************************************************************** */
+
+.about-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.professional-instructors-container {
+    background-color: #f8f8f8;
+    padding: 50px 0;
+    text-align: center;
+}
+
+.professional-heading {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #333;
+}
+
+.mission-container, .vision-container {
+    display: flex;
+    align-items: center;
+    margin: 50px 0;
+}
+
+.mission-image, .vision-image {
+    width: 50%;
+    max-width: 500px;
+    border-radius: 10px;
+}
+
+.mission-h3, .vision-h3 {
+    font-size: 2em;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.tutor-services-container {
+    text-align: center;
+    margin: 50px 0;
+}
+
+.tutoring-services-heading {
+    font-size: 2.5em;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.services-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.service {
+    width: 30%;
+    padding: 20px;
+    margin: 10px;
+    background-color: #f8f8f8;
+    border-radius: 10px;
+}
+
+.service-icon {
+    font-size: 3em;
+    color: #007bff;
+    margin-bottom: 20px;
+}
+
+.service-name {
+    font-size: 1.5em;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.service-container-line {
+    width: 50px;
+    height: 2px;
+    background-color: #007bff;
+    margin: 10px auto;
+}
+
+.open-learning-container {
+    display: flex;
+    align-items: center;
+    background-color: #f8f8f8;
+    padding: 50px;
+    margin: 50px 0;
+    border-radius: 10px;
+}
+
+.open-p {
+    font-size: 1.2em;
+    color: #007bff;
+    margin-bottom: 10px;
+}
+
+.learn-experts {
+    font-size: 2.5em;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.start-learning-btn {
+    padding: 10px 20px;
+    font-size: 1em;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.open-learning-image {
+    width: 50%;
+    max-width: 500px;
+    border-radius: 10px;
+}
+
+.pride-section {
+    text-align: center;
+    margin: 50px 0;
+}
+
+.testimonials-section {
+    margin: 50px 0;
+}
+
+.testimonials-cards {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.testimonial-card {
+    width: 45%;
+    padding: 20px;
+    margin: 10px;
+    background-color: #f8f8f8;
+    border-radius: 10px;
+}
+
+.testimonial-line {
+    width: 50px;
+    height: 2px;
+    background-color: #007bff;
+    margin: 10px 0;
+}
+
+.testimonial-user {
+    display: flex;
+    align-items: center;
+}
+
+.user-icon {
+    font-size: 1.5em;
+    color: #007bff;
+    margin-right: 10px;
+}
+
+@media (max-width: 768px) {
+    .mission-container, .vision-container, .open-learning-container {
+        flex-direction: column;
+    }
+
+    .mission-image, .vision-image, .open-learning-image {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .service, .testimonial-card {
+        width: 100%;
+    }
+}
