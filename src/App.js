@@ -20,7 +20,11 @@ import TutorApplicationForm from '../src/components/TutorApplicationForm';
 import AssessmentTaking from '../src/components/AssessmentTaking';
 import LessonView from '../src/components/LessonView';
 import FeePayment from '../src/components/FeePayment';
-import SubmittedPage from './components/SubmittedPage';
+import SubmittedPage from '../src/components/SubmittedPage';
+import AccountCreation from '../src/components/AccountCreation'
+import ParentRegistration from '../src/components/ParentRegistration'
+import EmailVerification from '../src/components/EmailVerification';
+import ParentVerification from '../src/components/ParentVerification';
 
 const theme = createTheme({
   palette: {
@@ -53,6 +57,10 @@ function App() {
         <Route path="/lesson/:id" element={<LessonView />} />
         <Route path="/fee-payment" element={<FeePayment />} />
         <Route path="/application-submitted" element={<SubmittedPage />} />
+        <Route path="/create-account/:role/:token" component={AccountCreation} />
+        <Route path="/parent-registration/:studentId" component={ParentRegistration} /> 
+        <Route path="/verify-email/:token" element={<EmailVerification />} />
+        <Route path="/parent/verify/:token" element={<ParentVerification />} />
 
 
       </Routes>

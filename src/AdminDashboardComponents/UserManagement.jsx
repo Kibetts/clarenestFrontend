@@ -3,20 +3,21 @@ import '../css/UserManagement.css';
 
 const UserManagement = () => {
   const [users, setUsers] = useState([]);
-  const [openDialog, setOpenDialog] = useState(false);
-  const [dialogMode, setDialogMode] = useState('add');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [modalMode, setModalMode] = useState('add');
   const [selectedUser, setSelectedUser] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     role: 'student',
-    password: ''
+    password: '',
+    phoneNumber: '',
+    grade: '',
+    subjects: []
   });
-  const [alert, setAlert] = useState({
-    show: false,
-    message: '',
-    type: 'success'
-  });
+  const [alert, setAlert] = useState({ show: false, message: '', type: '' });
 
   useEffect(() => {
     fetchUsers();
@@ -24,62 +25,88 @@ const UserManagement = () => {
 
   const fetchUsers = async () => {
     try {
+      setLoading(true);
       const response = await fetch('http://localhost:5000/api/users', {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       });
+
+      if (!response.ok) throw new Error('Failed to fetch users');
       const data = await response.json();
       setUsers(data.data.users);
-    } catch (error) {
-      showAlert('Failed to fetch users', 'error');
+      setError(null);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleOpenDialog = (mode, user = null) => {
-    setDialogMode(mode);
+  const handleShowModal = (mode, user = null) => {
+    setModalMode(mode);
     setSelectedUser(user);
-    if (user) {
-      setFormData({
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        password: ''
-      });
-    } else {
-      setFormData({
-        name: '',
-        email: '',
-        role: 'student',
-        password: ''
-      });
-    }
-    setOpenDialog(true);
-  };
-
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-    setSelectedUser(null);
+    setFormData(user ? {
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      phoneNumber: user.phoneNumber || '',
+      grade: user.grade || '',
+      subjects: user.subjects || [],
+      password: ''
+    } : {
+      name: '',
+      email: '',
+      role: 'student',
+      phoneNumber: '',
+      grade: '',
+      subjects: [],
+      password: ''
+    });
+    setShowModal(true);
   };
 
   const handleInputChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    if (e.target.name === 'subjects') {
+      // Handle subjects as an array
+      const subjects = e.target.value.split(',').map(s => s.trim());
+      setFormData({ ...formData, subjects });
+    } else {
+      setFormData({ ...formData, [e.target.name]: e.target.value });
+    }
+  };
+
+  const validateForm = () => {
+    if (!formData.name || !formData.email || !formData.role) {
+      showAlert('Please fill in all required fields', 'error');
+      return false;
+    }
+    if (modalMode === 'add' && !formData.password) {
+      showAlert('Password is required for new users', 'error');
+      return false;
+    }
+    if (formData.role === 'student' && !formData.grade) {
+      showAlert('Grade is required for students', 'error');
+      return false;
+    }
+    if (formData.role === 'tutor' && formData.subjects.length === 0) {
+      showAlert('At least one subject is required for tutors', 'error');
+      return false;
+    }
+    return true;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
+
     try {
-      const url = dialogMode === 'add'
+      const url = modalMode === 'add' 
         ? 'http://localhost:5000/api/users'
         : `http://localhost:5000/api/users/${selectedUser._id}`;
-      
-      const method = dialogMode === 'add' ? 'POST' : 'PATCH';
-      
+
       const response = await fetch(url, {
-        method,
+        method: modalMode === 'add' ? 'POST' : 'PATCH',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -88,15 +115,15 @@ const UserManagement = () => {
       });
 
       if (!response.ok) throw new Error('Failed to save user');
-
+      
       showAlert(
-        `User successfully ${dialogMode === 'add' ? 'added' : 'updated'}`,
+        `User successfully ${modalMode === 'add' ? 'added' : 'updated'}`,
         'success'
       );
-      handleCloseDialog();
+      setShowModal(false);
       fetchUsers();
-    } catch (error) {
-      showAlert(`Failed to ${dialogMode} user`, 'error');
+    } catch (err) {
+      showAlert(err.message, 'error');
     }
   };
 
@@ -112,24 +139,44 @@ const UserManagement = () => {
       });
 
       if (!response.ok) throw new Error('Failed to delete user');
-
+      
       showAlert('User successfully deleted', 'success');
       fetchUsers();
-    } catch (error) {
-      showAlert('Failed to delete user', 'error');
+    } catch (err) {
+      showAlert(err.message, 'error');
+    }
+  };
+
+  const handleUpdateFeeStatus = async (userId, feesPaid) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/users/${userId}/update-fee-status`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          },
+          body: JSON.stringify({ feesPaid })
+        }
+      );
+
+      if (!response.ok) throw new Error('Failed to update fee status');
+      
+      showAlert('Fee status updated successfully', 'success');
+      fetchUsers();
+    } catch (err) {
+      showAlert(err.message, 'error');
     }
   };
 
   const showAlert = (message, type) => {
-    setAlert({
-      show: true,
-      message,
-      type
-    });
-    setTimeout(() => {
-      setAlert({ ...alert, show: false });
-    }, 3000);
+    setAlert({ show: true, message, type });
+    setTimeout(() => setAlert({ show: false, message: '', type: '' }), 3000);
   };
+
+  if (loading) return <div className="loading">Loading...</div>;
+  if (error) return <div className="error">{error}</div>;
 
   return (
     <div className="user-management">
@@ -137,14 +184,33 @@ const UserManagement = () => {
         <h2>User Management</h2>
         <button 
           className="add-button"
-          onClick={() => handleOpenDialog('add')}
+          onClick={() => handleShowModal('add')}
         >
-          + Add User
+          Add New User
         </button>
       </div>
 
-      <div className="table-container">
-        <table className="users-table">
+      <div className="user-filters">
+        <input 
+          type="text" 
+          placeholder="Search users..." 
+          className="search-input"
+          onChange={(e) => {/* Add search functionality */}}
+        />
+        <select 
+          className="role-filter"
+          onChange={(e) => {/* Add filter functionality */}}
+        >
+          <option value="">All Roles</option>
+          <option value="student">Students</option>
+          <option value="tutor">Tutors</option>
+          <option value="parent">Parents</option>
+          <option value="admin">Admins</option>
+        </select>
+      </div>
+
+      <div className="users-table">
+        <table>
           <thead>
             <tr>
               <th>Name</th>
@@ -155,11 +221,15 @@ const UserManagement = () => {
             </tr>
           </thead>
           <tbody>
-            {users.map((user) => (
+            {users.map(user => (
               <tr key={user._id}>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
-                <td>{user.role}</td>
+                <td>
+                  <span className={`role-badge ${user.role}`}>
+                    {user.role}
+                  </span>
+                </td>
                 <td>
                   <span className={`status-badge ${user.status}`}>
                     {user.status}
@@ -168,15 +238,23 @@ const UserManagement = () => {
                 <td className="actions">
                   <button
                     className="edit-button"
-                    onClick={() => handleOpenDialog('edit', user)}
+                    onClick={() => handleShowModal('edit', user)}
                   >
-                    ✏️
+                    Edit
                   </button>
+                  {user.role === 'student' && (
+                    <button
+                      className={`fee-button ${user.feesPaid ? 'paid' : 'unpaid'}`}
+                      onClick={() => handleUpdateFeeStatus(user._id, !user.feesPaid)}
+                    >
+                      {user.feesPaid ? 'Paid' : 'Unpaid'}
+                    </button>
+                  )}
                   <button
                     className="delete-button"
                     onClick={() => handleDeleteUser(user._id)}
                   >
-                    🗑️
+                    Delete
                   </button>
                 </td>
               </tr>
@@ -185,40 +263,44 @@ const UserManagement = () => {
         </table>
       </div>
 
-      {openDialog && (
+      {showModal && (
         <div className="modal-overlay">
           <div className="modal">
             <div className="modal-header">
-              <h3>{dialogMode === 'add' ? 'Add New User' : 'Edit User'}</h3>
-              <button className="close-button" onClick={handleCloseDialog}>×</button>
+              <h3>{modalMode === 'add' ? 'Add New User' : 'Edit User'}</h3>
+              <button 
+                className="close-button"
+                onClick={() => setShowModal(false)}
+              >
+                ×
+              </button>
             </div>
             <form onSubmit={handleSubmit}>
               <div className="form-group">
-                <label htmlFor="name">Name</label>
+                <label>Name</label>
                 <input
                   type="text"
-                  id="name"
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
                   required
                 />
               </div>
+
               <div className="form-group">
-                <label htmlFor="email">Email</label>
+                <label>Email</label>
                 <input
                   type="email"
-                  id="email"
                   name="email"
                   value={formData.email}
                   onChange={handleInputChange}
                   required
                 />
               </div>
+
               <div className="form-group">
-                <label htmlFor="role">Role</label>
+                <label>Role</label>
                 <select
-                  id="role"
                   name="role"
                   value={formData.role}
                   onChange={handleInputChange}
@@ -230,12 +312,54 @@ const UserManagement = () => {
                   <option value="admin">Admin</option>
                 </select>
               </div>
-              {dialogMode === 'add' && (
+
+              <div className="form-group">
+                <label>Phone Number</label>
+                <input
+                  type="tel"
+                  name="phoneNumber"
+                  value={formData.phoneNumber}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              {formData.role === 'student' && (
                 <div className="form-group">
-                  <label htmlFor="password">Password</label>
+                  <label>Grade</label>
+                  <select
+                    name="grade"
+                    value={formData.grade}
+                    onChange={handleInputChange}
+                    required
+                  >
+                    <option value="">Select Grade</option>
+                    {Array.from({ length: 12 }, (_, i) => (
+                      <option key={i + 1} value={`${i + 1}`}>
+                        Grade {i + 1}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+
+              {formData.role === 'tutor' && (
+                <div className="form-group">
+                  <label>Subjects (comma-separated)</label>
+                  <input
+                    type="text"
+                    name="subjects"
+                    value={formData.subjects.join(', ')}
+                    onChange={handleInputChange}
+                    placeholder="Math, Science, English"
+                  />
+                </div>
+              )}
+
+              {modalMode === 'add' && (
+                <div className="form-group">
+                  <label>Password</label>
                   <input
                     type="password"
-                    id="password"
                     name="password"
                     value={formData.password}
                     onChange={handleInputChange}
@@ -243,12 +367,13 @@ const UserManagement = () => {
                   />
                 </div>
               )}
+
               <div className="modal-actions">
-                <button type="button" className="cancel-button" onClick={handleCloseDialog}>
+                <button type="button" onClick={() => setShowModal(false)}>
                   Cancel
                 </button>
-                <button type="submit" className="submit-button">
-                  {dialogMode === 'add' ? 'Add User' : 'Save Changes'}
+                <button type="submit">
+                  {modalMode === 'add' ? 'Add User' : 'Save Changes'}
                 </button>
               </div>
             </form>

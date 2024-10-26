@@ -5,62 +5,76 @@ const AssignmentManagement = () => {
   const [assignments, setAssignments] = useState([]);
   const [classes, setClasses] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [openDialog, setOpenDialog] = useState(false);
-  const [dialogMode, setDialogMode] = useState('add');
+  const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [modalMode, setModalMode] = useState('add');
   const [selectedAssignment, setSelectedAssignment] = useState(null);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
     class: '',
     dueDate: '',
-    totalPoints: ''
+    totalPoints: '',
+    assignmentFile: null
   });
-  const [alert, setAlert] = useState({
-    show: false,
-    message: '',
-    type: 'success'
-  });
+  const [submissions, setSubmissions] = useState([]);
+  const [viewSubmissions, setViewSubmissions] = useState(false);
+  const [alert, setAlert] = useState({ show: false, message: '', type: '' });
 
   useEffect(() => {
-    fetchAssignments();
-    fetchClasses();
+    fetchInitialData();
   }, []);
 
-  const fetchAssignments = async () => {
+  const fetchInitialData = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:5000/api/assignments', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-      if (!response.ok) throw new Error('Failed to fetch assignments');
-      const data = await response.json();
-      setAssignments(data.data.assignments || []);
-    } catch (error) {
-      showAlert('Failed to fetch assignments', 'error');
+      await Promise.all([
+        fetchAssignments(),
+        fetchClasses()
+      ]);
+      setError(null);
+    } catch (err) {
+      setError('Failed to load required data');
     } finally {
       setLoading(false);
     }
   };
 
-  const fetchClasses = async () => {
-    try {
-      const response = await fetch('http://localhost:5000/api/lessons', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-      if (!response.ok) throw new Error('Failed to fetch classes');
-      const data = await response.json();
-      setClasses(data.data.lessons || []);
-    } catch (error) {
-      showAlert('Failed to fetch classes', 'error');
-    }
+  const fetchAssignments = async () => {
+    const response = await fetch('http://localhost:5000/api/assignments', {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+    if (!response.ok) throw new Error('Failed to fetch assignments');
+    const data = await response.json();
+    setAssignments(data.data.assignments);
   };
 
-  const handleOpenDialog = (mode, assignment = null) => {
-    setDialogMode(mode);
+  const fetchClasses = async () => {
+    const response = await fetch('http://localhost:5000/api/lessons', {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+    if (!response.ok) throw new Error('Failed to fetch classes');
+    const data = await response.json();
+    setClasses(data.data.lessons);
+  };
+
+  const fetchSubmissions = async (assignmentId) => {
+    const response = await fetch(`http://localhost:5000/api/assignments/${assignmentId}`, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+    if (!response.ok) throw new Error('Failed to fetch submissions');
+    const data = await response.json();
+    setSubmissions(data.data.assignment.submissions || []);
+  };
+
+  const handleShowModal = (mode, assignment = null) => {
+    setModalMode(mode);
     setSelectedAssignment(assignment);
     if (assignment) {
       setFormData({
@@ -68,7 +82,8 @@ const AssignmentManagement = () => {
         description: assignment.description,
         class: assignment.class._id,
         dueDate: new Date(assignment.dueDate).toISOString().slice(0, 16),
-        totalPoints: assignment.totalPoints
+        totalPoints: assignment.totalPoints,
+        assignmentFile: null
       });
     } else {
       setFormData({
@@ -76,35 +91,31 @@ const AssignmentManagement = () => {
         description: '',
         class: '',
         dueDate: '',
-        totalPoints: ''
+        totalPoints: '',
+        assignmentFile: null
       });
     }
-    setOpenDialog(true);
-  };
-
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-    setSelectedAssignment(null);
+    setShowModal(true);
   };
 
   const handleInputChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    const { name, value, type, files } = e.target;
+    if (type === 'file') {
+      setFormData(prev => ({
+        ...prev,
+        assignmentFile: files[0]
+      }));
+    } else {
+      setFormData(prev => ({
+        ...prev,
+        [name]: value
+      }));
+    }
   };
 
   const validateForm = () => {
-    if (!formData.title.trim()) {
-      showAlert('Please enter an assignment title', 'error');
-      return false;
-    }
-    if (!formData.class) {
-      showAlert('Please select a class', 'error');
-      return false;
-    }
-    if (!formData.totalPoints || formData.totalPoints <= 0) {
-      showAlert('Please enter valid total points', 'error');
+    if (!formData.title || !formData.class || !formData.dueDate || !formData.totalPoints) {
+      showAlert('Please fill in all required fields', 'error');
       return false;
     }
     return true;
@@ -115,31 +126,39 @@ const AssignmentManagement = () => {
     if (!validateForm()) return;
 
     try {
-      const url = dialogMode === 'add'
+      const formDataObj = new FormData();
+      Object.keys(formData).forEach(key => {
+        if (key === 'assignmentFile') {
+          if (formData[key]) {
+            formDataObj.append('file', formData[key]);
+          }
+        } else {
+          formDataObj.append(key, formData[key]);
+        }
+      });
+
+      const url = modalMode === 'add'
         ? 'http://localhost:5000/api/assignments'
         : `http://localhost:5000/api/assignments/${selectedAssignment._id}`;
-      
-      const method = dialogMode === 'add' ? 'POST' : 'PATCH';
-      
+
       const response = await fetch(url, {
-        method,
+        method: modalMode === 'add' ? 'POST' : 'PATCH',
         headers: {
-          'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
-        body: JSON.stringify(formData)
+        body: formDataObj
       });
 
       if (!response.ok) throw new Error('Failed to save assignment');
-
+      
       showAlert(
-        `Assignment successfully ${dialogMode === 'add' ? 'created' : 'updated'}`,
+        `Assignment successfully ${modalMode === 'add' ? 'created' : 'updated'}`,
         'success'
       );
-      handleCloseDialog();
+      setShowModal(false);
       fetchAssignments();
-    } catch (error) {
-      showAlert(`Failed to ${dialogMode} assignment`, 'error');
+    } catch (err) {
+      showAlert(err.message, 'error');
     }
   };
 
@@ -155,28 +174,53 @@ const AssignmentManagement = () => {
       });
 
       if (!response.ok) throw new Error('Failed to delete assignment');
-
+      
       showAlert('Assignment successfully deleted', 'success');
       fetchAssignments();
-    } catch (error) {
-      showAlert('Failed to delete assignment', 'error');
+    } catch (err) {
+      showAlert(err.message, 'error');
+    }
+  };
+
+  const handleViewSubmissions = async (assignmentId) => {
+    try {
+      await fetchSubmissions(assignmentId);
+      setViewSubmissions(true);
+    } catch (err) {
+      showAlert(err.message, 'error');
+    }
+  };
+
+  const handleGradeSubmission = async (assignmentId, submissionId, grade, feedback) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/assignments/${assignmentId}/submissions/${submissionId}`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          },
+          body: JSON.stringify({ grade, feedback })
+        }
+      );
+
+      if (!response.ok) throw new Error('Failed to grade submission');
+      
+      showAlert('Submission graded successfully', 'success');
+      fetchSubmissions(assignmentId);
+    } catch (err) {
+      showAlert(err.message, 'error');
     }
   };
 
   const showAlert = (message, type) => {
-    setAlert({
-      show: true,
-      message,
-      type
-    });
-    setTimeout(() => {
-      setAlert({ ...alert, show: false });
-    }, 3000);
+    setAlert({ show: true, message, type });
+    setTimeout(() => setAlert({ show: false, message: '', type: '' }), 3000);
   };
 
-  if (loading) {
-    return <div className="loading">Loading...</div>;
-  }
+  if (loading) return <div className="loading">Loading...</div>;
+  if (error) return <div className="error">{error}</div>;
 
   return (
     <div className="assignment-management">
@@ -184,79 +228,79 @@ const AssignmentManagement = () => {
         <h2>Assignment Management</h2>
         <button 
           className="add-button"
-          onClick={() => handleOpenDialog('add')}
+          onClick={() => handleShowModal('add')}
         >
-          + Create Assignment
+          Add New Assignment
         </button>
       </div>
 
-      <div className="table-container">
-        <table className="assignments-table">
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Class</th>
-              <th>Due Date</th>
-              <th>Total Points</th>
-              <th>Submissions</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {assignments.length === 0 ? (
-              <tr>
-                <td colSpan="6" className="no-data">
-                  No assignments found
-                </td>
-              </tr>
-            ) : (
-              assignments.map((assignment) => (
-                <tr key={assignment._id}>
-                  <td>{assignment.title}</td>
-                  <td>{assignment.class?.name || 'N/A'}</td>
-                  <td>
-                    {new Date(assignment.dueDate).toLocaleString()}
-                  </td>
-                  <td>{assignment.totalPoints}</td>
-                  <td>
-                    <span className="submission-count">
-                      {assignment.submissions?.length || 0}
-                    </span>
-                  </td>
-                  <td className="actions">
-                    <button
-                      className="edit-button"
-                      onClick={() => handleOpenDialog('edit', assignment)}
-                    >
-                      ✏️
-                    </button>
-                    <button
-                      className="delete-button"
-                      onClick={() => handleDeleteAssignment(assignment._id)}
-                    >
-                      🗑️
-                    </button>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+      <div className="assignments-grid">
+        {assignments.map(assignment => (
+          <div key={assignment._id} className="assignment-card">
+            <div className="assignment-header">
+              <h3>{assignment.title}</h3>
+              <div className="assignment-meta">
+                <span className="class-name">{assignment.class.name}</span>
+                <span className="due-date">
+                  Due: {new Date(assignment.dueDate).toLocaleDateString()}
+                </span>
+              </div>
+            </div>
+            
+            <div className="assignment-content">
+              <p>{assignment.description}</p>
+              <div className="points">
+                Total Points: {assignment.totalPoints}
+              </div>
+            </div>
+
+            <div className="submission-info">
+              <span>
+                Submissions: {assignment.submissions?.length || 0}
+              </span>
+              <button
+                className="view-submissions"
+                onClick={() => handleViewSubmissions(assignment._id)}
+              >
+                View Submissions
+              </button>
+            </div>
+
+            <div className="assignment-actions">
+              <button
+                className="edit-button"
+                onClick={() => handleShowModal('edit', assignment)}
+              >
+                Edit
+              </button>
+              <button
+                className="delete-button"
+                onClick={() => handleDeleteAssignment(assignment._id)}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
 
-      {openDialog && (
+      {showModal && (
         <div className="modal-overlay">
           <div className="modal">
             <div className="modal-header">
-              <h3>{dialogMode === 'add' ? 'Create New Assignment' : 'Edit Assignment'}</h3>
-              <button className="close-button" onClick={handleCloseDialog}>×</button>
+              <h3>{modalMode === 'add' ? 'Add New Assignment' : 'Edit Assignment'}</h3>
+              <button 
+                className="close-button"
+                onClick={() => setShowModal(false)}
+              >
+                ×
+              </button>
             </div>
             <form onSubmit={handleSubmit}>
               <div className="form-group">
-                <label htmlFor="title">Assignment Title</label>
+                <label>Title</label>
                 <input
                   type="text"
-                  id="title"
                   name="title"
                   value={formData.title}
                   onChange={handleInputChange}
@@ -265,39 +309,36 @@ const AssignmentManagement = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="description">Description</label>
+                <label>Description</label>
                 <textarea
-                  id="description"
                   name="description"
                   value={formData.description}
                   onChange={handleInputChange}
                   rows="4"
-                ></textarea>
+                />
               </div>
 
               <div className="form-group">
-                <label htmlFor="class">Class</label>
+                <label>Class</label>
                 <select
-                  id="class"
                   name="class"
                   value={formData.class}
                   onChange={handleInputChange}
                   required
                 >
                   <option value="">Select Class</option>
-                  {classes.map((class_) => (
-                    <option key={class_._id} value={class_._id}>
-                      {class_.name}
+                  {classes.map(classItem => (
+                    <option key={classItem._id} value={classItem._id}>
+                      {classItem.name}
                     </option>
                   ))}
                 </select>
               </div>
 
               <div className="form-group">
-                <label htmlFor="dueDate">Due Date</label>
+                <label>Due Date</label>
                 <input
                   type="datetime-local"
-                  id="dueDate"
                   name="dueDate"
                   value={formData.dueDate}
                   onChange={handleInputChange}
@@ -306,10 +347,9 @@ const AssignmentManagement = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="totalPoints">Total Points</label>
+                <label>Total Points</label>
                 <input
                   type="number"
-                  id="totalPoints"
                   name="totalPoints"
                   value={formData.totalPoints}
                   onChange={handleInputChange}
@@ -318,15 +358,96 @@ const AssignmentManagement = () => {
                 />
               </div>
 
+              <div className="form-group">
+                <label>Assignment File (Optional)</label>
+                <input
+                  type="file"
+                  name="assignmentFile"
+                  onChange={handleInputChange}
+                />
+              </div>
+
               <div className="modal-actions">
-                <button type="button" className="cancel-button" onClick={handleCloseDialog}>
+                <button type="button" onClick={() => setShowModal(false)}>
                   Cancel
                 </button>
-                <button type="submit" className="submit-button">
-                  {dialogMode === 'add' ? 'Create' : 'Save'}
+                <button type="submit">
+                  {modalMode === 'add' ? 'Create Assignment' : 'Save Changes'}
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {viewSubmissions && (
+        <div className="modal-overlay">
+          <div className="modal submissions-modal">
+            <div className="modal-header">
+              <h3>Assignment Submissions</h3>
+              <button 
+                className="close-button"
+                onClick={() => setViewSubmissions(false)}
+              >
+                ×
+              </button>
+            </div>
+            <div className="submissions-list">
+              {submissions.length === 0 ? (
+                <p className="no-submissions">No submissions yet</p>
+              ) : (
+                submissions.map(submission => (
+                  <div key={submission._id} className="submission-card">
+                    <div className="submission-header">
+                      <span className="student-name">
+                        {submission.student.name}
+                      </span>
+                      <span className="submission-date">
+                        Submitted: {new Date(submission.submissionDate).toLocaleString()}
+                      </span>
+                    </div>
+                    
+                    {submission.files?.map((file, index) => (
+                      <div key={index} className="submission-file">
+                        <span>{file.filename}</span>
+                        <a 
+                          href={`/api/assignments/download/${file.path}`}
+                          download
+                          className="download-button"
+                        >
+                          Download
+                        </a>
+                      </div>
+                    ))}
+
+                    <div className="grading-section">
+                      <input
+                        type="number"
+                        placeholder="Grade"
+                        value={submission.grade || ''}
+                        onChange={(e) => handleGradeSubmission(
+                          selectedAssignment._id,
+                          submission._id,
+                          e.target.value,
+                          submission.feedback
+                        )}
+                        max={selectedAssignment?.totalPoints}
+                      />
+                      <textarea
+                        placeholder="Feedback"
+                        value={submission.feedback || ''}
+                        onChange={(e) => handleGradeSubmission(
+                          selectedAssignment._id,
+                          submission._id,
+                          submission.grade,
+                          e.target.value
+                        )}
+                      />
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
           </div>
         </div>
       )}

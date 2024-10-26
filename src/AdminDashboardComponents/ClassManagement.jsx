@@ -5,119 +5,180 @@ const ClassManagement = () => {
   const [classes, setClasses] = useState([]);
   const [tutors, setTutors] = useState([]);
   const [subjects, setSubjects] = useState([]);
-  const [openDialog, setOpenDialog] = useState(false);
-  const [dialogMode, setDialogMode] = useState('add');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [modalMode, setModalMode] = useState('add');
   const [selectedClass, setSelectedClass] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     subject: '',
     tutor: '',
-    schedule: [],
+    gradeLevel: '',
     capacity: '',
-    gradeLevel: ''
+    schedule: [{
+      day: 'Monday',
+      startTime: '',
+      endTime: ''
+    }]
   });
-  const [alert, setAlert] = useState({
-    show: false,
-    message: '',
-    type: 'success'
-  });
+  const [alert, setAlert] = useState({ show: false, message: '', type: '' });
 
   useEffect(() => {
-    fetchClasses();
-    fetchTutors();
-    fetchSubjects();
+    fetchInitialData();
   }, []);
 
-  const fetchClasses = async () => {
+  const fetchInitialData = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/lessons', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-      const data = await response.json();
-      setClasses(data.data.lessons);
-    } catch (error) {
-      showAlert('Failed to fetch classes', 'error');
+      setLoading(true);
+      await Promise.all([
+        fetchClasses(),
+        fetchTutors(),
+        fetchSubjects()
+      ]);
+      setError(null);
+    } catch (err) {
+      setError('Failed to load required data');
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const fetchClasses = async () => {
+    const response = await fetch('http://localhost:5000/api/lessons', {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+    if (!response.ok) throw new Error('Failed to fetch classes');
+    const data = await response.json();
+    setClasses(data.data.lessons);
   };
 
   const fetchTutors = async () => {
-    try {
-      const response = await fetch('http://localhost:5000/api/tutors', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-      const data = await response.json();
-      setTutors(data.data.tutors);
-    } catch (error) {
-      showAlert('Failed to fetch tutors', 'error');
-    }
+    const response = await fetch('http://localhost:5000/api/tutors', {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+    if (!response.ok) throw new Error('Failed to fetch tutors');
+    const data = await response.json();
+    setTutors(data.data.tutors);
   };
 
   const fetchSubjects = async () => {
-    try {
-      const response = await fetch('http://localhost:5000/api/subjects', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-      const data = await response.json();
-      setSubjects(data.data.subjects);
-    } catch (error) {
-      showAlert('Failed to fetch subjects', 'error');
-    }
+    const response = await fetch('http://localhost:5000/api/subjects', {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+    if (!response.ok) throw new Error('Failed to fetch subjects');
+    const data = await response.json();
+    setSubjects(data.data.subjects);
   };
 
-  const handleOpenDialog = (mode, classItem = null) => {
-    setDialogMode(mode);
+  const handleShowModal = (mode, classItem = null) => {
+    setModalMode(mode);
     setSelectedClass(classItem);
     if (classItem) {
       setFormData({
         name: classItem.name,
         subject: classItem.subject._id,
         tutor: classItem.tutor._id,
-        schedule: classItem.schedule,
+        gradeLevel: classItem.gradeLevel,
         capacity: classItem.capacity,
-        gradeLevel: classItem.gradeLevel
+        schedule: classItem.schedule
       });
     } else {
       setFormData({
         name: '',
         subject: '',
         tutor: '',
-        schedule: [],
+        gradeLevel: '',
         capacity: '',
-        gradeLevel: ''
+        schedule: [{
+          day: 'Monday',
+          startTime: '',
+          endTime: ''
+        }]
       });
     }
-    setOpenDialog(true);
-  };
-
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-    setSelectedClass(null);
+    setShowModal(true);
   };
 
   const handleInputChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleScheduleChange = (index, field, value) => {
+    const newSchedule = [...formData.schedule];
+    newSchedule[index] = {
+      ...newSchedule[index],
+      [field]: value
+    };
+    setFormData(prev => ({
+      ...prev,
+      schedule: newSchedule
+    }));
+  };
+
+  const addScheduleSlot = () => {
+    setFormData(prev => ({
+      ...prev,
+      schedule: [
+        ...prev.schedule,
+        {
+          day: 'Monday',
+          startTime: '',
+          endTime: ''
+        }
+      ]
+    }));
+  };
+
+  const removeScheduleSlot = (index) => {
+    if (formData.schedule.length > 1) {
+      const newSchedule = formData.schedule.filter((_, i) => i !== index);
+      setFormData(prev => ({
+        ...prev,
+        schedule: newSchedule
+      }));
+    }
+  };
+
+  const validateForm = () => {
+    if (!formData.name || !formData.subject || !formData.tutor || 
+        !formData.gradeLevel || !formData.capacity) {
+      showAlert('Please fill in all required fields', 'error');
+      return false;
+    }
+
+    const validSchedule = formData.schedule.every(slot => 
+      slot.day && slot.startTime && slot.endTime
+    );
+    if (!validSchedule) {
+      showAlert('Please fill in all schedule slots', 'error');
+      return false;
+    }
+
+    return true;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
+
     try {
-      const url = dialogMode === 'add'
+      const url = modalMode === 'add'
         ? 'http://localhost:5000/api/lessons'
         : `http://localhost:5000/api/lessons/${selectedClass._id}`;
-      
-      const method = dialogMode === 'add' ? 'POST' : 'PATCH';
-      
+
       const response = await fetch(url, {
-        method,
+        method: modalMode === 'add' ? 'POST' : 'PATCH',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -126,15 +187,15 @@ const ClassManagement = () => {
       });
 
       if (!response.ok) throw new Error('Failed to save class');
-
+      
       showAlert(
-        `Class successfully ${dialogMode === 'add' ? 'added' : 'updated'}`,
+        `Class successfully ${modalMode === 'add' ? 'created' : 'updated'}`,
         'success'
       );
-      handleCloseDialog();
+      setShowModal(false);
       fetchClasses();
-    } catch (error) {
-      showAlert(`Failed to ${dialogMode} class`, 'error');
+    } catch (err) {
+      showAlert(err.message, 'error');
     }
   };
 
@@ -150,24 +211,21 @@ const ClassManagement = () => {
       });
 
       if (!response.ok) throw new Error('Failed to delete class');
-
+      
       showAlert('Class successfully deleted', 'success');
       fetchClasses();
-    } catch (error) {
-      showAlert('Failed to delete class', 'error');
+    } catch (err) {
+      showAlert(err.message, 'error');
     }
   };
 
   const showAlert = (message, type) => {
-    setAlert({
-      show: true,
-      message,
-      type
-    });
-    setTimeout(() => {
-      setAlert({ ...alert, show: false });
-    }, 3000);
+    setAlert({ show: true, message, type });
+    setTimeout(() => setAlert({ show: false, message: '', type: '' }), 3000);
   };
+
+  if (loading) return <div className="loading">Loading...</div>;
+  if (error) return <div className="error">{error}</div>;
 
   return (
     <div className="class-management">
@@ -175,79 +233,78 @@ const ClassManagement = () => {
         <h2>Class Management</h2>
         <button 
           className="add-button"
-          onClick={() => handleOpenDialog('add')}
+          onClick={() => handleShowModal('add')}
         >
-          + Add Class
+          Add New Class
         </button>
       </div>
 
-      <div className="table-container">
-        <table className="classes-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Subject</th>
-              <th>Tutor</th>
-              <th>Grade Level</th>
-              <th>Capacity</th>
-              <th>Current Enrollment</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {classes.map((classItem) => (
-              <tr key={classItem._id}>
-                <td>{classItem.name}</td>
-                <td>{classItem.subject?.title}</td>
-                <td>{classItem.tutor?.name}</td>
-                <td>{classItem.gradeLevel}</td>
-                <td>{classItem.capacity}</td>
-                <td>
-                  <div className="enrollment-status">
-                    <div className="enrollment-bar">
-                      <div 
-                        className="enrollment-fill"
-                        style={{ 
-                          width: `${(classItem.currentEnrollment / classItem.capacity) * 100}%`
-                        }}
-                      ></div>
-                    </div>
-                    <span>{classItem.currentEnrollment}</span>
-                  </div>
-                </td>
-                <td className="actions">
-                  <button
-                    className="edit-button"
-                    onClick={() => handleOpenDialog('edit', classItem)}
-                  >
-                    ✏️
-                  </button>
-                  <button
-                    className="delete-button"
-                    onClick={() => handleDeleteClass(classItem._id)}
-                  >
-                    🗑️
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <div className="classes-grid">
+        {classes.map(classItem => (
+          <div key={classItem._id} className="class-card">
+            <div className="class-header">
+              <h3>{classItem.name}</h3>
+              <div className="class-actions">
+                <button
+                  className="edit-button"
+                  onClick={() => handleShowModal('edit', classItem)}
+                >
+                  Edit
+                </button>
+                <button
+                  className="delete-button"
+                  onClick={() => handleDeleteClass(classItem._id)}
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+            <div className="class-info">
+              <p><strong>Subject:</strong> {classItem.subject.title}</p>
+              <p><strong>Tutor:</strong> {classItem.tutor.name}</p>
+              <p><strong>Grade Level:</strong> {classItem.gradeLevel}</p>
+              <div className="capacity-info">
+                <span>Capacity: {classItem.currentEnrollment}/{classItem.capacity}</span>
+                <div className="capacity-bar">
+                  <div 
+                    className="capacity-fill"
+                    style={{
+                      width: `${(classItem.currentEnrollment / classItem.capacity) * 100}%`
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="schedule-info">
+              <h4>Schedule</h4>
+              {classItem.schedule.map((slot, index) => (
+                <div key={index} className="schedule-slot">
+                  <span>{slot.day}</span>
+                  <span>{slot.startTime} - {slot.endTime}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
 
-      {openDialog && (
+      {showModal && (
         <div className="modal-overlay">
           <div className="modal">
             <div className="modal-header">
-              <h3>{dialogMode === 'add' ? 'Add New Class' : 'Edit Class'}</h3>
-              <button className="close-button" onClick={handleCloseDialog}>×</button>
+              <h3>{modalMode === 'add' ? 'Add New Class' : 'Edit Class'}</h3>
+              <button 
+                className="close-button"
+                onClick={() => setShowModal(false)}
+              >
+                ×
+              </button>
             </div>
             <form onSubmit={handleSubmit}>
               <div className="form-group">
-                <label htmlFor="name">Class Name</label>
+                <label>Class Name</label>
                 <input
                   type="text"
-                  id="name"
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
@@ -256,16 +313,15 @@ const ClassManagement = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="subject">Subject</label>
+                <label>Subject</label>
                 <select
-                  id="subject"
                   name="subject"
                   value={formData.subject}
                   onChange={handleInputChange}
                   required
                 >
                   <option value="">Select Subject</option>
-                  {subjects.map((subject) => (
+                  {subjects.map(subject => (
                     <option key={subject._id} value={subject._id}>
                       {subject.title}
                     </option>
@@ -274,16 +330,15 @@ const ClassManagement = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="tutor">Tutor</label>
+                <label>Tutor</label>
                 <select
-                  id="tutor"
                   name="tutor"
                   value={formData.tutor}
                   onChange={handleInputChange}
                   required
                 >
                   <option value="">Select Tutor</option>
-                  {tutors.map((tutor) => (
+                  {tutors.map(tutor => (
                     <option key={tutor._id} value={tutor._id}>
                       {tutor.name}
                     </option>
@@ -292,24 +347,26 @@ const ClassManagement = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="gradeLevel">Grade Level</label>
-                <input
-                  type="number"
-                  id="gradeLevel"
+                <label>Grade Level</label>
+                <select
                   name="gradeLevel"
                   value={formData.gradeLevel}
                   onChange={handleInputChange}
-                  min="1"
-                  max="12"
                   required
-                />
+                >
+                  <option value="">Select Grade</option>
+                  {Array.from({ length: 12 }, (_, i) => (
+                    <option key={i + 1} value={i + 1}>
+                      Grade {i + 1}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="form-group">
-                <label htmlFor="capacity">Capacity</label>
+                <label>Capacity</label>
                 <input
                   type="number"
-                  id="capacity"
                   name="capacity"
                   value={formData.capacity}
                   onChange={handleInputChange}
@@ -318,12 +375,61 @@ const ClassManagement = () => {
                 />
               </div>
 
+              <div className="form-group">
+                <label>Schedule</label>
+                <div className="schedule-slots">
+                  {formData.schedule.map((slot, index) => (
+                    <div key={index} className="schedule-slot">
+                      <select
+                        value={slot.day}
+                        onChange={(e) => handleScheduleChange(index, 'day', e.target.value)}
+                        required
+                      >
+                        {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+                          .map(day => (
+                            <option key={day} value={day}>{day}</option>
+                          ))
+                        }
+                      </select>
+                      <input
+                        type="time"
+                        value={slot.startTime}
+                        onChange={(e) => handleScheduleChange(index, 'startTime', e.target.value)}
+                        required
+                      />
+                      <input
+                        type="time"
+                        value={slot.endTime}
+                        onChange={(e) => handleScheduleChange(index, 'endTime', e.target.value)}
+                        required
+                      />
+                      {formData.schedule.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => removeScheduleSlot(index)}
+                          className="remove-slot"
+                        >
+                          ×
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={addScheduleSlot}
+                    className="add-slot"
+                  >
+                    + Add Schedule Slot
+                  </button>
+                </div>
+              </div>
+
               <div className="modal-actions">
-                <button type="button" className="cancel-button" onClick={handleCloseDialog}>
+                <button type="button" onClick={() => setShowModal(false)}>
                   Cancel
                 </button>
-                <button type="submit" className="submit-button">
-                  {dialogMode === 'add' ? 'Add Class' : 'Save Changes'}
+                <button type="submit">
+                  {modalMode === 'add' ? 'Create Class' : 'Save Changes'}
                 </button>
               </div>
             </form>

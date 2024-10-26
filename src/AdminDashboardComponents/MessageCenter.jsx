@@ -4,82 +4,82 @@ import '../css/MessageCenter.css';
 const MessageCenter = () => {
   const [messages, setMessages] = useState([]);
   const [users, setUsers] = useState([]);
+  const [announcements, setAnnouncements] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [messageText, setMessageText] = useState('');
-  const [announcements, setAnnouncements] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [showAnnouncementModal, setShowAnnouncementModal] = useState(false);
   const [announcementForm, setAnnouncementForm] = useState({
     title: '',
-    content: '',
-    recipients: []
-  });
-  const [alert, setAlert] = useState({
-    show: false,
     message: '',
-    type: 'success'
+    recipientType: 'all',
+    recipients: [],
+    priority: 'medium'
   });
-  
+  const [alert, setAlert] = useState({ show: false, message: '', type: '' });
   const messagesEndRef = useRef(null);
+  const [activeTab, setActiveTab] = useState('messages');
 
   useEffect(() => {
-    fetchMessages();
-    fetchUsers();
-    fetchAnnouncements();
+    fetchInitialData();
   }, []);
 
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  const fetchInitialData = async () => {
+    try {
+      setLoading(true);
+      await Promise.all([
+        fetchMessages(),
+        fetchUsers(),
+        fetchAnnouncements()
+      ]);
+      setError(null);
+    } catch (err) {
+      setError('Failed to load message center data');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const fetchMessages = async () => {
-    try {
-      const response = await fetch('http://localhost:5000/api/messages', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-      const data = await response.json();
-      setMessages(data.messages);
-    } catch (error) {
-      showAlert('Failed to fetch messages', 'error');
-    }
+    const response = await fetch('http://localhost:5000/api/messages', {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+    if (!response.ok) throw new Error('Failed to fetch messages');
+    const data = await response.json();
+    setMessages(data);
   };
 
   const fetchUsers = async () => {
-    try {
-      const response = await fetch('http://localhost:5000/api/users', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-      const data = await response.json();
-      setUsers(data.data.users);
-    } catch (error) {
-      showAlert('Failed to fetch users', 'error');
-    }
+    const response = await fetch('http://localhost:5000/api/users', {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+    if (!response.ok) throw new Error('Failed to fetch users');
+    const data = await response.json();
+    setUsers(data.data.users);
   };
 
   const fetchAnnouncements = async () => {
-    try {
-      const response = await fetch('http://localhost:5000/api/notifications', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-      const data = await response.json();
-      setAnnouncements(data.data.notifications.filter(n => n.type === 'Announcement'));
-    } catch (error) {
-      showAlert('Failed to fetch announcements', 'error');
-    }
+    const response = await fetch('http://localhost:5000/api/notifications?type=Announcement', {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+    if (!response.ok) throw new Error('Failed to fetch announcements');
+    const data = await response.json();
+    setAnnouncements(data.data.notifications);
   };
 
-  const handleUserSelect = (user) => {
-    setSelectedUser(user);
-    setMessageText('');
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const handleSendMessage = async (e) => {
@@ -95,22 +95,24 @@ const MessageCenter = () => {
         },
         body: JSON.stringify({
           recipientId: selectedUser._id,
-          content: messageText
+          content: messageText,
+          recipientModel: selectedUser.role.charAt(0).toUpperCase() + selectedUser.role.slice(1)
         })
       });
 
       if (!response.ok) throw new Error('Failed to send message');
-
+      
       setMessageText('');
       fetchMessages();
       showAlert('Message sent successfully', 'success');
-    } catch (error) {
-      showAlert('Failed to send message', 'error');
+    } catch (err) {
+      showAlert(err.message, 'error');
     }
   };
 
   const handleCreateAnnouncement = async (e) => {
     e.preventDefault();
+
     try {
       const response = await fetch('http://localhost:5000/api/notifications', {
         method: 'POST',
@@ -127,88 +129,150 @@ const MessageCenter = () => {
       if (!response.ok) throw new Error('Failed to create announcement');
 
       setShowAnnouncementModal(false);
-      setAnnouncementForm({ title: '', content: '', recipients: [] });
+      setAnnouncementForm({
+        title: '',
+        message: '',
+        recipientType: 'all',
+        recipients: [],
+        priority: 'medium'
+      });
       fetchAnnouncements();
       showAlert('Announcement created successfully', 'success');
-    } catch (error) {
-      showAlert('Failed to create announcement', 'error');
+    } catch (err) {
+      showAlert(err.message, 'error');
+    }
+  };
+
+  const handleMarkAsRead = async (messageId) => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/messages/${messageId}/read`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+
+      if (!response.ok) throw new Error('Failed to mark message as read');
+      fetchMessages();
+    } catch (err) {
+      showAlert(err.message, 'error');
     }
   };
 
   const getUserMessages = () => {
     if (!selectedUser) return [];
-    return messages.filter(msg => 
-      msg.sender === selectedUser._id || msg.recipient === selectedUser._id
+    return messages.filter(msg =>
+      (msg.sender === selectedUser._id || msg.recipient === selectedUser._id)
     ).sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
   };
 
   const showAlert = (message, type) => {
-    setAlert({
-      show: true,
-      message,
-      type
-    });
-    setTimeout(() => {
-      setAlert({ ...alert, show: false });
-    }, 3000);
+    setAlert({ show: true, message, type });
+    setTimeout(() => setAlert({ show: false, message: '', type: '' }), 3000);
   };
+
+  if (loading) return <div className="loading">Loading...</div>;
+  if (error) return <div className="error">{error}</div>;
 
   return (
     <div className="message-center">
-      <div className="message-grid">
-        <div className="users-panel">
-          <div className="panel-header">
-            <h3>Users</h3>
-          </div>
-          <div className="users-list">
-            {users.map((user) => (
-              <div
-                key={user._id}
-                className={`user-item ${selectedUser?._id === user._id ? 'selected' : ''}`}
-                onClick={() => handleUserSelect(user)}
-              >
-                <div className="user-avatar">
-                  {user.name.charAt(0).toUpperCase()}
-                </div>
-                <div className="user-info">
-                  <span className="user-name">{user.name}</span>
-                  <span className="user-role">{user.role}</span>
-                </div>
-              </div>
-            ))}
-          </div>
+      <div className="header">
+        <h2>Message Center</h2>
+        <div className="tab-navigation">
+          <button 
+            className={`tab ${activeTab === 'messages' ? 'active' : ''}`}
+            onClick={() => setActiveTab('messages')}
+          >
+            Messages
+          </button>
+          <button 
+            className={`tab ${activeTab === 'announcements' ? 'active' : ''}`}
+            onClick={() => setActiveTab('announcements')}
+          >
+            Announcements
+          </button>
         </div>
+      </div>
 
-        <div className="chat-panel">
-          <div className="panel-header">
-            <h3>{selectedUser ? `Chat with ${selectedUser.name}` : 'Select a user to start chatting'}</h3>
-            <button 
-              className="announce-button"
-              onClick={() => setShowAnnouncementModal(true)}
-            >
-              📢 New Announcement
-            </button>
+      {activeTab === 'messages' ? (
+        <div className="messages-container">
+          <div className="users-list">
+            <div className="users-header">
+              <h3>Contacts</h3>
+              <input
+                type="text"
+                placeholder="Search users..."
+                className="user-search"
+              />
+            </div>
+            <div className="users-scroll">
+              {users.map(user => (
+                <div
+                  key={user._id}
+                  className={`user-item ${selectedUser?._id === user._id ? 'active' : ''}`}
+                  onClick={() => setSelectedUser(user)}
+                >
+                  <div className="user-avatar">
+                    {user.name.charAt(0).toUpperCase()}
+                  </div>
+                  <div className="user-info">
+                    <span className="user-name">{user.name}</span>
+                    <span className="user-role">{user.role}</span>
+                  </div>
+                  {messages.filter(m => 
+                    m.sender === user._id && !m.read
+                  ).length > 0 && (
+                    <span className="unread-badge">
+                      {messages.filter(m => m.sender === user._id && !m.read).length}
+                    </span>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
-          
-          <div className="messages-container">
+
+          <div className="chat-area">
             {selectedUser ? (
               <>
+                <div className="chat-header">
+                  <div className="chat-user-info">
+                    <div className="user-avatar">
+                      {selectedUser.name.charAt(0).toUpperCase()}
+                    </div>
+                    <div className="user-details">
+                      <span className="user-name">{selectedUser.name}</span>
+                      <span className="user-role">{selectedUser.role}</span>
+                    </div>
+                  </div>
+                </div>
+
                 <div className="messages-list">
-                  {getUserMessages().map((message) => (
+                  {getUserMessages().map(message => (
                     <div
                       key={message._id}
                       className={`message ${message.sender === selectedUser._id ? 'received' : 'sent'}`}
+                      onClick={() => {
+                        if (message.sender === selectedUser._id && !message.read) {
+                          handleMarkAsRead(message._id);
+                        }
+                      }}
                     >
                       <div className="message-content">
                         {message.content}
                       </div>
-                      <div className="message-time">
-                        {new Date(message.createdAt).toLocaleTimeString()}
+                      <div className="message-meta">
+                        <span className="message-time">
+                          {new Date(message.createdAt).toLocaleTimeString()}
+                        </span>
+                        {message.sender === selectedUser._id && !message.read && (
+                          <span className="unread-marker">•</span>
+                        )}
                       </div>
                     </div>
                   ))}
                   <div ref={messagesEndRef} />
                 </div>
+
                 <form className="message-form" onSubmit={handleSendMessage}>
                   <input
                     type="text"
@@ -222,45 +286,54 @@ const MessageCenter = () => {
                 </form>
               </>
             ) : (
-              <div className="no-selection">
-                Select a user from the list to start a conversation
+              <div className="no-chat-selected">
+                Select a user to start messaging
               </div>
             )}
           </div>
         </div>
-
-        <div className="announcements-panel">
-          <div className="panel-header">
-            <h3>Recent Announcements</h3>
+      ) : (
+        <div className="announcements-container">
+          <div className="announcements-header">
+            <button 
+              className="create-announcement"
+              onClick={() => setShowAnnouncementModal(true)}
+            >
+              Create Announcement
+            </button>
           </div>
+
           <div className="announcements-list">
-            {announcements.map((announcement) => (
-              <div key={announcement._id} className="announcement-item">
+            {announcements.map(announcement => (
+              <div key={announcement._id} className="announcement-card">
                 <div className="announcement-header">
-                  <span className="announcement-icon">📢</span>
-                  <span className="announcement-time">
-                    {new Date(announcement.createdAt).toLocaleDateString()}
+                  <h4>{announcement.title}</h4>
+                  <span className={`priority ${announcement.priority}`}>
+                    {announcement.priority}
                   </span>
                 </div>
                 <div className="announcement-content">
                   {announcement.message}
                 </div>
+                <div className="announcement-meta">
+                  <span className="timestamp">
+                    {new Date(announcement.createdAt).toLocaleString()}
+                  </span>
+                  <span className="recipient-type">
+                    To: {announcement.recipientType}
+                  </span>
+                </div>
               </div>
             ))}
-            {announcements.length === 0 && (
-              <div className="no-announcements">
-                No announcements yet
-              </div>
-            )}
           </div>
         </div>
-      </div>
+      )}
 
       {showAnnouncementModal && (
         <div className="modal-overlay">
           <div className="modal">
             <div className="modal-header">
-              <h3>Create New Announcement</h3>
+              <h3>Create Announcement</h3>
               <button 
                 className="close-button"
                 onClick={() => setShowAnnouncementModal(false)}
@@ -270,67 +343,99 @@ const MessageCenter = () => {
             </div>
             <form onSubmit={handleCreateAnnouncement}>
               <div className="form-group">
-                <label htmlFor="title">Title</label>
+                <label>Title</label>
                 <input
                   type="text"
-                  id="title"
                   value={announcementForm.title}
-                  onChange={(e) => setAnnouncementForm({
-                    ...announcementForm,
+                  onChange={(e) => setAnnouncementForm(prev => ({
+                    ...prev,
                     title: e.target.value
-                  })}
+                  }))}
                   required
                 />
               </div>
 
               <div className="form-group">
-                <label htmlFor="content">Content</label>
+                <label>Message</label>
                 <textarea
-                  id="content"
-                  value={announcementForm.content}
-                  onChange={(e) => setAnnouncementForm({
-                    ...announcementForm,
-                    content: e.target.value
-                  })}
+                  value={announcementForm.message}
+                  onChange={(e) => setAnnouncementForm(prev => ({
+                    ...prev,
+                    message: e.target.value
+                  }))}
                   rows="4"
                   required
-                ></textarea>
+                />
               </div>
 
               <div className="form-group">
-                <label>Recipients</label>
-                <div className="checkbox-group">
-                  {['all', 'students', 'tutors', 'parents'].map((role) => (
-                    <label key={role} className="checkbox-label">
-                      <input
-                        type="checkbox"
-                        checked={announcementForm.recipients.includes(role)}
-                        onChange={(e) => {
-                          const newRecipients = e.target.checked
-                            ? [...announcementForm.recipients, role]
-                            : announcementForm.recipients.filter(r => r !== role);
-                          setAnnouncementForm({
-                            ...announcementForm,
-                            recipients: newRecipients
-                          });
-                        }}
-                      />
-                      {role.charAt(0).toUpperCase() + role.slice(1)}
-                    </label>
-                  ))}
+                <label>Recipient Type</label>
+                <select
+                  value={announcementForm.recipientType}
+                  onChange={(e) => setAnnouncementForm(prev => ({
+                    ...prev,
+                    recipientType: e.target.value,
+                    recipients: []
+                  }))}
+                >
+                  <option value="all">All Users</option>
+                  <option value="students">All Students</option>
+                  <option value="tutors">All Tutors</option>
+                  <option value="parents">All Parents</option>
+                  <option value="specific">Specific Users</option>
+                </select>
+              </div>
+
+              {announcementForm.recipientType === 'specific' && (
+                <div className="form-group">
+                  <label>Select Recipients</label>
+                  <div className="recipients-list">
+                    {users.map(user => (
+                      <label key={user._id} className="recipient-option">
+                        <input
+                          type="checkbox"
+                          checked={announcementForm.recipients.includes(user._id)}
+                          onChange={(e) => {
+                            const newRecipients = e.target.checked
+                              ? [...announcementForm.recipients, user._id]
+                              : announcementForm.recipients.filter(id => id !== user._id);
+                            setAnnouncementForm(prev => ({
+                              ...prev,
+                              recipients: newRecipients
+                            }));
+                          }}
+                        />
+                        {user.name} ({user.role})
+                      </label>
+                    ))}
+                  </div>
                 </div>
+              )}
+
+              <div className="form-group">
+                <label>Priority</label>
+                <select
+                  value={announcementForm.priority}
+                  onChange={(e) => setAnnouncementForm(prev => ({
+                    ...prev,
+                    priority: e.target.value
+                  }))}
+                >
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high">High</option>
+                </select>
               </div>
 
               <div className="modal-actions">
                 <button 
                   type="button" 
-                  className="cancel-button"
                   onClick={() => setShowAnnouncementModal(false)}
                 >
                   Cancel
                 </button>
-                <button type="submit" className="submit-button">
-                  Send Announcement
+                <button type="submit">
+                  Create Announcement
                 </button>
               </div>
             </form>

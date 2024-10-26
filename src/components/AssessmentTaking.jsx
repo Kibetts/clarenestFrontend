@@ -61,7 +61,6 @@ function AssessmentTaking() {
             // Show a success message
             alert('Assessment submitted successfully!');
             
-            // You can choose to redirect the user or show the results here
             // Option 1: Redirect to a results page
             navigate(`/assessment-results/${result.submissionId}`); // Results page not yet created
             

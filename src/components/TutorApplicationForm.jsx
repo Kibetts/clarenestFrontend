@@ -1,15 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../css/TutorApplication.css';
+
+const GRADE_LEVELS = [
+    '1st', '2nd', '3rd', '4th', '5th', '6th', 
+    '7th', '8th', '9th', '10th', '11th', '12th'
+];
+
+const subjects = [
+    "Mathematics",
+    "Physics",
+    "Chemistry",
+    "Biology",
+    "English",
+    "History",
+    "Geography",
+    "Computer Science"
+];
 
 function TutorApplication() {
     const navigate = useNavigate();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState(null);
+    const [isSubjectsDropdownOpen, setIsSubjectsDropdownOpen] = useState(false);
+    const [isGradeLevelsDropdownOpen, setIsGradeLevelsDropdownOpen] = useState(false);
+    const subjectsDropdownRef = useRef(null);
+    const gradeLevelsDropdownRef = useRef(null);
 
     const [formData, setFormData] = useState({
         personalInfo: {
             fullName: '',
+            email: '',
             dateOfBirth: '',
             nationality: '',
             location: ''
@@ -27,9 +48,9 @@ function TutorApplication() {
             languagesSpoken: []
         },
         documents: {
-            cv: '',
+            cv: null,
             academicCertificates: [],
-            governmentId: ''
+            governmentId: null
         },
         professionalReferences: [
             {
@@ -47,7 +68,23 @@ function TutorApplication() {
             motivation: '',
             teachingPhilosophy: ''
         }
-    });;
+    });
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (subjectsDropdownRef.current && !subjectsDropdownRef.current.contains(event.target)) {
+                setIsSubjectsDropdownOpen(false);
+            }
+            if (gradeLevelsDropdownRef.current && !gradeLevelsDropdownRef.current.contains(event.target)) {
+                setIsGradeLevelsDropdownOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -63,7 +100,7 @@ function TutorApplication() {
     };
 
     const handleArrayChange = (e, section, field) => {
-        const values = e.target.value.split(',').map(item => item.trim());
+        const values = e.target.value.split(',').map(item => item.trim()).filter(item => item);
         setFormData(prev => ({
             ...prev,
             [section]: {
@@ -71,6 +108,40 @@ function TutorApplication() {
                 [field]: values
             }
         }));
+    };
+
+    const handleSubjectToggle = (subject) => {
+        setFormData(prev => {
+            const currentSubjects = prev.professionalInfo.subjectsSpecialization;
+            const updatedSubjects = currentSubjects.includes(subject)
+                ? currentSubjects.filter(s => s !== subject)
+                : [...currentSubjects, subject];
+            
+            return {
+                ...prev,
+                professionalInfo: {
+                    ...prev.professionalInfo,
+                    subjectsSpecialization: updatedSubjects
+                }
+            };
+        });
+    };
+
+    const handleGradeLevelToggle = (level) => {
+        setFormData(prev => {
+            const currentLevels = prev.professionalInfo.preferredGradeLevels;
+            const updatedLevels = currentLevels.includes(level)
+                ? currentLevels.filter(l => l !== level)
+                : [...currentLevels, level];
+            
+            return {
+                ...prev,
+                professionalInfo: {
+                    ...prev.professionalInfo,
+                    preferredGradeLevels: updatedLevels
+                }
+            };
+        });
     };
 
     const handleReferenceChange = (index, field, value) => {
@@ -82,59 +153,77 @@ function TutorApplication() {
         }));
     };
 
+    const handleFileChange = (fieldName, files) => {
+        setFormData(prev => ({
+            ...prev,
+            documents: {
+                ...prev.documents,
+                [fieldName]: fieldName === 'academicCertificates' ? Array.from(files) : files[0]
+            }
+        }));
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
         setError(null);
     
         try {
-            const transformedData = {
+            const formDataToSend = new FormData();
+            const { documents, ...otherFormData } = formData;
+            
+            const applicationData = {
                 personalInfo: {
-                    fullName: formData.personalInfo.fullName,
-                    dateOfBirth: formData.personalInfo.dateOfBirth,
-                    nationality: formData.personalInfo.nationality,
-                    location: formData.personalInfo.location
+                    fullName: otherFormData.personalInfo.fullName,
+                    email: otherFormData.personalInfo.email,
+                    dateOfBirth: otherFormData.personalInfo.dateOfBirth,
+                    nationality: otherFormData.personalInfo.nationality,
+                    location: otherFormData.personalInfo.location
                 },
                 professionalInfo: {
-                    academicQualifications: formData.professionalInfo.academicQualifications,
-                    teachingExperience: parseInt(formData.professionalInfo.teachingExperience),
-                    subjectsSpecialization: formData.professionalInfo.subjectsSpecialization,
-                    certifications: formData.professionalInfo.certifications,
-                    preferredGradeLevels: formData.professionalInfo.preferredGradeLevels.map(
-                        level => parseInt(level)
-                    ),
-                    availability: formData.professionalInfo.availability
+                    academicQualifications: otherFormData.professionalInfo.academicQualifications,
+                    teachingExperience: parseInt(otherFormData.professionalInfo.teachingExperience),
+                    subjectsSpecialization: otherFormData.professionalInfo.subjectsSpecialization,
+                    certifications: otherFormData.professionalInfo.certifications,
+                    preferredGradeLevels: otherFormData.professionalInfo.preferredGradeLevels,
+                    availability: otherFormData.professionalInfo.availability
                 },
-                additionalSkills: {
-                    technologySkills: formData.additionalSkills.technologySkills,
-                    languagesSpoken: formData.additionalSkills.languagesSpoken
-                },
-                documents: {
-                    cv: 'https://example.com/placeholder-cv.pdf',
-                    academicCertificates: ['https://example.com/placeholder-cert.pdf'],
-                    governmentId: 'https://example.com/placeholder-id.pdf'
-                },
-                professionalReferences: formData.professionalReferences,
-                essay: formData.essay
+                additionalSkills: otherFormData.additionalSkills,
+                professionalReferences: otherFormData.professionalReferences,
+                essay: otherFormData.essay
             };
+    
+            // Debug log
+            console.log('Application data being sent:', JSON.stringify(applicationData, null, 2));
+    
+            if (documents.cv) {
+                formDataToSend.append('cv', documents.cv);
+            }
+            
+            if (documents.academicCertificates.length > 0) {
+                documents.academicCertificates.forEach(file => {
+                    formDataToSend.append('academicCertificates', file);
+                });
+            }
+            
+            if (documents.governmentId) {
+                formDataToSend.append('governmentId', documents.governmentId);
+            }
+    
+            formDataToSend.append('application', JSON.stringify(applicationData));
     
             const response = await fetch('http://localhost:5000/api/applications/tutor', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(transformedData),
-                credentials: 'include' // Add this line
+                body: formDataToSend
             });
     
-            const data = await response.json();
+            const responseData = await response.json();
     
             if (!response.ok) {
-                throw new Error(data.message || 'Failed to submit application');
+                throw new Error(responseData.message || 'Failed to submit application');
             }
     
-            // Show success message and redirect
-            alert('Application submitted successfully!');
+            alert(`Application submitted successfully! Application ID: ${responseData.data.applicationId}`);
             navigate('/application-submitted');
         } catch (error) {
             console.error('Submission error:', error);
@@ -143,15 +232,12 @@ function TutorApplication() {
             setIsSubmitting(false);
         }
     };
+
     return (
         <div className="tutor-application">
             <h2>Tutor Application Form</h2>
             
-            {error && (
-                <div className="error-alert">
-                    {error}
-                </div>
-            )}
+            {error && <div className="error-alert">{error}</div>}
 
             <form onSubmit={handleSubmit}>
                 <section className="form-section">
@@ -229,30 +315,81 @@ function TutorApplication() {
                             required
                         />
                     </div>
-                    <div className="form-group">
-                        <input
-                            type="text"
-                            onChange={(e) => handleArrayChange(e, 'professionalInfo', 'subjectsSpecialization')}
-                            value={formData.professionalInfo.subjectsSpecialization.join(', ')}
-                            placeholder="Subjects Specialization (comma-separated)"
-                            required
-                        />
+
+                    <div className="form-group" ref={subjectsDropdownRef}>
+                        <label>Subjects Specialization</label>
+                        <div className="custom-select">
+                            <div 
+                                className="select-trigger"
+                                onClick={() => setIsSubjectsDropdownOpen(!isSubjectsDropdownOpen)}
+                            >
+                                {formData.professionalInfo.subjectsSpecialization.length > 0 
+                                    ? formData.professionalInfo.subjectsSpecialization.join(', ')
+                                    : 'Select subject(s)'}
+                            </div>
+                            {isSubjectsDropdownOpen && (
+                                <div className="select-options">
+                                    {subjects.map((subject) => (
+                                        <div
+                                            key={subject}
+                                            className={`select-option ${
+                                                formData.professionalInfo.subjectsSpecialization.includes(subject)
+                                                    ? 'selected'
+                                                    : ''
+                                            }`}
+                                            onClick={() => handleSubjectToggle(subject)}
+                                        >
+                                            {subject}
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                        {formData.professionalInfo.subjectsSpecialization.length === 0 && (
+                            <div className="error-text">Please select at least one subject</div>
+                        )}
                     </div>
+
+                    <div className="form-group" ref={gradeLevelsDropdownRef}>
+                        <label>Preferred Grade Levels</label>
+                        <div className="custom-select">
+                            <div 
+                                className="select-trigger"
+                                onClick={() => setIsGradeLevelsDropdownOpen(!isGradeLevelsDropdownOpen)}
+                            >
+                                {formData.professionalInfo.preferredGradeLevels.length > 0 
+                                    ? formData.professionalInfo.preferredGradeLevels.join(', ')
+                                    : 'Select grade level(s)'}
+                            </div>
+                            {isGradeLevelsDropdownOpen && (
+                                <div className="select-options">
+                                    {GRADE_LEVELS.map((level) => (
+                                        <div
+                                            key={level}
+                                            className={`select-option ${
+                                                formData.professionalInfo.preferredGradeLevels.includes(level)
+                                                    ? 'selected'
+                                                    : ''
+                                            }`}
+                                            onClick={() => handleGradeLevelToggle(level)}
+                                        >
+                                            {level}
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                        {formData.professionalInfo.preferredGradeLevels.length === 0 && (
+                            <div className="error-text">Please select at least one grade level</div>
+                        )}
+                    </div>
+
                     <div className="form-group">
                         <input
                             type="text"
                             onChange={(e) => handleArrayChange(e, 'professionalInfo', 'certifications')}
                             value={formData.professionalInfo.certifications.join(', ')}
                             placeholder="Certifications (comma-separated)"
-                        />
-                    </div>
-                    <div className="form-group">
-                        <input
-                            type="text"
-                            onChange={(e) => handleArrayChange(e, 'professionalInfo', 'preferredGradeLevels')}
-                            value={formData.professionalInfo.preferredGradeLevels.join(', ')}
-                            placeholder="Preferred Grade Levels (comma-separated numbers)"
-                            required
                         />
                     </div>
                     <div className="form-group">
@@ -283,6 +420,38 @@ function TutorApplication() {
                             onChange={(e) => handleArrayChange(e, 'additionalSkills', 'languagesSpoken')}
                             value={formData.additionalSkills.languagesSpoken.join(', ')}
                             placeholder="Languages Spoken (comma-separated)"
+                            required
+                        />
+                    </div>
+                </section>
+
+                <section className="form-section">
+                    <h3>Required Documents</h3>
+                    <div className="form-group">
+                        <label>CV (PDF, DOC, or DOCX)</label>
+                        <input
+                            type="file"
+                            accept=".pdf,.doc,.docx"
+                            onChange={(e) => handleFileChange('cv', e.target.files)}
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Academic Certificates (PDF only)</label>
+                        <input
+                            type="file"
+                            accept=".pdf"
+                            multiple
+                            onChange={(e) => handleFileChange('academicCertificates', e.target.files)}
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>Government ID (PDF, JPEG, or PNG)</label>
+                        <input
+                            type="file"
+                            accept=".pdf,.jpg,.jpeg,.png"
+                            onChange={(e) => handleFileChange('governmentId', e.target.files)}
                             required
                         />
                     </div>
@@ -330,9 +499,10 @@ function TutorApplication() {
                             name="essay.motivation"
                             value={formData.essay.motivation}
                             onChange={handleChange}
-                            placeholder="What motivates you to teach?"
+                            placeholder="What motivates you to teach? (minimum 100 characters)"
                             required
                             rows="4"
+                            minLength="100"
                         />
                     </div>
                     <div className="form-group">
@@ -340,9 +510,10 @@ function TutorApplication() {
                             name="essay.teachingPhilosophy"
                             value={formData.essay.teachingPhilosophy}
                             onChange={handleChange}
-                            placeholder="Describe your teaching philosophy"
+                            placeholder="Describe your teaching philosophy (minimum 100 characters)"
                             required
                             rows="4"
+                            minLength="100"
                         />
                     </div>
                 </section>
@@ -350,7 +521,9 @@ function TutorApplication() {
                 <button 
                     type="submit" 
                     className="submit-button" 
-                    disabled={isSubmitting}
+                    disabled={isSubmitting || 
+                        formData.professionalInfo.subjectsSpecialization.length === 0 || 
+                        formData.professionalInfo.preferredGradeLevels.length === 0}
                 >
                     {isSubmitting ? 'Submitting...' : 'Submit Application'}
                 </button>

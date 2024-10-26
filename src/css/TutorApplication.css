@@ -4,8 +4,13 @@
     padding: 20px;
 }
 
+.tutor-application h2 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
 .form-section {
-    background: #ffffff;
+    background: #f9f9f9;
     padding: 20px;
     margin-bottom: 20px;
     border-radius: 8px;
@@ -13,18 +18,24 @@
 }
 
 .form-section h3 {
-    margin-top: 0;
     margin-bottom: 20px;
     color: #333;
-    border-bottom: 2px solid #eee;
-    padding-bottom: 10px;
 }
 
 .form-group {
     margin-bottom: 15px;
 }
 
-.form-group input,
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="date"],
+.form-group input[type="number"],
 .form-group textarea {
     width: 100%;
     padding: 10px;
@@ -34,66 +45,98 @@
 }
 
 .form-group textarea {
-    min-height: 100px;
     resize: vertical;
+    min-height: 100px;
 }
 
 .reference-group {
     padding: 15px;
-    margin-bottom: 15px;
-    border: 1px solid #eee;
+    background: #fff;
     border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.custom-select {
+    position: relative;
+    width: 100%;
+}
+
+.select-trigger {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    background: white;
+    min-height: 42px;
+}
+
+.select-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-top: 4px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.select-option {
+    padding: 8px 10px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.select-option:hover {
+    background: #f0f0f0;
+}
+
+.select-option.selected {
+    background: #e3e3e3;
+    font-weight: 500;
+}
+
+.error-text {
+    color: #dc3545;
+    font-size: 0.875em;
+    margin-top: 4px;
+}
+
+.error-alert {
+    background: #ffebee;
+    color: #c62828;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    text-align: center;
 }
 
 .submit-button {
     width: 100%;
     padding: 12px;
-    background-color: #007bff;
+    background: #4a90e2;
     color: white;
     border: none;
     border-radius: 4px;
     font-size: 16px;
+    font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.2s;
 }
 
-.submit-button:hover {
-    background-color: #0056b3;
+.submit-button:hover:not(:disabled) {
+    background: #357abd;
 }
 
 .submit-button:disabled {
-    background-color: #cccccc;
+    background: #cccccc;
     cursor: not-allowed;
 }
 
-.error-alert {
-    background-color: #f8d7da;
-    color: #721c24;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #f5c6cb;
-    border-radius: 4px;
-}
-
-@media (max-width: 768px) {
-    .tutor-application {
-        padding: 10px;
-    }
-    
-    .form-section {
-        padding: 15px;
-    }
-}
-.error-message {
-    color: red;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid red;
-    border-radius: 4px;
-    background-color: #ffebee;
-}
-
-.student-application-form button:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
+input[type="file"] {
+    padding: 10px 0;
 }
