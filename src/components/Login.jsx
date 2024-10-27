@@ -21,13 +21,11 @@ function Login() {
             });
     
             const data = await response.json();
-            console.log('Login response:', data);
     
             if (!response.ok) {
                 throw new Error(data.message || 'Login failed');
             }
     
-            // Check if the token is in the expected location
             const token = data.token || data.data?.token;
             const userRole = data.data?.user?.role || data.user?.role;
     
@@ -38,7 +36,6 @@ function Login() {
             localStorage.setItem('token', token);
             localStorage.setItem('role', userRole);
     
-            // Redirect based on user role
             switch (userRole) {
                 case 'student':
                     navigate('/dashboard/student');
@@ -62,37 +59,43 @@ function Login() {
     };
 
     return (
-        <div className="login-container">
-            <h2>Login</h2>
-            <form >
-                <div>
-                    <label htmlFor="email">Email:</label>
-                    <input
-                        type="email"
-                        id="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
+        <div className="login">
+            <div className="login-wrapper">
+                <div className="login-card">
+                    <h2 className="login-title">Welcome Back</h2>
+                    <form className="login-form" onSubmit={handleSubmit}>
+                        <div className="login-form-group">
+                            <label className="login-label" htmlFor="email">Email</label>
+                            <input
+                                className="login-input"
+                                type="email"
+                                id="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div className="login-form-group">
+                            <label className="login-label" htmlFor="password">Password</label>
+                            <input
+                                className="login-input"
+                                type="password"
+                                id="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </div>
+                        {error && <p className="login-error">{error}</p>}
+                        <button type="submit" className="login-button">Login</button>
+                    </form>
+                    <p className="login-register-text">
+                        Don't have an account? Apply as a{' '}
+                        <Link className="login-link" to="/apply/student">student</Link> or{' '}
+                        <Link className="login-link" to="/apply/tutor">tutor</Link>.
+                    </p>
                 </div>
-                <div>
-                    <label htmlFor="password">Password:</label>
-                    <input
-                        type="password"
-                        id="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                </div>
-                {error && <p className="error">{error}</p>}
-                <button type="submit" onClick={handleSubmit}>Login</button>
-            </form>
-            <p>
-                Don't have an account? Apply as a{' '}
-                <Link className='login-options' to="/apply/student">student</Link> or{' '}
-                <Link className='login-options' to="/apply/tutor">tutor</Link>.
-            </p>
+            </div>
         </div>
     );
 }
