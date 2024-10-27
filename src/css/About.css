@@ -1,340 +1,381 @@
-/* 
-.professional-instructors-container{
-    background-image: url('../img/homeschol.jpeg');
-    background-repeat: no-repeat; 
-    background-size: cover; 
-    height: 350px;
-    width: 100%;
-    margin-top: 0;  
-    position: relative;
+.about {
+    font-family: var(--font-primary);
 }
-
-.professional-heading{
-    font-size: 40px;
-    padding: 0;  
-    position: absolute;
-    top: 50px;
-    left: 50px;
-    font-weight:bolder;
-}
-
-.mission-container{
-    display: flex;
-    margin-top: 100px;
-    margin-left: 23%;
-}
-.mission-image{
-    height: 500px;
-    width: 400px;
-    margin-right: 100px;
-}
-.mission-h3{
-    font-size: 24px;
-}
-.mission-container p{
-    max-width: 350px;
-
-}
-
-.vision-container {
-    display: flex;
-    justify-content: flex-start;  
-    /* width: 100%; *
-    max-width: 100%;
-    margin: 100px auto;
-    padding: 0 10%;              
-}
-
-.vision-h3 {
-    margin-bottom: 10px;
-    margin-top: 80px;
-    padding: 0;
-    font-size: 24px;
-    margin-left: 180px;
-}
-
-.vision-container p {
-    max-width: 350px;            
-    margin-right: 30px;  
-    margin-left: 180px;         
-}
-
-.vision-image {
-    height: 200px;
-    width: auto;                  
-    margin-left: -50px;           
-}
-
-
-.services-container{
-    display: flex;
-    text-align: center; 
-    width: 100%;
-    padding: 0;
-}
-.service{
-    border: 2px solid black;
-    margin: auto;
-    width: 200px;
-    height: 250px;
-    margin-top: 20px;    
-}
-.service-icon {
-    font-size: 24px;
-    margin-bottom: 10px; 
-    margin-top: 20px;   
-    margin-bottom: 0;   
-}
-.service-container-line{
-    height: 2px;
-    background-color: black;
-    width: 90%;
-    margin: auto;
-    
-}
-.tutoring-services-heading{
-    text-align: center;
-}
-.service-name{
-    text-align: center;
-}
-.service-info{
-    text-align: center;
-}
-
-.open-learning-container{
-    border: 2px solid black;
-    display: flex;
-    justify-content: space-between;
-    margin-top: 50px;
-    max-width: 80%;
-    height: 300px;
-    align-items: center;
-    margin-left: 9.8%;    
-    border-radius: 20px;
-    padding: 0;
-    background-color: #00A89F;
-    position: relative;
-}
-
-.open-learning-container img{
-height: 300px;
-border-radius: 20px;
-margin-top: 1px;
-margin-bottom: -1px;
-}
-.open-p-div{
-    margin-bottom: -10px;
-    margin-top: -20px;
-    margin-left: 50px;
-    border: 2px solid #E71F69;
-    border-radius: 8px;
-    background-color: #E71F69;
-    width: 250px;
-    height: 40px;
-}
-.open-p{
-    align-items: center;
-    text-align: center;
-    margin-top: 10px;
-    padding: 0;
-    font-weight: bolder;
-    
-}
-.learn-experts{
-    font-size: 60px;
-    padding: 0;
-    margin-left:50px;
-    margin-top: 10px;
-    margin-bottom: -20px;
-}
-
-.testimonials-section{
-    max-width: 90%;
-    text-align: center;
-    margin: auto;
-}
-
-.testimonials-cards{
-    display: flex;
-    justify-content: space-between;
-  
-}
-.testimonial-user > p{
-   
-} */
-
-/* ************************************************************************************** */
 
 .about-container {
-    max-width: 1200px;
+    max-width: 1440px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 0 var(--spacing-lg);
 }
 
-.professional-instructors-container {
-    background-color: #f8f8f8;
-    padding: 50px 0;
-    text-align: center;
-}
-
-.professional-heading {
-    font-size: 2.5em;
-    font-weight: bold;
-    color: #333;
-}
-
-.mission-container, .vision-container {
+/* Hero Section */
+.about-hero {
+    background-color: var(--primary-dark);
+    min-height: 60vh;
     display: flex;
     align-items: center;
-    margin: 50px 0;
-}
-
-.mission-image, .vision-image {
-    width: 50%;
-    max-width: 500px;
-    border-radius: 10px;
-}
-
-.mission-h3, .vision-h3 {
-    font-size: 2em;
-    color: #333;
-    margin-bottom: 20px;
-}
-
-.tutor-services-container {
+    justify-content: center;
     text-align: center;
-    margin: 50px 0;
+    padding: var(--spacing-xl) 0;
 }
 
-.tutoring-services-heading {
-    font-size: 2.5em;
-    color: #333;
-    margin-bottom: 30px;
+.about-hero-text {
+    color: var(--text-light);
+    font-size: 3.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 2px;
 }
 
-.services-container {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
+/* Mission Section */
+.about-mission {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-xl);
+    padding: var(--spacing-xl) 0;
+    align-items: center;
 }
 
-.service {
-    width: 30%;
-    padding: 20px;
-    margin: 10px;
-    background-color: #f8f8f8;
-    border-radius: 10px;
+.about-mission-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.service-icon {
-    font-size: 3em;
-    color: #007bff;
-    margin-bottom: 20px;
+.about-mission-title {
+    color: var(--primary-dark);
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-lg);
+    position: relative;
 }
 
-.service-name {
-    font-size: 1.5em;
-    color: #333;
-    margin-bottom: 10px;
+.about-mission-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background-color: var(--accent-gold);
 }
 
-.service-container-line {
-    width: 50px;
+.about-mission-text {
+    color: var(--text-dark);
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+/* Vision Section */
+.about-vision {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-xl);
+    padding: var(--spacing-xl) 0;
+    align-items: center;
+    background-color: var(--neutral-gray);
+}
+
+.about-vision-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.about-vision-title {
+    color: var(--primary-dark);
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-lg);
+    position: relative;
+}
+
+.about-vision-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background-color: var(--accent-gold);
+}
+
+.about-vision-text {
+    color: var(--text-dark);
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+/* Services Section */
+.about-services {
+    padding: var(--spacing-xl) 0;
+    text-align: center;
+}
+
+.about-services-title {
+    color: var(--primary-dark);
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-xl);
+}
+
+.about-services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-lg);
+}
+
+.about-service {
+    background-color: white;
+    padding: var(--spacing-lg);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.about-service:hover {
+    transform: translateY(-5px);
+}
+
+.about-service-icon {
+    font-size: 2.5rem;
+    color: var(--primary-dark);
+    margin-bottom: var(--spacing-md);
+}
+
+.about-service-title {
+    color: var(--primary-dark);
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.about-service-divider {
+    width: 60px;
     height: 2px;
-    background-color: #007bff;
-    margin: 10px auto;
+    background-color: var(--accent-gold);
+    margin: var(--spacing-md) auto;
 }
 
-.open-learning-container {
-    display: flex;
+.about-service-text {
+    color: var(--text-dark);
+    line-height: 1.6;
+}
+
+/* Learning Section */
+.about-learning {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-xl);
+    padding: var(--spacing-xl) 0;
     align-items: center;
-    background-color: #f8f8f8;
-    padding: 50px;
-    margin: 50px 0;
-    border-radius: 10px;
+    background-color: var(--primary-light);
 }
 
-.open-p {
-    font-size: 1.2em;
-    color: #007bff;
-    margin-bottom: 10px;
+.about-learning-subtitle {
+    color: var(--accent-gold);
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: var(--spacing-md);
 }
 
-.learn-experts {
-    font-size: 2.5em;
-    color: #333;
-    margin-bottom: 20px;
+.about-learning-title {
+    color: var(--text-light);
+    font-size: 3rem;
+    margin-bottom: var(--spacing-lg);
 }
 
-.start-learning-btn {
-    padding: 10px 20px;
-    font-size: 1em;
-    background-color: #007bff;
-    color: white;
+.about-learning-button {
+    background-color: var(--accent-gold);
+    color: var(--primary-dark);
+    padding: var(--spacing-sm) var(--spacing-lg);
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
+    font-size: 1.1rem;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.open-learning-image {
-    width: 50%;
-    max-width: 500px;
-    border-radius: 10px;
+.about-learning-button:hover {
+    background-color: var(--text-light);
 }
 
-.pride-section {
+.about-learning-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Pride Section */
+.about-pride {
     text-align: center;
-    margin: 50px 0;
+    padding: var(--spacing-xl) 0;
+    background-color: var(--neutral-gray);
 }
 
-.testimonials-section {
-    margin: 50px 0;
+.about-pride-title {
+    color: var(--primary-dark);
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-lg);
 }
 
-.testimonials-cards {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
+.about-pride-text {
+    color: var(--text-dark);
+    font-size: 1.1rem;
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.6;
 }
 
-.testimonial-card {
-    width: 45%;
-    padding: 20px;
-    margin: 10px;
-    background-color: #f8f8f8;
-    border-radius: 10px;
+/* Testimonials Section */
+.about-testimonials {
+    padding: var(--spacing-xl) 0;
 }
 
-.testimonial-line {
-    width: 50px;
+.about-testimonials-header {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+}
+
+.about-testimonials-title {
+    color: var(--primary-dark);
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.about-testimonials-subtitle {
+    color: var(--text-dark);
+    font-size: 1.1rem;
+}
+
+.about-testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-lg);
+}
+
+.about-testimonial {
+    background-color: white;
+    padding: var(--spacing-lg);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.about-testimonial:hover {
+    transform: translateY(-5px);
+}
+
+.about-testimonial-title {
+    color: var(--primary-dark);
+    font-size: 1.3rem;
+    margin-bottom: var(--spacing-sm);
+}
+
+.about-testimonial-divider {
+    width: 40px;
     height: 2px;
-    background-color: #007bff;
-    margin: 10px 0;
+    background-color: var(--accent-gold);
+    margin: var(--spacing-md) 0;
 }
 
-.testimonial-user {
+.about-testimonial-text {
+    color: var(--text-dark);
+    line-height: 1.6;
+    margin-bottom: var(--spacing-md);
+}
+
+.about-testimonial-user {
     display: flex;
     align-items: center;
+    gap: var(--spacing-sm);
 }
 
-.user-icon {
-    font-size: 1.5em;
-    color: #007bff;
-    margin-right: 10px;
+.about-testimonial-icon {
+    color: var(--primary-dark);
+    font-size: 1.2rem;
+}
+
+.about-testimonial-name {
+    color: var(--primary-dark);
+    font-weight: 600;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .about-testimonials-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 992px) {
+    .about-hero-text {
+        font-size: 2.8rem;
+    }
+
+    .about-services-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-md);
+    }
+
+    .about-learning-title {
+        font-size: 2.5rem;
+    }
 }
 
 @media (max-width: 768px) {
-    .mission-container, .vision-container, .open-learning-container {
-        flex-direction: column;
+    .about-mission,
+    .about-vision,
+    .about-learning {
+        grid-template-columns: 1fr;
+        text-align: center;
     }
 
-    .mission-image, .vision-image, .open-learning-image {
-        width: 100%;
-        margin-bottom: 20px;
+    .about-mission-title::after,
+    .about-vision-title::after {
+        left: 50%;
+        transform: translateX(-50%);
     }
 
-    .service, .testimonial-card {
-        width: 100%;
+    .about-vision-content {
+        order: 1;
+    }
+
+    .about-vision-image-container {
+        order: 2;
+    }
+
+    .about-learning-content {
+        order: 2;
+    }
+
+    .about-learning-image-container {
+        order: 1;
+    }
+
+    .about-services-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-hero-text {
+        font-size: 2rem;
+    }
+
+    .about-testimonials-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .about-mission-title,
+    .about-vision-title,
+    .about-services-title,
+    .about-pride-title,
+    .about-testimonials-title {
+        font-size: 2rem;
+    }
+
+    .about-learning-title {
+        font-size: 2.2rem;
     }
 }
