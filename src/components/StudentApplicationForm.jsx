@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import '../css/StudentApplication.css';
 
 function StudentApplicationForm() {
+    const [currentStep, setCurrentStep] = useState(1);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
-    const [successMessage, setSuccessMessage] = useState('');
+    const [error, setError] = useState('');
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
@@ -25,7 +25,7 @@ function StudentApplicationForm() {
             name: '',
             email: '',
             phoneNumber: '',
-            relationship: 'Parent' // Added default value
+            relationship: 'Parent'
         },
         learningPreferences: {
             scheduleType: ''
@@ -36,7 +36,91 @@ function StudentApplicationForm() {
         }
     });
 
-    // Simplified prepareFormData function
+    const steps = [
+        {
+            title: 'Personal Information',
+            fields: ['personalInfo']
+        },
+        {
+            title: 'Educational Background',
+            fields: ['educationalInfo']
+        },
+        {
+            title: 'Parent/Guardian Information',
+            fields: ['parentInfo']
+        },
+        {
+            title: 'Learning Preferences & Special Needs',
+            fields: ['learningPreferences', 'specialNeeds']
+        }
+    ];
+
+    const handleChange = (e) => {
+        const { name, value, type, checked } = e.target;
+        const [section, field] = name.split('.');
+        
+        setFormData(prevState => ({
+            ...prevState,
+            [section]: {
+                ...prevState[section],
+                [field]: type === 'checkbox' ? checked : value
+            }
+        }));
+    };
+
+    const validateStep = (step) => {
+        const currentStepFields = steps[step - 1].fields;
+        let isValid = true;
+        let errorMessage = '';
+
+        currentStepFields.forEach(section => {
+            Object.entries(formData[section]).forEach(([key, value]) => {
+                if (typeof value === 'boolean') return;
+                if (!value && !(section === 'specialNeeds' && key === 'accommodationsRequired')) {
+                    isValid = false;
+                    errorMessage = 'Please fill in all required fields';
+                }
+            });
+        });
+
+        if (currentStep === 1) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(formData.personalInfo.email)) {
+                isValid = false;
+                errorMessage = 'Please enter a valid email address';
+            }
+        }
+
+        if (currentStep === 3) {
+            const parentEmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!parentEmailRegex.test(formData.parentInfo.email)) {
+                isValid = false;
+                errorMessage = 'Please enter a valid parent email address';
+            }
+
+            const phoneRegex = /^\+?[\d\s-]{10,}$/;
+            if (!phoneRegex.test(formData.parentInfo.phoneNumber)) {
+                isValid = false;
+                errorMessage = 'Please enter a valid phone number';
+            }
+        }
+
+        setError(errorMessage);
+        return isValid;
+    };
+
+    const handleNext = () => {
+        if (validateStep(currentStep)) {
+            setCurrentStep(prev => prev + 1);
+            setError('');
+        }
+    };
+
+    const handlePrevious = () => {
+        setCurrentStep(prev => prev - 1);
+        setError('');
+    };
+
     const prepareFormData = (data) => {
         return {
             personalInfo: {
@@ -65,16 +149,15 @@ function StudentApplicationForm() {
         };
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = async () => {
+        if (!validateStep(currentStep)) return;
+
         setIsSubmitting(true);
-        setErrorMessage('');
-        setSuccessMessage('');
-    
+        setError('');
+
         try {
             const preparedData = prepareFormData(formData);
-            console.log('Sending data:', JSON.stringify(preparedData, null, 2));
-    
+            
             const response = await fetch('http://localhost:5000/api/applications/student', {
                 method: 'POST',
                 headers: {
@@ -83,255 +166,313 @@ function StudentApplicationForm() {
                 },
                 body: JSON.stringify(preparedData)
             });
-    
+
             const responseData = await response.json();
             
             if (!response.ok) {
                 throw new Error(responseData.message || responseData.error || 'Failed to submit application');
             }
-    
-            setSuccessMessage('Application submitted successfully!');
-            setTimeout(() => {
-                navigate('/application-submitted');
-            }, 2000);
-    
+
+            navigate('/application-submitted');
         } catch (error) {
             console.error('Submission error:', error);
-            setErrorMessage(error.message || 'Failed to submit application. Please try again.');
+            setError(error.message || 'Failed to submit application. Please try again.');
         } finally {
             setIsSubmitting(false);
         }
     };
 
-    const handleChange = (e) => {
-        const { name, value, type, checked } = e.target;
-        setFormData(prevState => {
-            const [section, field] = name.split('.');
-            if (!field) {
-                return { ...prevState, [name]: type === 'checkbox' ? checked : value };
-            }
-            return {
-                ...prevState,
-                [section]: {
-                    ...prevState[section],
-                    [field]: type === 'checkbox' ? checked : value
-                }
-            };
-        });
+    const renderFormFields = () => {
+        switch (currentStep) {
+            case 1:
+                return (
+                    <div className="student-app-step">
+                        <div className="student-app-field">
+                            <label className="student-app-label">Full Name</label>
+                            <input
+                                type="text"
+                                name="personalInfo.fullName"
+                                value={formData.personalInfo.fullName}
+                                onChange={handleChange}
+                                className="student-app-input"
+                                required
+                            />
+                        </div>
+
+                        <div className="student-app-field">
+                            <label className="student-app-label">Email</label>
+                            <input
+                                type="email"
+                                name="personalInfo.email"
+                                value={formData.personalInfo.email}
+                                onChange={handleChange}
+                                className="student-app-input"
+                                required
+                            />
+                        </div>
+
+                        <div className="student-app-field">
+                            <label className="student-app-label">Date of Birth</label>
+                            <input
+                                type="date"
+                                name="personalInfo.dateOfBirth"
+                                value={formData.personalInfo.dateOfBirth}
+                                onChange={handleChange}
+                                className="student-app-input"
+                                required
+                            />
+                        </div>
+
+                        <div className="student-app-field">
+                            <label className="student-app-label">Gender</label>
+                            <select
+                                name="personalInfo.gender"
+                                value={formData.personalInfo.gender}
+                                onChange={handleChange}
+                                className="student-app-select"
+                                required
+                            >
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div className="student-app-field">
+                            <label className="student-app-label">Nationality</label>
+                            <input
+                                type="text"
+                                name="personalInfo.nationality"
+                                value={formData.personalInfo.nationality}
+                                onChange={handleChange}
+                                className="student-app-input"
+                                required
+                            />
+                        </div>
+
+                        <div className="student-app-field">
+                            <label className="student-app-label">Location</label>
+                            <input
+                                type="text"
+                                name="personalInfo.location"
+                                value={formData.personalInfo.location}
+                                onChange={handleChange}
+                                className="student-app-input"
+                                required
+                            />
+                        </div>
+                    </div>
+                );
+
+            case 2:
+                return (
+                    <div className="student-app-step">
+                        <div className="student-app-field">
+                            <label className="student-app-label">Current Grade Level</label>
+                            <select
+                                name="educationalInfo.currentGradeLevel"
+                                value={formData.educationalInfo.currentGradeLevel}
+                                onChange={handleChange}
+                                className="student-app-select"
+                                required
+                            >
+                                <option value="">Select Grade Level</option>
+                                {Array.from({ length: 12 }, (_, i) => (
+                                    <option key={i + 1} value={`${i + 1}`}>
+                                        Grade {i + 1}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div className="student-app-field">
+                            <label className="student-app-label">Last School Attended</label>
+                            <input
+                                type="text"
+                                name="educationalInfo.lastSchoolAttended"
+                                value={formData.educationalInfo.lastSchoolAttended}
+                                onChange={handleChange}
+                                className="student-app-input"
+                                required
+                            />
+                        </div>
+                    </div>
+                );
+
+            case 3:
+                return (
+                    <div className="student-app-step">
+                        <div className="student-app-field">
+                            <label className="student-app-label">Parent/Guardian Name</label>
+                            <input
+                                type="text"
+                                name="parentInfo.name"
+                                value={formData.parentInfo.name}
+                                onChange={handleChange}
+                                className="student-app-input"
+                                required
+                            />
+                        </div>
+
+                        <div className="student-app-field">
+                            <label className="student-app-label">Parent/Guardian Email</label>
+                            <input
+                                type="email"
+                                name="parentInfo.email"
+                                value={formData.parentInfo.email}
+                                onChange={handleChange}
+                                className="student-app-input"
+                                required
+                            />
+                        </div>
+
+                        <div className="student-app-field">
+                            <label className="student-app-label">Parent/Guardian Phone</label>
+                            <input
+                                type="tel"
+                                name="parentInfo.phoneNumber"
+                                value={formData.parentInfo.phoneNumber}
+                                onChange={handleChange}
+                                className="student-app-input"
+                                required
+                            />
+                        </div>
+
+                        <div className="student-app-field">
+                            <label className="student-app-label">Relationship</label>
+                            <select
+                                name="parentInfo.relationship"
+                                value={formData.parentInfo.relationship}
+                                onChange={handleChange}
+                                className="student-app-select"
+                                required
+                            >
+                                <option value="Parent">Parent</option>
+                                <option value="Guardian">Guardian</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                );
+
+            case 4:
+                return (
+                    <div className="student-app-step">
+                        <div className="student-app-field">
+                            <label className="student-app-label">Schedule Type</label>
+                            <select
+                                name="learningPreferences.scheduleType"
+                                value={formData.learningPreferences.scheduleType}
+                                onChange={handleChange}
+                                className="student-app-select"
+                                required
+                            >
+                                <option value="">Select Schedule Type</option>
+                                <option value="full time">Full Time</option>
+                                <option value="afterclasses">After Classes</option>
+                            </select>
+                        </div>
+
+                        <div className="student-app-field">
+                            <label className="student-app-checkbox-label">
+                                <input
+                                    type="checkbox"
+                                    name="specialNeeds.hasSpecialNeeds"
+                                    checked={formData.specialNeeds.hasSpecialNeeds}
+                                    onChange={handleChange}
+                                    className="student-app-checkbox"
+                                />
+                                <span>Does the student have any special needs?</span>
+                            </label>
+                        </div>
+
+                        {formData.specialNeeds.hasSpecialNeeds && (
+                            <div className="student-app-field">
+                                <label className="student-app-label">
+                                    Please describe required accommodations
+                                </label>
+                                <textarea
+                                    name="specialNeeds.accommodationsRequired"
+                                    value={formData.specialNeeds.accommodationsRequired}
+                                    onChange={handleChange}
+                                    className="student-app-textarea"
+                                    rows="4"
+                                    required
+                                />
+                            </div>
+                        )}
+                    </div>
+                );
+
+            default:
+                return null;
+        }
     };
 
     return (
-        <div className="student-application-form">
-            <h2>Student Application Form</h2>
-            
-            {errorMessage && <div className="alert alert-error">{errorMessage}</div>}
-            {successMessage && <div className="alert alert-success">{successMessage}</div>}
-
-            <form onSubmit={handleSubmit}>
-                {/* Personal Information Section */}
-                <fieldset disabled={isSubmitting}>
-                    <legend>Personal Information</legend>
-                    <div className="form-group">
-                        <input
-                            type="text"
-                            name="personalInfo.fullName"
-                            value={formData.personalInfo.fullName}
-                            onChange={handleChange}
-                            placeholder="Full Name"
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <input
-                            type="email"
-                            name="personalInfo.email"
-                            value={formData.personalInfo.email}
-                            onChange={handleChange}
-                            placeholder="Email"
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <input
-                            type="date"
-                            name="personalInfo.dateOfBirth"
-                            value={formData.personalInfo.dateOfBirth}
-                            onChange={handleChange}
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <select
-                            name="personalInfo.gender"
-                            value={formData.personalInfo.gender}
-                            onChange={handleChange}
-                            required
+        <div className="student-app">
+            <div className="student-app-container">
+                <h2 className="student-app-title">Student Application</h2>
+                
+                <div className="student-app-progress">
+                    {steps.map((step, index) => (
+                        <div 
+                            key={index}
+                            className={`student-app-progress-step ${
+                                currentStep > index + 1 ? 'completed' : 
+                                currentStep === index + 1 ? 'active' : ''
+                            }`}
                         >
-                            <option value="">Select Gender</option>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-                    <div className="form-group">
-                        <input
-                            type="text"
-                            name="personalInfo.nationality"
-                            value={formData.personalInfo.nationality}
-                            onChange={handleChange}
-                            placeholder="Nationality"
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <input
-                            type="text"
-                            name="personalInfo.location"
-                            value={formData.personalInfo.location}
-                            onChange={handleChange}
-                            placeholder="Location"
-                            required
-                        />
-                    </div>
-                </fieldset>
-
-                {/* Educational Information Section */}
-                <fieldset disabled={isSubmitting}>
-                    <legend>Educational Information</legend>
-                    <div className="form-group">
-                        <select
-                            name="educationalInfo.currentGradeLevel"
-                            value={formData.educationalInfo.currentGradeLevel}
-                            onChange={handleChange}
-                            required
-                        >
-                            <option value="">Select Grade Level</option>
-                            <option value="1st">1st Grade</option>
-                            <option value="2nd">2nd Grade</option>
-                            <option value="3rd">3rd Grade</option>
-                            <option value="4th">4th Grade</option>
-                            <option value="5th">5th Grade</option>
-                            <option value="6th">6th Grade</option>
-                            <option value="7th">7th Grade</option>
-                            <option value="8th">8th Grade</option>
-                            <option value="9th">9th Grade</option>
-                            <option value="10th">10th Grade</option>
-                            <option value="11th">11th Grade</option>
-                            <option value="12th">12th Grade</option>
-                        </select>
-                    </div>
-                    <div className="form-group">
-                        <input
-                            type="text"
-                            name="educationalInfo.lastSchoolAttended"
-                            value={formData.educationalInfo.lastSchoolAttended}
-                            onChange={handleChange}
-                            placeholder="Last School Attended"
-                            required
-                        />
-                    </div>
-                </fieldset>
-
-                {/* Parent Information Section */}
-                <fieldset disabled={isSubmitting}>
-                    <legend>Parent Information</legend>
-                    <div className="form-group">
-                        <input
-                            type="text"
-                            name="parentInfo.name"
-                            value={formData.parentInfo.name}
-                            onChange={handleChange}
-                            placeholder="Parent Name"
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <input
-                            type="email"
-                            name="parentInfo.email"
-                            value={formData.parentInfo.email}
-                            onChange={handleChange}
-                            placeholder="Parent Email"
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <input
-                            type="tel"
-                            name="parentInfo.phoneNumber"
-                            value={formData.parentInfo.phoneNumber}
-                            onChange={handleChange}
-                            placeholder="Parent Phone Number"
-                            required
-                        />
-                    </div>
-                    <div className="form-group">
-                        <select
-                            name="parentInfo.relationship"
-                            value={formData.parentInfo.relationship}
-                            onChange={handleChange}
-                            required
-                        >
-                            <option value="Mother">Mother</option>
-                            <option value="Father">Father</option>
-                            <option value="Guardian">Guardian</option>
-                            <option value="Other">Other</option>
-                        </select>
-                    </div>
-                </fieldset>
-
-                {/* Learning Preferences Section */}
-                <fieldset disabled={isSubmitting}>
-                    <legend>Learning Preferences</legend>
-                    <div className="form-group">
-                        <select
-                            name="learningPreferences.scheduleType"
-                            value={formData.learningPreferences.scheduleType}
-                            onChange={handleChange}
-                            required
-                        >
-                            <option value="">Select Schedule Type</option>
-                            <option value="full time">Full Time</option>
-                            <option value="afterclasses">After Classes</option>
-                        </select>
-                    </div>
-                </fieldset>
-
-                {/* Special Needs Section */}
-                <fieldset disabled={isSubmitting}>
-                    <legend>Special Needs</legend>
-                    <div className="form-group">
-                        <label>
-                            <input
-                                type="checkbox"
-                                name="specialNeeds.hasSpecialNeeds"
-                                checked={formData.specialNeeds.hasSpecialNeeds}
-                                onChange={handleChange}
-                            />
-                            Has Special Needs
-                        </label>
-                    </div>
-                    {formData.specialNeeds.hasSpecialNeeds && (
-                        <div className="form-group">
-                            <textarea
-                                name="specialNeeds.accommodationsRequired"
-                                value={formData.specialNeeds.accommodationsRequired || ''}
-                                onChange={handleChange}
-                                placeholder="Describe required accommodations"
-                                required={formData.specialNeeds.hasSpecialNeeds}
-                            />
+                            <div className="student-app-progress-number">{index + 1}</div>
+                            <span className="student-app-progress-title">{step.title}</span>
                         </div>
-                    )}
-                </fieldset>
+                    ))}
+                </div>
 
-                <button 
-                    type="submit" 
-                    disabled={isSubmitting}
-                    className={isSubmitting ? 'submitting' : ''}
-                >
-                    {isSubmitting ? 'Submitting...' : 'Submit Application'}
-                </button>
-            </form>
+                {error && (
+                    <div className="student-app-error">
+                        {error}
+                    </div>
+                )}
+
+                <form className="student-app-form">
+                    {renderFormFields()}
+
+                    <div className="student-app-actions">
+                        {currentStep > 1 && (
+                            <button
+                                type="button"
+                                onClick={handlePrevious}
+                                className="student-app-button secondary"
+                                disabled={isSubmitting}
+                            >
+                                Previous
+                            </button>
+                        )}
+                        
+                        {currentStep < steps.length ? (
+                            <button
+                                type="button"
+                                onClick={handleNext}
+                                className="student-app-button primary"
+                                disabled={isSubmitting}
+                            >
+                                Next
+                            </button>
+                        ) : (
+                            <button
+                                type="button"
+                                onClick={handleSubmit}
+                                className="student-app-button primary"
+                                disabled={isSubmitting}
+                            >
+                                {isSubmitting ? 'Submitting...' : 'Submit Application'}
+                            </button>
+                        )}
+                    </div>
+                </form>
+            </div>
         </div>
     );
 }
