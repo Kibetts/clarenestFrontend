@@ -162,7 +162,7 @@ const ApplicationManagement = () => {
 
   const renderDetailsModal = () => {
     if (!selectedApplication) return null;
-
+  
     const isTutor = selectedApplication.type === 'tutor';
     
     return (
@@ -177,30 +177,32 @@ const ApplicationManagement = () => {
               ×
             </button>
           </div>
-
+  
           <div className="modal-content">
             <div className="detail-section">
               <h3>Personal Information</h3>
               <div className="detail-grid">
                 <div className="detail-item">
                   <label>Full Name</label>
-                  <p>{selectedApplication.personalInfo.fullName}</p>
+                  <p>{selectedApplication.personalInfo?.fullName}</p>
                 </div>
                 <div className="detail-item">
                   <label>Email</label>
-                  <p>{selectedApplication.personalInfo.email}</p>
+                  <p>{selectedApplication.personalInfo?.email}</p>
                 </div>
                 <div className="detail-item">
                   <label>Date of Birth</label>
-                  <p>{new Date(selectedApplication.personalInfo.dateOfBirth).toLocaleDateString()}</p>
+                  <p>{selectedApplication.personalInfo?.dateOfBirth ? 
+                      new Date(selectedApplication.personalInfo.dateOfBirth).toLocaleDateString() : 
+                      'Not specified'}</p>
                 </div>
                 <div className="detail-item">
                   <label>Nationality</label>
-                  <p>{selectedApplication.personalInfo.nationality}</p>
+                  <p>{selectedApplication.personalInfo?.nationality || 'Not specified'}</p>
                 </div>
               </div>
             </div>
-
+  
             {isTutor ? (
               <>
                 <div className="detail-section">
@@ -208,27 +210,27 @@ const ApplicationManagement = () => {
                   <div className="detail-grid">
                     <div className="detail-item">
                       <label>Teaching Experience</label>
-                      <p>{selectedApplication.professionalInfo.teachingExperience} years</p>
+                      <p>{selectedApplication.professionalInfo?.teachingExperience} years</p>
                     </div>
                     <div className="detail-item">
                       <label>Subjects</label>
-                      <p>{selectedApplication.professionalInfo.subjectsSpecialization.join(', ')}</p>
+                      <p>{selectedApplication.professionalInfo?.subjectsSpecialization?.join(', ') || 'Not specified'}</p>
                     </div>
                     <div className="detail-item">
                       <label>Certifications</label>
                       <ul>
-                        {selectedApplication.professionalInfo.certifications.map((cert, index) => (
+                        {selectedApplication.professionalInfo?.certifications?.map((cert, index) => (
                           <li key={index}>{cert}</li>
-                        ))}
+                        )) || <li>No certifications provided</li>}
                       </ul>
                     </div>
                     <div className="detail-item">
                       <label>Preferred Grade Levels</label>
-                      <p>{selectedApplication.professionalInfo.preferredGradeLevels.join(', ')}</p>
+                      <p>{selectedApplication.professionalInfo?.preferredGradeLevels?.join(', ') || 'Not specified'}</p>
                     </div>
                   </div>
                 </div>
-
+  
                 <div className="detail-section">
                   <h3>Documents</h3>
                   <div className="documents-grid">
@@ -237,7 +239,7 @@ const ApplicationManagement = () => {
                         <div className="document-item">
                           <label>CV</label>
                           <a 
-                            href={`/api/applications/download/${selectedApplication.documents.cv.path}`}
+                            href={`/api/applications/download/${selectedApplication.documents.cv?.path}`}
                             download
                             className="download-link"
                           >
@@ -246,7 +248,7 @@ const ApplicationManagement = () => {
                         </div>
                         <div className="document-item">
                           <label>Academic Certificates</label>
-                          {selectedApplication.documents.academicCertificates.map((cert, index) => (
+                          {selectedApplication.documents.academicCertificates?.map((cert, index) => (
                             <a 
                               key={index}
                               href={`/api/applications/download/${cert.path}`}
@@ -260,7 +262,7 @@ const ApplicationManagement = () => {
                         <div className="document-item">
                           <label>Government ID</label>
                           <a 
-                            href={`/api/applications/download/${selectedApplication.documents.governmentId.path}`}
+                            href={`/api/applications/download/${selectedApplication.documents.governmentId?.path}`}
                             download
                             className="download-link"
                           >
@@ -271,11 +273,11 @@ const ApplicationManagement = () => {
                     )}
                   </div>
                 </div>
-
+  
                 <div className="detail-section">
                   <h3>Teaching Philosophy</h3>
                   <p className="philosophy-text">
-                    {selectedApplication.essay.teachingPhilosophy}
+                    {selectedApplication.essay?.teachingPhilosophy || 'No teaching philosophy provided'}
                   </p>
                 </div>
               </>
@@ -286,51 +288,51 @@ const ApplicationManagement = () => {
                   <div className="detail-grid">
                     <div className="detail-item">
                       <label>Current Grade Level</label>
-                      <p>{selectedApplication.educationalInfo.currentGradeLevel}</p>
+                      <p>{selectedApplication.educationalInfo?.currentGradeLevel || 'Not specified'}</p>
                     </div>
                     <div className="detail-item">
                       <label>Previous School</label>
-                      <p>{selectedApplication.educationalInfo.lastSchoolAttended}</p>
+                      <p>{selectedApplication.educationalInfo?.lastSchoolAttended || 'Not specified'}</p>
                     </div>
                     <div className="detail-item">
                       <label>Interested Subjects</label>
-                      <p>{selectedApplication.educationalInfo.interestedSubjects.join(', ')}</p>
+                      <p>{selectedApplication.educationalInfo?.interestedSubjects?.join(', ') || 'Not specified'}</p>
                     </div>
                   </div>
                 </div>
-
+  
                 <div className="detail-section">
                   <h3>Parent Information</h3>
                   <div className="detail-grid">
                     <div className="detail-item">
                       <label>Parent Name</label>
-                      <p>{selectedApplication.parentInfo.name}</p>
+                      <p>{selectedApplication.parentInfo?.name || 'Not specified'}</p>
                     </div>
                     <div className="detail-item">
                       <label>Parent Email</label>
-                      <p>{selectedApplication.parentInfo.email}</p>
+                      <p>{selectedApplication.parentInfo?.email || 'Not specified'}</p>
                     </div>
                     <div className="detail-item">
                       <label>Parent Phone</label>
-                      <p>{selectedApplication.parentInfo.phoneNumber}</p>
+                      <p>{selectedApplication.parentInfo?.phoneNumber || 'Not specified'}</p>
                     </div>
                     <div className="detail-item">
                       <label>Relationship</label>
-                      <p>{selectedApplication.parentInfo.relationship}</p>
+                      <p>{selectedApplication.parentInfo?.relationship || 'Not specified'}</p>
                     </div>
                   </div>
                 </div>
-
-                {selectedApplication.specialNeeds.hasSpecialNeeds && (
+  
+                {selectedApplication.specialNeeds?.hasSpecialNeeds && (
                   <div className="detail-section">
                     <h3>Special Needs</h3>
-                    <p>{selectedApplication.specialNeeds.accommodationsRequired}</p>
+                    <p>{selectedApplication.specialNeeds?.accommodationsRequired || 'No details provided'}</p>
                   </div>
                 )}
               </>
             )}
           </div>
-
+  
           {selectedApplication.status === 'pending' && (
             <div className="modal-actions">
               <button 

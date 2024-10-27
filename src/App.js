@@ -57,8 +57,8 @@ function App() {
         <Route path="/lesson/:id" element={<LessonView />} />
         <Route path="/fee-payment" element={<FeePayment />} />
         <Route path="/application-submitted" element={<SubmittedPage />} />
-        <Route path="/create-account/:role/:token" component={AccountCreation} />
-        <Route path="/parent-registration/:studentId" component={ParentRegistration} /> 
+        <Route path="/create-account/:role/:token" element={<AccountCreation />} />
+        <Route path="/parent-registration/:studentId" component={<ParentRegistration/>} /> 
         <Route path="/verify-email/:token" element={<EmailVerification />} />
         <Route path="/parent/verify/:token" element={<ParentVerification />} />
 
