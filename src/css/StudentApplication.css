@@ -1,144 +1,306 @@
-/* .student-application-form {
+.student-app {
+    min-height: 100vh;
+    background-color: var(--neutral-gray);
+    padding: var(--spacing-xl) 0;
+}
+
+.student-app-container {
     max-width: 800px;
     margin: 0 auto;
-    padding: 20px;
-    font-family: 'Arial', sans-serif;
+    padding: var(--spacing-lg);
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.student-application-form h2 {
-    color: #003366;
-    border-bottom: 2px solid #003366;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
+/* Header Styles */
+.student-app-title {
+    color: var(--primary-dark);
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+    font-family: var(--font-primary);
+    position: relative;
 }
 
-.student-application-form fieldset {
-    border: 1px solid #cccccc;
-    border-radius: 5px;
-    padding: 15px;
-    margin-bottom: 20px;
+.student-app-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background-color: var(--accent-gold);
 }
 
-.student-application-form legend {
-    color: #0066cc;
-    font-weight: bold;
-    padding: 0 10px;
+/* Progress Bar Styles */
+.student-app-progress {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-xl);
+    position: relative;
+    padding: 0 var(--spacing-lg);
 }
 
-.student-application-form input[type="text"],
-.student-application-form input[type="email"],
-.student-application-form input[type="tel"],
-.student-application-form input[type="date"],
-.student-application-form input[type="number"],
-.student-application-form select,
-.student-application-form textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #cccccc;
-    border-radius: 3px;
+.student-app-progress::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: var(--neutral-gray);
+    z-index: 1;
 }
 
-.student-application-form textarea {
-    height: 100px;
+.student-app-progress-step {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+    flex: 1;
 }
 
-.student-application-form button[type="submit"] {
-    background-color: #0066cc;
-    color: #ffffff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
+.student-app-progress-number {
+    width: 30px;
+    height: 30px;
+    background-color: var(--neutral-gray);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-dark);
+    font-weight: 600;
+    transition: all 0.3s ease;
 }
 
-.student-application-form button[type="submit"]:hover {
-    background-color: #004c99;
-}
-.error-message {
-    color: red;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid red;
-    border-radius: 4px;
-    background-color: #ffebee;
+.student-app-progress-title {
+    font-size: 0.8rem;
+    color: var(--text-dark);
+    text-align: center;
+    transition: all 0.3s ease;
+    max-width: 100px;
 }
 
-.student-application-form button:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-} */
+.student-app-progress-step.active .student-app-progress-number {
+    background-color: var(--primary-dark);
+    color: var(--text-light);
+}
 
-.student-application-form {
-    max-width: 800px;
+.student-app-progress-step.active .student-app-progress-title {
+    color: var(--primary-dark);
+    font-weight: 600;
+}
+
+.student-app-progress-step.completed .student-app-progress-number {
+    background-color: var(--accent-gold);
+    color: var(--primary-dark);
+}
+
+/* Form Styles */
+.student-app-form {
+    max-width: 600px;
     margin: 0 auto;
-    padding: 20px;
 }
 
-.alert {
-    padding: 15px;
-    margin-bottom: 20px;
-    border: 1px solid transparent;
+.student-app-step {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.student-app-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.student-app-label {
+    color: var(--primary-dark);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.student-app-input,
+.student-app-select,
+.student-app-textarea {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 2px solid var(--neutral-gray);
     border-radius: 4px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
 }
 
-.alert-error {
-    color: #721c24;
-    background-color: #f8d7da;
-    border-color: #f5c6cb;
+.student-app-input:focus,
+.student-app-select:focus,
+.student-app-textarea:focus {
+    outline: none;
+    border-color: var(--primary-light);
 }
 
-.alert-success {
-    color: #155724;
-    background-color: #d4edda;
-    border-color: #c3e6cb;
+.student-app-textarea {
+    resize: vertical;
+    min-height: 100px;
 }
 
-.form-group {
-    margin-bottom: 15px;
-}
-
-fieldset {
-    margin-bottom: 20px;
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-legend {
-    padding: 0 10px;
-    font-weight: bold;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="tel"],
-input[type="number"],
-input[type="date"],
-select,
-textarea {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
+/* Checkbox Styles */
+.student-app-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
     cursor: pointer;
 }
 
-button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
+.student-app-checkbox {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--primary-dark);
+    border-radius: 4px;
+    cursor: pointer;
+    accent-color: var(--primary-dark);
 }
 
-button.submitting {
+/* Action Buttons */
+.student-app-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-lg);
+    border-top: 2px solid var(--neutral-gray);
+}
+
+.student-app-button {
+    padding: var(--spacing-sm) var(--spacing-xl);
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 120px;
+}
+
+.student-app-button.primary {
+    background-color: var(--primary-dark);
+    color: var(--text-light);
+}
+
+.student-app-button.secondary {
+    background-color: var(--neutral-gray);
+    color: var(--text-dark);
+}
+
+.student-app-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+}
+
+.student-app-button:disabled {
     opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* Error Message */
+.student-app-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: var(--spacing-md);
+    border-radius: 4px;
+    margin-bottom: var(--spacing-lg);
+    text-align: center;
+    font-weight: 500;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.student-app-step {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .student-app {
+        padding: var(--spacing-lg) 0;
+    }
+
+    .student-app-container {
+        margin: 0 var(--spacing-md);
+        padding: var(--spacing-md);
+    }
+
+    .student-app-title {
+        font-size: 1.8rem;
+    }
+
+    .student-app-progress {
+        padding: 0;
+    }
+
+    .student-app-progress-title {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .student-app-title {
+        font-size: 1.5rem;
+    }
+
+    .student-app-actions {
+        flex-direction: column-reverse;
+        gap: var(--spacing-md);
+    }
+
+    .student-app-button {
+        width: 100%;
+    }
+
+    .student-app-progress {
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .student-app-progress-step {
+        padding: 0 var(--spacing-xs);
+    }
+}
+
+/* Print Styles */
+@media print {
+    .student-app {
+        background: none;
+        padding: 0;
+    }
+
+    .student-app-container {
+        box-shadow: none;
+        max-width: none;
+        padding: 0;
+    }
+
+    .student-app-progress,
+    .student-app-actions {
+        display: none;
+    }
+
+    .student-app-step {
+        page-break-inside: avoid;
+    }
+}
+
+/* Touch Device Optimizations */
+@media (hover: none) {
+    .student-app-button:hover:not(:disabled) {
+        transform: none;
+    }
 }
