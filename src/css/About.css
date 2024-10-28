@@ -1,15 +1,113 @@
-.about {
-    font-family: var(--font-primary);
+:root {
+    --primary-dark: #1B3764;
+    --primary-light: #2F5D9E;
+    --accent-gold: #C4A484;
+    --accent-burgundy: #722F37;
+    --neutral-gray: #F5F5F5;
+    --text-dark: #2C3E50;
+    --text-light: #ECF0F1;
+    --font-primary: 'Playfair Display', serif;
+    --font-secondary: 'Lato', sans-serif;
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 4rem;
 }
 
-.about-container {
+/* Animation Keyframes */
+@keyframes abtFadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes abtSlideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes abtSlideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes abtPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Base Styles */
+.abt-page {
+    font-family: var(--font-primary);
+    position: relative;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+.abt-page-container {
     max-width: 1440px;
     margin: 0 auto;
     padding: 0 var(--spacing-lg);
+    width: 100%;
 }
 
+/* Animation Classes */
+.abt-fade-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 1s ease;
+}
+
+.abt-slide-in-left {
+    opacity: 0;
+    transform: translateX(-100px);
+    transition: all 1s ease;
+}
+
+.abt-slide-in-right {
+    opacity: 0;
+    transform: translateX(100px);
+    transition: all 1s ease;
+}
+
+section.visible .abt-fade-up,
+section.visible .abt-slide-in-left,
+section.visible .abt-slide-in-right {
+    opacity: 1;
+    transform: translate(0);
+}
+
+.abt-pulse {
+    animation: abtPulse 2s infinite ease-in-out;
+}
+
+/* Animation Delays */
+.abt-delay-100 { transition-delay: 100ms; }
+.abt-delay-200 { transition-delay: 200ms; }
+.abt-delay-300 { transition-delay: 300ms; }
+.abt-delay-400 { transition-delay: 400ms; }
+
 /* Hero Section */
-.about-hero {
+.abt-page-hero {
     background-color: var(--primary-dark);
     min-height: 60vh;
     display: flex;
@@ -17,9 +115,11 @@
     justify-content: center;
     text-align: center;
     padding: var(--spacing-xl) 0;
+    position: relative;
+    z-index: 1;
 }
 
-.about-hero-text {
+.abt-page-hero-text {
     color: var(--text-light);
     font-size: 3.5rem;
     font-weight: 700;
@@ -28,29 +128,40 @@
 }
 
 /* Mission Section */
-.about-mission {
+.abt-page-mission {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--spacing-xl);
     padding: var(--spacing-xl) 0;
     align-items: center;
+    position: relative;
+    z-index: 1;
 }
 
-.about-mission-image {
+.abt-page-mission-image-container {
+    width: 100%;
+}
+
+.abt-page-mission-image {
     width: 100%;
     height: auto;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
 }
 
-.about-mission-title {
+.abt-page-mission-image:hover {
+    transform: scale(1.02);
+}
+
+.abt-page-mission-title {
     color: var(--primary-dark);
     font-size: 2.5rem;
     margin-bottom: var(--spacing-lg);
     position: relative;
 }
 
-.about-mission-title::after {
+.abt-page-mission-title::after {
     content: '';
     position: absolute;
     bottom: -10px;
@@ -58,39 +169,51 @@
     width: 60px;
     height: 3px;
     background-color: var(--accent-gold);
+    transition: width 0.3s ease;
 }
 
-.about-mission-text {
+.abt-page-mission-title:hover::after {
+    width: 100px;
+}
+
+.abt-page-mission-text {
     color: var(--text-dark);
     font-size: 1.1rem;
     line-height: 1.6;
 }
 
 /* Vision Section */
-.about-vision {
+.abt-page-vision {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--spacing-xl);
     padding: var(--spacing-xl) 0;
     align-items: center;
     background-color: var(--neutral-gray);
+    position: relative;
+    z-index: 1;
 }
 
-.about-vision-image {
+.abt-page-vision-image {
     width: 100%;
     height: auto;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
 }
 
-.about-vision-title {
+.abt-page-vision-image:hover {
+    transform: scale(1.02);
+}
+
+.abt-page-vision-title {
     color: var(--primary-dark);
     font-size: 2.5rem;
     margin-bottom: var(--spacing-lg);
     position: relative;
 }
 
-.about-vision-title::after {
+.abt-page-vision-title::after {
     content: '';
     position: absolute;
     bottom: -10px;
@@ -98,79 +221,103 @@
     width: 60px;
     height: 3px;
     background-color: var(--accent-gold);
+    transition: width 0.3s ease;
 }
 
-.about-vision-text {
+.abt-page-vision-title:hover::after {
+    width: 100px;
+}
+
+.abt-page-vision-text {
     color: var(--text-dark);
     font-size: 1.1rem;
     line-height: 1.6;
 }
 
 /* Services Section */
-.about-services {
+.abt-page-services {
     padding: var(--spacing-xl) 0;
     text-align: center;
+    position: relative;
+    z-index: 1;
 }
 
-.about-services-title {
+.abt-page-services-title {
     color: var(--primary-dark);
     font-size: 2.5rem;
     margin-bottom: var(--spacing-xl);
 }
 
-.about-services-grid {
+.abt-page-services-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: var(--spacing-lg);
 }
 
-.about-service {
+.abt-page-service {
     background-color: white;
     padding: var(--spacing-lg);
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
 }
 
-.about-service:hover {
+.abt-page-service:hover {
     transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
 }
 
-.about-service-icon {
+.abt-page-service-icon {
     font-size: 2.5rem;
     color: var(--primary-dark);
     margin-bottom: var(--spacing-md);
+    transition: transform 0.3s ease;
 }
 
-.about-service-title {
+.abt-page-service:hover .abt-page-service-icon {
+    transform: scale(1.1);
+}
+
+.abt-page-service-title {
     color: var(--primary-dark);
     font-size: 1.5rem;
     margin-bottom: var(--spacing-sm);
 }
 
-.about-service-divider {
+.abt-page-service-divider {
     width: 60px;
     height: 2px;
     background-color: var(--accent-gold);
     margin: var(--spacing-md) auto;
+    transition: width 0.3s ease;
 }
 
-.about-service-text {
+.abt-page-service:hover .abt-page-service-divider {
+    width: 80px;
+}
+
+.abt-page-service-text {
     color: var(--text-dark);
     line-height: 1.6;
 }
 
 /* Learning Section */
-.about-learning {
+.abt-page-learning {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--spacing-xl);
     padding: var(--spacing-xl) 0;
     align-items: center;
     background-color: var(--primary-light);
+    position: relative;
+    z-index: 1;
 }
 
-.about-learning-subtitle {
+.abt-page-learning-content {
+    padding: var(--spacing-lg);
+}
+
+.abt-page-learning-subtitle {
     color: var(--accent-gold);
     font-size: 1.2rem;
     text-transform: uppercase;
@@ -178,13 +325,13 @@
     margin-bottom: var(--spacing-md);
 }
 
-.about-learning-title {
+.abt-page-learning-title {
     color: var(--text-light);
     font-size: 3rem;
     margin-bottom: var(--spacing-lg);
 }
 
-.about-learning-button {
+.abt-page-learning-button {
     background-color: var(--accent-gold);
     color: var(--primary-dark);
     padding: var(--spacing-sm) var(--spacing-lg);
@@ -192,34 +339,43 @@
     border-radius: 4px;
     font-size: 1.1rem;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
 }
 
-.about-learning-button:hover {
+.abt-page-learning-button:hover {
     background-color: var(--text-light);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(196, 164, 132, 0.3);
 }
 
-.about-learning-image {
+.abt-page-learning-image {
     width: 100%;
     height: auto;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.abt-page-learning-image:hover {
+    transform: scale(1.02);
 }
 
 /* Pride Section */
-.about-pride {
+.abt-page-pride {
     text-align: center;
     padding: var(--spacing-xl) 0;
     background-color: var(--neutral-gray);
+    position: relative;
+    z-index: 1;
 }
 
-.about-pride-title {
+.abt-page-pride-title {
     color: var(--primary-dark);
     font-size: 2.5rem;
     margin-bottom: var(--spacing-lg);
 }
 
-.about-pride-text {
+.abt-page-pride-text {
     color: var(--text-dark);
     font-size: 1.1rem;
     max-width: 800px;
@@ -228,154 +384,332 @@
 }
 
 /* Testimonials Section */
-.about-testimonials {
+.abt-page-testimonials {
     padding: var(--spacing-xl) 0;
+    position: relative;
+    z-index: 1;
 }
 
-.about-testimonials-header {
+.abt-page-testimonials-header {
     text-align: center;
     margin-bottom: var(--spacing-xl);
 }
 
-.about-testimonials-title {
+.abt-page-testimonials-title {
     color: var(--primary-dark);
     font-size: 2.5rem;
     margin-bottom: var(--spacing-md);
 }
 
-.about-testimonials-subtitle {
+.abt-page-testimonials-subtitle {
     color: var(--text-dark);
     font-size: 1.1rem;
 }
 
-.about-testimonials-grid {
+.abt-page-testimonials-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: var(--spacing-lg);
 }
 
-.about-testimonial {
+.abt-page-testimonial {
     background-color: white;
     padding: var(--spacing-lg);
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
 }
 
-.about-testimonial:hover {
+.abt-page-testimonial:hover {
     transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
 }
 
-.about-testimonial-title {
+.abt-page-testimonial-title {
     color: var(--primary-dark);
     font-size: 1.3rem;
     margin-bottom: var(--spacing-sm);
 }
 
-.about-testimonial-divider {
+.abt-page-testimonial-divider {
     width: 40px;
     height: 2px;
     background-color: var(--accent-gold);
     margin: var(--spacing-md) 0;
+    transition: width 0.3s ease;
 }
 
-.about-testimonial-text {
+.abt-page-testimonial:hover .abt-page-testimonial-divider {
+    width: 60px;
+}
+
+.abt-page-testimonial-text {
     color: var(--text-dark);
     line-height: 1.6;
     margin-bottom: var(--spacing-md);
 }
 
-.about-testimonial-user {
+.abt-page-testimonial-user {
     display: flex;
     align-items: center;
     gap: var(--spacing-sm);
 }
 
-.about-testimonial-icon {
+.abt-page-testimonial-icon {
     color: var(--primary-dark);
     font-size: 1.2rem;
+    transition: transform 0.3s ease;
 }
 
-.about-testimonial-name {
+.abt-page-testimonial:hover .abt-page-testimonial-icon {
+    transform: scale(1.1);
+}
+
+.abt-page-testimonial-name {
     color: var(--primary-dark);
     font-weight: 600;
 }
 
 /* Responsive Design */
 @media (max-width: 1200px) {
-    .about-testimonials-grid {
+    .abt-page-testimonials-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (max-width: 992px) {
-    .about-hero-text {
+    .abt-page-hero-text {
         font-size: 2.8rem;
     }
 
-    .about-services-grid {
+    .abt-page-services-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: var(--spacing-md);
     }
 
-    .about-learning-title {
+    .abt-page-learning-title {
         font-size: 2.5rem;
+    }
+
+    .abt-page-mission,
+    .abt-page-vision,
+    .abt-page-learning {
+        grid-template-columns: 1fr;
     }
 }
 
 @media (max-width: 768px) {
-    .about-mission,
-    .about-vision,
-    .about-learning {
-        grid-template-columns: 1fr;
-        text-align: center;
-    }
+    .abt-page-mission,
+    .abt-page-vision,
+    .abt-page-learning {
+        text-align: center; }
 
-    .about-mission-title::after,
-    .about-vision-title::after {
-        left: 50%;
-        transform: translateX(-50%);
+        .abt-page-mission-title::after,
+        .abt-page-vision-title::after {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    
+        .abt-page-vision-content {
+            order: 1;
+        }
+    
+        .abt-page-vision-image-container {
+            order: 2;
+        }
+    
+        .abt-page-learning-content {
+            order: 2;
+        }
+    
+        .abt-page-learning-image-container {
+            order: 1;
+        }
+    
+        .abt-page-services-grid {
+            grid-template-columns: 1fr;
+        }
+    
+        .abt-page-testimonials-grid {
+            grid-template-columns: 1fr;
+        }
+    
+        .abt-page-mission-title,
+        .abt-page-vision-title,
+        .abt-page-services-title,
+        .abt-page-testimonials-title {
+            font-size: 2rem;
+        }
     }
-
-    .about-vision-content {
-        order: 1;
+    
+    @media (max-width: 480px) {
+        .abt-page-hero-text {
+            font-size: 2rem;
+        }
+    
+        .abt-page-mission-title,
+        .abt-page-vision-title,
+        .abt-page-services-title,
+        .abt-page-pride-title,
+        .abt-page-testimonials-title {
+            font-size: 1.8rem;
+        }
+    
+        .abt-page-learning-title {
+            font-size: 2.2rem;
+        }
+    
+        .abt-page-service {
+            padding: var(--spacing-md);
+        }
+    
+        .abt-page-service-icon {
+            font-size: 2rem;
+        }
+    
+        .abt-page-service-title {
+            font-size: 1.3rem;
+        }
     }
-
-    .about-vision-image-container {
-        order: 2;
+    
+    /* Enhanced Accessibility */
+    .abt-page button:focus-visible,
+    .abt-page a:focus-visible {
+        outline: 2px solid var(--accent-gold);
+        outline-offset: 2px;
     }
-
-    .about-learning-content {
-        order: 2;
+    
+    /* Smooth Scrolling */
+    .abt-page {
+        scroll-behavior: smooth;
     }
-
-    .about-learning-image-container {
-        order: 1;
+    
+    /* Reduced Motion Preferences */
+    @media (prefers-reduced-motion: reduce) {
+        .abt-page *,
+        .abt-page *::before,
+        .abt-page *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
+    
+        .abt-pulse {
+            animation: none !important;
+        }
+    
+        .abt-fade-up,
+        .abt-slide-in-left,
+        .abt-slide-in-right {
+            transition: none !important;
+            transform: none !important;
+            opacity: 1 !important;
+        }
     }
-
-    .about-services-grid {
-        grid-template-columns: 1fr;
+    
+    /* Interactive Elements Enhancement */
+    .abt-page button,
+    .abt-page-learning-button,
+    .abt-page-service,
+    .abt-page-testimonial {
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
     }
-}
-
-@media (max-width: 480px) {
-    .about-hero-text {
-        font-size: 2rem;
+    
+    .abt-page button::after,
+    .abt-page-learning-button::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.2),
+            transparent
+        );
+        transition: 0.5s;
     }
-
-    .about-testimonials-grid {
-        grid-template-columns: 1fr;
+    
+    .abt-page button:hover::after,
+    .abt-page-learning-button:hover::after {
+        left: 100%;
     }
-
-    .about-mission-title,
-    .about-vision-title,
-    .about-services-title,
-    .about-pride-title,
-    .about-testimonials-title {
-        font-size: 2rem;
+    
+    /* Loading States */
+    .abt-page-loading {
+        position: relative;
     }
-
-    .about-learning-title {
-        font-size: 2.2rem;
+    
+    .abt-page-loading::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        animation: abtShimmer 1.5s infinite linear;
+        background-size: 200% 100%;
     }
-}
+    
+    @keyframes abtShimmer {
+        0% { background-position: -200% 0; }
+        100% { background-position: 200% 0; }
+    }
+    
+    /* Print Styles */
+    @media print {
+        .abt-page {
+            background: white !important;
+            color: black !important;
+        }
+    
+        .abt-page-hero,
+        .abt-page-mission,
+        .abt-page-vision,
+        .abt-page-services,
+        .abt-page-learning,
+        .abt-page-pride,
+        .abt-page-testimonials {
+            page-break-inside: avoid;
+        }
+    
+        .abt-fade-up,
+        .abt-slide-in-left,
+        .abt-slide-in-right {
+            opacity: 1 !important;
+            transform: none !important;
+            transition: none !important;
+        }
+    
+        .abt-page-service,
+        .abt-page-testimonial {
+            box-shadow: none !important;
+            border: 1px solid #ccc !important;
+        }
+    
+        .abt-pulse {
+            animation: none !important;
+        }
+    }
+    
+    /* High Contrast Mode */
+    @media (prefers-contrast: high) {
+        .abt-page {
+            --primary-dark: #000000;
+            --primary-light: #1a1a1a;
+            --accent-gold: #996515;
+            --text-dark: #000000;
+            --text-light: #ffffff;
+        }
+    
+        .abt-page-service,
+        .abt-page-testimonial {
+            border: 2px solid currentColor;
+        }
+    }

@@ -163,17 +163,18 @@ const FinanceManagement = () => {
 
     const renderOverview = () => {
         if (!financialStats) return null;
-
+    
         const totalFees = financialStats.totalFees || 0;
         const totalPaid = financialStats.totalPaid || 0;
         const totalPending = financialStats.totalPending || 0;
-
-        const paymentTrends = dashboardData?.financialStats?.paymentHistory.reduce((acc, payment) => {
+    
+        // null check and default empty array
+        const paymentHistory = dashboardData?.financialStats?.paymentHistory || [];
+        const paymentTrends = paymentHistory.reduce((acc, payment) => {
             const month = new Date(payment.paymentDate).toLocaleString('default', { month: 'short' });
             acc[month] = (acc[month] || 0) + payment.amount;
             return acc;
         }, {});
-
         return (
             <div className="finance-overview">
                 <div className="finance-stats">

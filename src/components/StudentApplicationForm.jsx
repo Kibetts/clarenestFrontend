@@ -269,22 +269,25 @@ function StudentApplicationForm() {
                 return (
                     <div className="student-app-step">
                         <div className="student-app-field">
-                            <label className="student-app-label">Current Grade Level</label>
-                            <select
-                                name="educationalInfo.currentGradeLevel"
-                                value={formData.educationalInfo.currentGradeLevel}
-                                onChange={handleChange}
-                                className="student-app-select"
-                                required
-                            >
-                                <option value="">Select Grade Level</option>
-                                {Array.from({ length: 12 }, (_, i) => (
-                                    <option key={i + 1} value={`${i + 1}`}>
-                                        Grade {i + 1}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
+                    <label className="student-app-label">Current Grade Level</label>
+                    <select
+                        name="educationalInfo.currentGradeLevel"
+                        value={formData.educationalInfo.currentGradeLevel}
+                        onChange={handleChange}
+                        className="student-app-select"
+                        required
+                    >
+                        <option value="">Select Grade Level</option>
+                        {[
+                            '1st', '2nd', '3rd', '4th', '5th', '6th',
+                            '7th', '8th', '9th', '10th', '11th', '12th'
+                        ].map((grade) => (
+                            <option key={grade} value={grade}>
+                                {grade}
+                            </option>
+                        ))}
+                    </select>
+                </div>
 
                         <div className="student-app-field">
                             <label className="student-app-label">Last School Attended</label>
@@ -348,7 +351,8 @@ function StudentApplicationForm() {
                                 className="student-app-select"
                                 required
                             >
-                                <option value="Parent">Parent</option>
+                                <option value="Mother">Mother</option>
+                                <option value="Father">Father</option>
                                 <option value="Guardian">Guardian</option>
                                 <option value="Other">Other</option>
                             </select>

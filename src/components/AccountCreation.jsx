@@ -16,46 +16,68 @@ const AccountCreation = () => {
     useEffect(() => {
         if (!token || !role) {
             setError('Invalid account creation link');
-        } else {
-            console.log('Valid parameters received:', { role, token });
         }
     }, [token, role]);
+
+    const validatePassword = (password) => {
+        return password.length >= 8;
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
         setError('');
-        
+    
         if (formData.password !== formData.confirmPassword) {
             setError('Passwords do not match');
             setLoading(false);
             return;
         }
 
+        if (!validatePassword(formData.password)) {
+            setError('Password must be at least 8 characters long');
+            setLoading(false);
+            return;
+        }
+    
         try {
-            const endpoint = `http://localhost:5000/api/auth/create-${role}-account/${token}`;
-
+            // Update this endpoint construction
+            const endpoint = `http://localhost:5000/api/auth/create-${role.toLowerCase()}-account/${token}`;
+            
+            console.log('Submitting to endpoint:', endpoint); // Debug log
+    
             const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json' // Add Accept header
                 },
                 body: JSON.stringify({
                     password: formData.password
                 })
             });
-
-            const data = await response.json();
-
+    
+            // First log the raw response
+            const responseText = await response.text();
+            console.log('Raw response:', responseText);
+    
+            let data;
+            try {
+                data = JSON.parse(responseText);
+            } catch (error) {
+                console.error('Failed to parse response:', error);
+                throw new Error('Invalid server response format');
+            }
+    
             if (response.ok) {
                 alert('Account created successfully! Please check your email to verify your account.');
                 navigate('/login');
             } else {
-                setError(data.message || 'Error creating account');
+                throw new Error(data.message || 'Failed to create account');
             }
         } catch (err) {
             console.error('Account creation error:', err);
-            setError('Error creating account. Please try again.');
+            setError(err.message || 'Error creating account. Please try again.');
         } finally {
             setLoading(false);
         }
@@ -98,7 +120,11 @@ const AccountCreation = () => {
                             required
                             minLength="8"
                             disabled={loading}
+                            placeholder="Enter your password"
                         />
+                        <small className="password-requirements">
+                            Password must be at least 8 characters long
+                        </small>
                     </div>
                     
                     <div className="account-creation-field">
@@ -111,6 +137,7 @@ const AccountCreation = () => {
                             required
                             minLength="8"
                             disabled={loading}
+                            placeholder="Confirm your password"
                         />
                     </div>
                     

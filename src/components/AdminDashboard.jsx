@@ -7,6 +7,19 @@ import MessageCenter from '../AdminDashboardComponents/MessageCenter';
 import ApplicationManagement from '../AdminDashboardComponents/ApplicationManagement';
 import '../css/AdminDashboard.css';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { 
+    faBars,
+    faHome, 
+    faUsers, 
+    faFileAlt, 
+    faChalkboardTeacher, 
+    faClipboardList, 
+    faDollarSign, 
+    faComments 
+} from '@fortawesome/free-solid-svg-icons';
+
+
 const AdminDashboard = () => {
     const [selectedTab, setSelectedTab] = useState('home');
     const [menuOpen, setMenuOpen] = useState(true);
@@ -44,15 +57,14 @@ const AdminDashboard = () => {
     };
 
     const menuItems = [
-        { text: 'Home', icon: '🏠', value: 'home' },
-        { text: 'User Management', icon: '👥', value: 'users' },
-        { text: 'Applications', icon: '📝', value: 'applications' },
-        { text: 'Class Management', icon: '📚', value: 'classes' },
-        { text: 'Assignment Management', icon: '📋', value: 'assignments' },
-        { text: 'Finances', icon: '💰', value: 'finances' },
-        { text: 'Messages', icon: '💬', value: 'messages' },
+        { text: 'Home', icon: faHome, value: 'home' },
+        { text: 'User Management', icon: faUsers, value: 'users' },
+        { text: 'Applications', icon: faFileAlt, value: 'applications' },
+        { text: 'Class Management', icon: faChalkboardTeacher, value: 'classes' },
+        { text: 'Assignment Management', icon: faClipboardList, value: 'assignments' },
+        { text: 'Finances', icon: faDollarSign, value: 'finances' },
+        { text: 'Messages', icon: faComments, value: 'messages' },
     ];
-
     const renderHomeContent = () => {
         if (!dashboardData) return null;
 
@@ -284,12 +296,12 @@ const AdminDashboard = () => {
                     className="admin-menu-toggle"
                     onClick={() => setMenuOpen(!menuOpen)}
                 >
-                    ☰
+                    <FontAwesomeIcon icon={faBars} />
                 </button>
                 <h1 className="admin-title">Admin Dashboard</h1>
                 {dashboardData && (
                     <div className="admin-profile">
-                        <span className="admin-name">{dashboardData.admin.name}</span>
+                        <h2 className="welcome-message">Welcome, {dashboardData.admin.name}</h2>
                         <span className="admin-role">{dashboardData.admin.adminLevel}</span>
                     </div>
                 )}
@@ -304,7 +316,9 @@ const AdminDashboard = () => {
                                 className={`admin-nav-item ${selectedTab === item.value ? 'active' : ''}`}
                                 onClick={() => setSelectedTab(item.value)}
                             >
-                                <span className="admin-nav-icon">{item.icon}</span>
+                                <span className="admin-nav-icon">
+                                    <FontAwesomeIcon icon={item.icon} />
+                                </span>
                                 <span className="admin-nav-text">{item.text}</span>
                             </li>
                         ))}
