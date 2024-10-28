@@ -1,142 +1,427 @@
-.tutor-application {
+.tutor-app {
+    min-height: 100vh;
+    background-color: var(--neutral-gray);
+    padding: var(--spacing-xl) 0;
+}
+
+.tutor-app-container {
     max-width: 800px;
     margin: 0 auto;
-    padding: 20px;
-}
-
-.tutor-application h2 {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-.form-section {
-    background: #f9f9f9;
-    padding: 20px;
-    margin-bottom: 20px;
+    padding: var(--spacing-lg);
+    background-color: white;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.form-section h3 {
-    margin-bottom: 20px;
-    color: #333;
+/* Header Styles */
+.tutor-app-title {
+    color: var(--primary-dark);
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+    font-family: var(--font-primary);
+    position: relative;
 }
 
-.form-group {
-    margin-bottom: 15px;
+.tutor-app-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background-color: var(--accent-gold);
 }
 
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 500;
+/* Progress Bar Styles */
+.tutor-app-progress {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-xl);
+    position: relative;
+    padding: 0 var(--spacing-lg);
 }
 
-.form-group input[type="text"],
-.form-group input[type="email"],
-.form-group input[type="date"],
-.form-group input[type="number"],
-.form-group textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
+.tutor-app-progress::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: var(--neutral-gray);
+    z-index: 1;
+}
+
+.tutor-app-progress-step {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+    flex: 1;
+}
+
+.tutor-app-progress-number {
+    width: 30px;
+    height: 30px;
+    background-color: var(--neutral-gray);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-dark);
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.tutor-app-progress-step.active .tutor-app-progress-number {
+    background-color: var(--primary-dark);
+    color: var(--text-light);
+}
+
+.tutor-app-progress-step.completed .tutor-app-progress-number {
+    background-color: var(--accent-gold);
+    color: var(--primary-dark);
+}
+
+.tutor-app-progress-title {
+    font-size: 0.8rem;
+    color: var(--text-dark);
+    text-align: center;
+    max-width: 100px;
+}
+
+/* Form Styles */
+.tutor-app-form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.tutor-app-step {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+    animation: fadeIn 0.3s ease-out;
+}
+
+.tutor-app-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.tutor-app-label {
+    color: var(--primary-dark);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.tutor-app-input,
+.tutor-app-textarea,
+.tutor-app-select {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 2px solid var(--neutral-gray);
     border-radius: 4px;
-    font-size: 16px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
 }
 
-.form-group textarea {
+.tutor-app-input:focus,
+.tutor-app-textarea:focus,
+.tutor-app-select:focus {
+    outline: none;
+    border-color: var(--primary-light);
+}
+
+.tutor-app-textarea {
     resize: vertical;
     min-height: 100px;
 }
 
-.reference-group {
-    padding: 15px;
-    background: #fff;
-    border-radius: 4px;
-    margin-bottom: 15px;
-}
-
-.custom-select {
-    position: relative;
-    width: 100%;
-}
-
-.select-trigger {
-    padding: 10px;
-    border: 1px solid #ddd;
+.tutor-app-file {
+    padding: var(--spacing-sm);
+    border: 2px dashed var(--neutral-gray);
     border-radius: 4px;
     cursor: pointer;
-    background: white;
-    min-height: 42px;
 }
 
-.select-options {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: white;
-    border: 1px solid #ddd;
+.tutor-app-file:hover {
+    border-color: var(--primary-light);
+}
+
+.tutor-app-file-name {
+    font-size: 0.9rem;
+    color: var(--primary-dark);
+    margin-top: var(--spacing-xs);
+}
+
+/* Checkbox Styles */
+.tutor-app-checkbox-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--spacing-sm);
+    padding: var(--spacing-sm);
+    background-color: var(--neutral-gray);
     border-radius: 4px;
-    margin-top: 4px;
-    max-height: 200px;
-    overflow-y: auto;
-    z-index: 1000;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.select-option {
-    padding: 8px 10px;
+.tutor-app-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
     cursor: pointer;
-    transition: background-color 0.2s;
 }
 
-.select-option:hover {
-    background: #f0f0f0;
+.tutor-app-checkbox {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--primary-dark);
+    border-radius: 3px;
+    cursor: pointer;
 }
 
-.select-option.selected {
-    background: #e3e3e3;
-    font-weight: 500;
-}
-
-.error-text {
-    color: #dc3545;
-    font-size: 0.875em;
-    margin-top: 4px;
-}
-
-.error-alert {
-    background: #ffebee;
-    color: #c62828;
-    padding: 10px;
+/* Reference Section */
+.tutor-app-reference {
+    padding: var(--spacing-lg);
+    background-color: var(--neutral-gray);
     border-radius: 4px;
-    margin-bottom: 20px;
-    text-align: center;
+    margin-bottom: var(--spacing-lg);
 }
 
-.submit-button {
-    width: 100%;
-    padding: 12px;
-    background: #4a90e2;
-    color: white;
+.tutor-app-subtitle {
+    color: var(--primary-dark);
+    font-size: 1.2rem;
+    margin-bottom: var(--spacing-md);
+}
+
+/* Action Buttons */
+.tutor-app-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: var(--spacing-xl);
+    padding-top: var(--spacing-lg);
+    border-top: 2px solid var(--neutral-gray);
+}
+
+.tutor-app-button {
+    padding: var(--spacing-sm) var(--spacing-xl);
     border: none;
     border-radius: 4px;
-    font-size: 16px;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: all 0.3s ease;
+    min-width: 120px;
 }
 
-.submit-button:hover:not(:disabled) {
-    background: #357abd;
+.tutor-app-button.primary {
+    background-color: var(--primary-dark);
+    color: var(--text-light);
 }
 
-.submit-button:disabled {
-    background: #cccccc;
+.tutor-app-button.secondary {
+    background-color: var(--neutral-gray);
+    color: var(--text-dark);
+}
+
+.tutor-app-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+}
+
+.tutor-app-button:disabled {
+    opacity: 0.7;
     cursor: not-allowed;
 }
 
-input[type="file"] {
-    padding: 10px 0;
+/* Modal Styles */
+.tutor-app-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: var(--spacing-md);
+}
+
+.tutor-app-modal-content {
+    background-color: white;
+    padding: var(--spacing-xl);
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+}
+
+.tutor-app-modal-title {
+    color: var(--primary-dark);
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.tutor-app-modal-text {
+    color: var(--text-dark);
+    margin-bottom: var(--spacing-lg);
+    line-height: 1.5;
+}
+
+.tutor-app-modal-actions {
+    display: flex;
+    gap: var(--spacing-md);
+}
+
+/* Error Message */
+.tutor-app-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: var(--spacing-md);
+    border-radius: 4px;
+    margin-bottom: var(--spacing-lg);
+    text-align: center;
+    font-weight: 500;
+    border: 1px solid #f5c6cb;
+}
+
+/* File Upload Styles */
+.tutor-app-file-list {
+    margin-top: var(--spacing-sm);
+    padding: var(--spacing-sm);
+    background-color: var(--neutral-gray);
+    border-radius: 4px;
+}
+
+.tutor-app-file-list .tutor-app-file-name {
+    display: block;
+    padding: var(--spacing-xs) 0;
+    font-size: 0.85rem;
+    color: var(--text-dark);
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .tutor-app-container {
+        margin: var(--spacing-md);
+        padding: var(--spacing-md);
+    }
+
+    .tutor-app-progress {
+        padding: 0;
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .tutor-app-progress-title {
+        font-size: 0.7rem;
+        display: none;
+    }
+
+    .tutor-app-checkbox-group {
+        grid-template-columns: 1fr;
+    }
+
+    .tutor-app-actions {
+        flex-direction: column-reverse;
+        gap: var(--spacing-md);
+    }
+
+    .tutor-app-button {
+        width: 100%;
+    }
+
+    .tutor-app-modal-content {
+        padding: var(--spacing-lg);
+    }
+
+    .tutor-app-modal-actions {
+        flex-direction: column;
+    }
+}
+
+/* Additional Hover and Focus States */
+.tutor-app-checkbox-label:hover {
+    color: var(--primary-light);
+}
+
+.tutor-app-button.primary:hover:not(:disabled) {
+    background-color: var(--primary-light);
+}
+
+.tutor-app-button.secondary:hover:not(:disabled) {
+    background-color: #e0e0e0;
+}
+
+/* Success States */
+.tutor-app-success {
+    background-color: #d4edda;
+    color: #155724;
+    padding: var(--spacing-md);
+    border-radius: 4px;
+    margin-bottom: var(--spacing-lg);
+    text-align: center;
+    font-weight: 500;
+    border: 1px solid #c3e6cb;
+}
+
+/* Loading States */
+.tutor-app-loading {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: var(--text-light);
+    animation: spin 1s linear infinite;
+    margin-left: var(--spacing-sm);
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Modal Overlay Animation */
+.tutor-app-modal {
+    animation: fadeIn 0.2s ease-out;
+}
+
+/* Additional Accessibility Styles */
+.tutor-app input:focus-visible,
+.tutor-app-button:focus-visible {
+    outline: 2px solid var(--primary-light);
+    outline-offset: 2px;
+}
+
+/* Print Styles */
+@media print {
+    .tutor-app {
+        background: none;
+        padding: 0;
+    }
+
+    .tutor-app-container {
+        box-shadow: none;
+        max-width: 100%;
+    }
+
+    .tutor-app-button,
+    .tutor-app-modal {
+        display: none;
+    }
 }
