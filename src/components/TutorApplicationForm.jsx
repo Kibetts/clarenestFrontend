@@ -191,7 +191,7 @@ function TutorApplication() {
             // Append other form data
             formDataToSend.append('application', JSON.stringify(otherFormData));
 
-            const response = await fetch('http://localhost:5000/api/applications/tutor', {
+            const response = await fetch('https://clarenest.onrender.com/api/applications/tutor', {
                 method: 'POST',
                 body: formDataToSend
             });

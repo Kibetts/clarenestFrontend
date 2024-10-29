@@ -55,7 +55,7 @@ const ParentRegistration = () => {
             setLoading(true);
             setError('');
 
-            const response = await fetch(`http://localhost:5000/api/parents/register/${studentId}`, {
+            const response = await fetch(`https://clarenest.onrender.com/api/parents/register/${studentId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

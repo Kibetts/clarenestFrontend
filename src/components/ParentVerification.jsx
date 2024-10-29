@@ -21,7 +21,7 @@ const ParentVerification = () => {
         }
 
         try {
-            const response = await fetch(`http://localhost:5000/api/parents/verify/${token}`, {
+            const response = await fetch(`https://clarenest.onrender.com/api/parents/verify/${token}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

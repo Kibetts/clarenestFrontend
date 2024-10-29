@@ -24,7 +24,7 @@ const ApplicationManagement = () => {
   const fetchApplications = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:5000/api/applications', {
+      const response = await fetch('https://clarenest.onrender.com/api/applications', {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
@@ -44,7 +44,7 @@ const ApplicationManagement = () => {
   const handleApplicationAction = async (id, type, action) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/api/applications/${type}/${id}/${action}`, 
+        `https://clarenest.onrender.com/api/applications/${type}/${id}/${action}`, 
         {
           method: 'POST',
           headers: {

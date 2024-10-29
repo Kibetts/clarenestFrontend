@@ -41,7 +41,7 @@ const AssignmentManagement = () => {
     };
 
     const fetchAssignments = async () => {
-        const response = await fetch('http://localhost:5000/api/assignments', {
+        const response = await fetch('https://clarenest.onrender.com/api/assignments', {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
@@ -52,7 +52,7 @@ const AssignmentManagement = () => {
     };
 
     const fetchClasses = async () => {
-        const response = await fetch('http://localhost:5000/api/lessons', {
+        const response = await fetch('https://clarenest.onrender.com/api/lessons', {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
@@ -63,7 +63,7 @@ const AssignmentManagement = () => {
     };
 
     const fetchSubmissions = async (assignmentId) => {
-        const response = await fetch(`http://localhost:5000/api/assignments/${assignmentId}`, {
+        const response = await fetch(`https://clarenest.onrender.com/api/assignments/${assignmentId}`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
@@ -138,8 +138,8 @@ const AssignmentManagement = () => {
             });
 
             const url = modalMode === 'add'
-                ? 'http://localhost:5000/api/assignments'
-                : `http://localhost:5000/api/assignments/${selectedAssignment._id}`;
+                ? 'https://clarenest.onrender.com/api/assignments'
+                : `https://clarenest.onrender.com/api/assignments/${selectedAssignment._id}`;
 
             const response = await fetch(url, {
                 method: modalMode === 'add' ? 'POST' : 'PATCH',
@@ -166,7 +166,7 @@ const AssignmentManagement = () => {
         if (!window.confirm('Are you sure you want to delete this assignment?')) return;
 
         try {
-            const response = await fetch(`http://localhost:5000/api/assignments/${assignmentId}`, {
+            const response = await fetch(`https://clarenest.onrender.com/api/assignments/${assignmentId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -195,7 +195,7 @@ const AssignmentManagement = () => {
     const handleGradeSubmission = async (assignmentId, submissionId, grade, feedback) => {
         try {
             const response = await fetch(
-                `http://localhost:5000/api/assignments/${assignmentId}/submissions/${submissionId}`,
+                `https://clarenest.onrender.com/api/assignments/${assignmentId}/submissions/${submissionId}`,
                 {
                     method: 'PATCH',
                     headers: {

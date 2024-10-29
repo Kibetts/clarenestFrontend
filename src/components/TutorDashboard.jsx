@@ -12,7 +12,7 @@ const TutorDashboard = () => {
 
     const fetchDashboardData = async () => {
         try {
-            const response = await fetch('http://localhost:5000/api/dashboard/tutor', {
+            const response = await fetch('https://clarenest.onrender.com/api/dashboard/tutor', {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }

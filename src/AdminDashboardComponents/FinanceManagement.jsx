@@ -40,7 +40,7 @@ const FinanceManagement = () => {
     };
 
     const fetchFinancialStats = async () => {
-        const response = await fetch('http://localhost:5000/api/dashboard/admin', {
+        const response = await fetch('https://clarenest.onrender.com/api/dashboard/admin', {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
@@ -52,7 +52,7 @@ const FinanceManagement = () => {
     };
 
     const fetchStudents = async () => {
-        const response = await fetch('http://localhost:5000/api/users?role=student', {
+        const response = await fetch('https://clarenest.onrender.com/api/users?role=student', {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
@@ -66,7 +66,7 @@ const FinanceManagement = () => {
         e.preventDefault();
 
         try {
-            const response = await fetch('http://localhost:5000/api/fees/record-payment', {
+            const response = await fetch('https://clarenest.onrender.com/api/fees/record-payment', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -97,7 +97,7 @@ const FinanceManagement = () => {
         }
 
         try {
-            const response = await fetch('http://localhost:5000/api/fees/grant-temporary-access', {
+            const response = await fetch('https://clarenest.onrender.com/api/fees/grant-temporary-access', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

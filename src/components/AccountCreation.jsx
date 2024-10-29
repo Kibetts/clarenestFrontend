@@ -42,7 +42,7 @@ const AccountCreation = () => {
     
         try {
             // Update this endpoint construction
-            const endpoint = `http://localhost:5000/api/auth/create-${role.toLowerCase()}-account/${token}`;
+            const endpoint = `https://clarenest.onrender.com/api/auth/create-${role.toLowerCase()}-account/${token}`;
             
             console.log('Submitting to endpoint:', endpoint); // Debug log
     
