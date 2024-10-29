@@ -57,10 +57,6 @@ export default function ContactUs() {
             answer: "Tuition fees vary by program. Our comprehensive fee structure includes access to all learning materials, mentoring sessions, and career development resources. Contact our admissions office for detailed program-specific information."
         },
         {
-            question: "Do you offer financial aid?",
-            answer: "Yes, we offer various financial aid options including merit-based scholarships, need-based grants, and flexible payment plans. Our financial aid team is available to discuss options that best suit your situation."
-        },
-        {
             question: "What technical requirements do I need for online classes?",
             answer: "Students need a reliable internet connection (minimum 5Mbps), a computer with webcam and microphone, and access to basic software including Microsoft Office or equivalent. Specific programs may have additional requirements."
         },
@@ -97,9 +93,9 @@ export default function ContactUs() {
                             </div>
                             <h3>Email Us</h3>
                             <div className="cnt-info-details">
-                                <p>General Inquiries: info@prestigeacademy.edu</p>
-                                <p>Admissions: admissions@prestigeacademy.edu</p>
-                                <p>Technical Support: support@prestigeacademy.edu</p>
+                                <p>General Inquiries: clarenestschool@outlook.com</p>
+                                <p>Admissions: clarenestschool@outlook.com</p>
+                                <p>Technical Support: clarenestschool@outlook.com</p>
                             </div>
                         </div>
 
@@ -109,9 +105,9 @@ export default function ContactUs() {
                             </div>
                             <h3>Call Us</h3>
                             <div className="cnt-info-details">
-                                <p>Main Office: +1 (555) 123-4567</p>
-                                <p>Admissions: +1 (555) 234-5678</p>
-                                <p>Technical Support: +1 (555) 345-6789</p>
+                                <p>Main Office: +254 (720) 944-056</p>
+                                <p>Admissions: +254 (720) 944-056</p>
+                                <p>Technical Support: +254 (720) 944-056</p>
                             </div>
                         </div>
 
@@ -121,8 +117,8 @@ export default function ContactUs() {
                             </div>
                             <h3>Office Hours</h3>
                             <div className="cnt-info-details">
-                                <p>Monday - Friday: 8:00 AM - 6:00 PM EST</p>
-                                <p>Saturday: 9:00 AM - 1:00 PM EST</p>
+                                <p>Monday - Friday: 8:00 AM - 4:00 PM EAT</p>
+                                <p>Saturday: closed</p>
                                 <p>Sunday: Closed</p>
                             </div>
                         </div>

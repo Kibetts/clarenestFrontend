@@ -98,11 +98,11 @@
     opacity: 0.8;
 }
 
-.footer-accent-large {
+/* .footer-accent-large {
     height: 8px;
     background-color: var(--accent-burgundy);
     margin-top: var(--spacing-md);
-}
+} */
 
 /* Responsive Design */
 @media (max-width: 768px) {

@@ -31,7 +31,7 @@ export default function Navbar() {
                             <Link className="navbar-link" to="/about">About</Link>
                         </li>
                         <li className="navbar-item">
-                            <Link className="navbar-link" to="/contact">Contact Us</Link>
+                            <Link className="navbar-link" to="/contact-us">Contact Us</Link>
                         </li>
                         <li className="navbar-item">
                             <Link className="navbar-link navbar-link-login" to="/login">Log In</Link>

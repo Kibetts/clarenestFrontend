@@ -25,6 +25,7 @@ import AccountCreation from '../src/components/AccountCreation'
 import ParentRegistration from '../src/components/ParentRegistration'
 import EmailVerification from '../src/components/EmailVerification';
 import ParentVerification from '../src/components/ParentVerification';
+import ContactUs from '../src/components/ContactUs'
 
 const theme = createTheme({
   palette: {
@@ -61,6 +62,8 @@ function App() {
         <Route path="/parent-registration/:studentId" component={<ParentRegistration/>} /> 
         <Route path="/verify-email/:token" element={<EmailVerification />} />
         <Route path="/parent/verify/:token" element={<ParentVerification />} />
+        <Route path="/contact-us" element={<ContactUs />} />
+
 
 
       </Routes>

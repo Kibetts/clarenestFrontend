@@ -3,6 +3,15 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import '../css/Home.css';
 
+import { 
+    faGraduationCap, 
+    faChalkboardTeacher, 
+    faChartLine, 
+    faGlobe, 
+    faBriefcase 
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 const TransformCarousel = ({ features, activeFeature, setActiveFeature }) => {
     return (
         <div className="main-transform-carousel">
@@ -106,27 +115,27 @@ export default function Home() {
         {
             title: "Excellence In Education",
             text: "Our curriculum is designed to match the rigor of Ivy League institutions, featuring advanced coursework, research opportunities, and interdisciplinary learning approaches.",
-            icon: "🎓"
+            icon: <FontAwesomeIcon icon={faGraduationCap} className="fa-1x" />
         },
         {
             title: "World-Class Educators",
             text: "Learn from distinguished professors and industry leaders who bring decades of experience from top universities and Fortune 500 companies.",
-            icon: "👨‍🏫"
+            icon: <FontAwesomeIcon icon={faChalkboardTeacher} className="fa-1x" />
         },
         {
             title: "Comprehensive Monitoring",
             text: "Track your progress with our advanced analytics system, receiving personalized feedback and adaptive learning recommendations.",
-            icon: "📊"
+            icon: <FontAwesomeIcon icon={faChartLine} className="fa-1x" />
         },
         {
             title: "Global Network",
             text: "Join a diverse community of learners from over 100 countries, fostering international connections and collaborative opportunities.",
-            icon: "🌍"
+            icon: <FontAwesomeIcon icon={faGlobe} className="fa-1x" />
         },
         {
             title: "Career Development",
             text: "Access exclusive career services, including mentorship programs, internship placements, and networking events with industry leaders.",
-            icon: "💼"
+            icon: <FontAwesomeIcon icon={faBriefcase} className="fa-1x" />
         }
     ];
 
@@ -141,8 +150,8 @@ export default function Home() {
                     className={`main-hero ${isSectionVisible('main-hero') ? 'visible' : ''}`}
                 >
                     <div className="main-hero-content">
-                        <h1 className="main-hero-title">Elevate Your Education to Ivy League Standards</h1>
-                        <p className="main-hero-subtitle">Experience world-class online education that transforms careers and opens doors to exceptional opportunities</p>
+                        <h1 className="main-hero-title">Elevate Your Education to International Standards</h1>
+                        <p className="main-hero-subtitle">Experience world-class online education that transforms futures and opens doors to exceptional opportunities</p>
                         <div className="main-hero-cta">
                             <button className="main-hero-button primary">Start Your Journey</button>
                         </div>
@@ -157,11 +166,11 @@ export default function Home() {
                     <div className="main-about-grid">
                         <div className="main-about-item main-slide-in-left">
                             <h3>Our Vision</h3>
-                            <p>To provide accessible, world-class education that rivals the prestige and quality of Ivy League institutions.</p>
+                            <p>To be the leading online educational platform that transforms lives through accessible, engaging, and effective learning opportunities for students worldwide.</p>
                         </div>
                         <div className="main-about-item main-slide-in-right">
                             <h3>Our Mission</h3>
-                            <p>Empowering global learners through innovative online education and fostering academic excellence.</p>
+                            <p>To provide high-quality online education that empowers students to achieve their full potential through personalized learning experiences, innovative teaching methods, and a supportive community.</p>
                         </div>
                     </div>
                 </section>
@@ -172,19 +181,19 @@ export default function Home() {
                 >
                     <div className="main-stat-item main-fade-in">
                         <p className="main-stat-number-1">7</p>
-                        <p className="main-stat-label">Student-to-Faculty Ratio</p>
+                        <p className="main-stat-label">Student-to-Instructor Ratio</p>
                     </div>
                     <div className="main-stat-item main-fade-in">
                         <p className="main-stat-number-2">500</p>
-                        <p className="main-stat-label">Distinguished Alumni</p>
+                        <p className="main-stat-label">Students</p>
                     </div>
                     <div className="main-stat-item main-fade-in">
                         <p className="main-stat-number-3">1000</p>
-                        <p className="main-stat-label">Course Resources</p>
+                        <p className="main-stat-label">Resources</p>
                     </div>
                     <div className="main-stat-item main-fade-in">
                         <p className="main-stat-number-4">100</p>
-                        <p className="main-stat-label">Partner Companies</p>
+                        <p className="main-stat-label">Graduates</p>
                     </div>
                 </section>
 
@@ -207,21 +216,21 @@ export default function Home() {
                     <h2 className="main-programs-title">Featured Programs</h2>
                     <div className="main-programs-grid">
                         <div className="main-program-card main-slide-in-left">
-                            <h3>Data Science & AI</h3>
-                            <p>Master cutting-edge technologies and analytical methods</p>
+                            <h3>Introductory Software Development</h3>
+                            <p>Indulge cutting-edge technologies at a young age!</p>
                             <ul className="main-program-highlights">
-                                <li>Machine Learning</li>
-                                <li>Big Data Analytics</li>
-                                <li>AI Applications</li>
+                                <li>Foundational Programming Languages</li>
+                                <li>Project-Based Learning</li>
+                                <li>Problem-Solving Skills</li>
                             </ul>
                         </div>
                         <div className="main-program-card main-slide-in-right">
-                            <h3>Business Leadership</h3>
-                            <p>Develop strategic thinking and management skills</p>
+                            <h3>Extra-carricular activities</h3>
+                            <p>Creative, social, and wellness-oriented activities</p>
                             <ul className="main-program-highlights">
-                                <li>Strategic Management</li>
-                                <li>Global Economics</li>
-                                <li>Organizational Leadership</li>
+                                <li>Spelling Bee</li>
+                                <li>Literary and Debate Club</li>
+                                <li>Virtual Sports and Wellness Activities</li>
                             </ul>
                         </div>
                     </div>
@@ -234,17 +243,17 @@ export default function Home() {
                     <h2>Student Success Stories</h2>
                     <div className="main-testimonials-grid">
                         <div className="main-testimonial-card main-fade-in">
-                            <p>"The quality of education rivals traditional Ivy League programs. The flexibility allowed me to advance my career while studying."</p>
+                            <p>"The teachers here are incredibly supportive, especially in subjects like math where I used to struggle. I’ve improved so much! Plus, with clubs and activities, I’ve made amazing friends and memories. It’s a great place to learn and have fun!"</p>
                             <div className="main-testimonial-author">
-                                <p className="main-author-name">Sarah Chen</p>
-                                <p className="main-author-title">Data Scientist at Google</p>
+                                <p className="main-author-name">Sarah Cheptoo</p>
+                                <p className="main-author-title">Student</p>
                             </div>
                         </div>
                         <div className="main-testimonial-card main-fade-in">
-                            <p>"The networking opportunities and career support have been invaluable. I secured my dream job before even completing my program."</p>
+                            <p>"This school makes everyone feel like they belong. Joining the debate club helped me discover new passions and build confidence. The encouragement from teachers and friends here has made a big difference in my life."</p>
                             <div className="main-testimonial-author">
-                                <p className="main-author-name">Michael Rodriguez</p>
-                                <p className="main-author-title">Investment Banking Analyst</p>
+                                <p className="main-author-name">Allan Maina</p>
+                                <p className="main-author-title">Student</p>
                             </div>
                         </div>
                     </div>
@@ -256,11 +265,11 @@ export default function Home() {
                 >
                     <div className="main-cta-content main-slide-in-left">
                         <h2>Begin Your Academic Journey</h2>
-                        <p>Join our next cohort and transform your career prospects</p>
+                        <p>Join our next intake and transform your future prospects</p>
                         <button className="main-cta-button">Apply Now</button>
                     </div>
                     <div className="main-cta-image main-slide-in-right">
-                        <img src="../img/children.jpg" alt="Campus life" />
+                        <img src="../img/children.jpg" alt="home-school life" />
                     </div>
                 </section>
 

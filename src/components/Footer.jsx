@@ -61,7 +61,7 @@ export default function Footer() {
                 <div className="footer-bottom">
                     <div className="footer-accent"></div>
                     <p className="footer-copyright">All Rights Reserved 2024</p>
-                    <div className="footer-accent-large"></div>
+                    {/* <div className="footer-accent-large"></div> */}
                 </div>
             </div>
         </footer>
