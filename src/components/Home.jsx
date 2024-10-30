@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import '../css/Home.css';
+import childrenImage from '../img/children.webp';
 
 import { 
     faGraduationCap, 
@@ -269,7 +270,7 @@ export default function Home() {
                         <button className="main-cta-button">Apply Now</button>
                     </div>
                     <div className="main-cta-image main-slide-in-right">
-                        <img src="../img/children.jpg" alt="home-school life" />
+                        <img src={childrenImage} alt="home-school life" />
                     </div>
                 </section>
 
