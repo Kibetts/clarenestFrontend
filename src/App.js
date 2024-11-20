@@ -1,5 +1,5 @@
 
-import React from 'react';
+import {React, useEffect} from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import '../src/css/App.css';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -22,10 +22,14 @@ import LessonView from '../src/components/LessonView';
 import FeePayment from '../src/components/FeePayment';
 import SubmittedPage from '../src/components/SubmittedPage';
 import AccountCreation from '../src/components/AccountCreation'
-import ParentRegistration from '../src/components/ParentRegistration'
 import EmailVerification from '../src/components/EmailVerification';
-import ParentVerification from '../src/components/ParentVerification';
 import ContactUs from '../src/components/ContactUs'
+import MeetTheTeam from "./components/MeetTheTeam";
+import CreateAssignment from "./components/CreateAssignment"
+import ScheduleAssessment from "./components/ScheduleAssessment"
+import MarkAttendance  from "./components/MarkAttendance"
+import Messages  from "./components/Messages"
+
 
 const theme = createTheme({
   palette: {
@@ -38,7 +42,29 @@ const theme = createTheme({
   },
 });
 
+
+
 function App() {
+
+  useEffect(() => {
+    const updateStatus = async () => {
+      try {
+        await fetch('http://localhost:5000/api/users/heartbeat', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+      } catch (err) {
+        console.error('Error updating status:', err);
+      }
+    };
+  
+    const interval = setInterval(updateStatus, 30000); // Every 30 seconds
+  
+    return () => clearInterval(interval);
+  }, []);
+  
   return (
     <ThemeProvider theme={theme}>
        <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -59,13 +85,13 @@ function App() {
         <Route path="/fee-payment" element={<FeePayment />} />
         <Route path="/application-submitted" element={<SubmittedPage />} />
         <Route path="/create-account/:role/:token" element={<AccountCreation />} />
-        <Route path="/parent-registration/:studentId" component={<ParentRegistration/>} /> 
         <Route path="/verify-email/:token" element={<EmailVerification />} />
-        <Route path="/parent/verify/:token" element={<ParentVerification />} />
         <Route path="/contact-us" element={<ContactUs />} />
-
-
-
+        <Route path="/team" element={<MeetTheTeam />} />
+        <Route path="/tutor/create-assignment" element={<CreateAssignment />} />
+        <Route path="/tutor/schedule-assessment" element={<ScheduleAssessment />} />
+        <Route path="/tutor/mark-attendance" element={<MarkAttendance />} />
+        <Route path="/tutor/messages" element={<Messages />} />
       </Routes>
     </Router>
     </LocalizationProvider>

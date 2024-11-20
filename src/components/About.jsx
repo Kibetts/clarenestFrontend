@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { Star } from 'lucide-react';
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import ContactForm from "./Contact";
+import TestimonialForm from "./TestimonialForm";
 import missionImage from "../img/mission.jpg";
 import visionImage from "../img/vision.jpg";
 import openImage from "../img/kenyanHomeschool.jpeg";
@@ -14,8 +16,37 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import '../css/About.css';
 
+
+
 export default function About() {
     const [visibleSections, setVisibleSections] = useState(new Set());
+    const [testimonials, setTestimonials] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [loading, setLoading] = useState(true);
+    const [showForm, setShowForm] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+    const fetchTestimonials = async () => {
+        try {
+            const response = await fetch(`/api/testimonials?page=${currentPage}`);
+            if (!response.ok) throw new Error('Failed to fetch testimonials');
+            
+            const data = await response.json();
+            setTestimonials(data.data.testimonials);
+            setTotalPages(Math.ceil(data.results / 10)); // Assuming 10 items per page
+        } catch (err) {
+            console.error('Error fetching testimonials:', err);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        setIsAuthenticated(!!token);
+        fetchTestimonials();
+    }, [currentPage]);
 
     useEffect(() => {
         const observerOptions = {
@@ -165,7 +196,7 @@ export default function About() {
                     </p>
                 </section>
 
-                <section id="abt-testimonials" className={`abt-page-testimonials ${isSectionVisible('abt-testimonials') ? 'visible' : ''}`}>
+                {/* <section id="abt-testimonials" className={`abt-page-testimonials ${isSectionVisible('abt-testimonials') ? 'visible' : ''}`}>
                     <div className="abt-page-testimonials-header">
                         <h2 className="abt-page-testimonials-title abt-fade-up">
                             What People Are Saying About Us
@@ -199,7 +230,103 @@ export default function About() {
                             </div>
                         ))}
                     </div>
-                </section>
+                </section> */}
+                 <section id="abt-testimonials" className={`abt-page-testimonials ${isSectionVisible('abt-testimonials') ? 'visible' : ''}`}>
+                <div className="abt-page-testimonials-header">
+                    <h2 className="abt-page-testimonials-title abt-fade-up">
+                        What People Are Saying About Us
+                    </h2>
+                    <p className="abt-page-testimonials-subtitle abt-fade-up abt-delay-100">
+                        Hear from our students and parents about their experiences with
+                        Clarenest Online School.
+                    </p>
+                    {isAuthenticated && (
+                        <button
+                            onClick={() => setShowForm(true)}
+                            className="abt-page-learning-button mt-4 abt-fade-up abt-delay-200"
+                        >
+                            Share Your Experience
+                        </button>
+                    )}
+                </div>
+
+                {showForm && (
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                        <div className="bg-white rounded-lg max-w-md w-full mx-4">
+                            <TestimonialForm 
+                                onSubmitSuccess={() => {
+                                    fetchTestimonials();
+                                    setShowForm(false);
+                                }}
+                                onClose={() => setShowForm(false)}
+                            />
+                        </div>
+                    </div>
+                )}
+
+                <div className="abt-page-testimonials-grid">
+                    {loading ? (
+                        <div className="col-span-full text-center">
+                            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+                        </div>
+                    ) : testimonials.length === 0 ? (
+                        <div className="col-span-full text-center">
+                            No testimonials available yet.
+                        </div>
+                    ) : (
+                        testimonials.map((testimonial, index) => (
+                            <div 
+                                key={testimonial._id} 
+                                className={`abt-page-testimonial abt-fade-up abt-delay-${index * 100}`}
+                            >
+                                <h4 className="abt-page-testimonial-title">{testimonial.title}</h4>
+                                <div className="flex gap-1 mb-2">
+                                    {[...Array(5)].map((_, i) => (
+                                        <Star
+                                            key={i}
+                                            className={`w-4 h-4 ${
+                                                i < testimonial.rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'
+                                            }`}
+                                        />
+                                    ))}
+                                </div>
+                                <div className="abt-page-testimonial-divider"></div>
+                                <p className="abt-page-testimonial-text">
+                                    {testimonial.content}
+                                </p>
+                                <div className="abt-page-testimonial-divider"></div>
+                                <div className="abt-page-testimonial-user">
+                                    <FontAwesomeIcon 
+                                        icon={faUser} 
+                                        className="abt-page-testimonial-icon" 
+                                    />
+                                    <p className="abt-page-testimonial-name">
+                                        {testimonial.author.name}
+                                    </p>
+                                </div>
+                            </div>
+                        ))
+                    )}
+                </div>
+
+                {totalPages > 1 && (
+                    <div className="flex justify-center gap-2 mt-8">
+                        {[...Array(totalPages)].map((_, i) => (
+                            <button
+                                key={i}
+                                onClick={() => setCurrentPage(i + 1)}
+                                className={`px-3 py-1 rounded ${
+                                    currentPage === i + 1
+                                        ? 'bg-primary text-white'
+                                        : 'bg-gray-100 hover:bg-gray-200'
+                                }`}
+                            >
+                                {i + 1}
+                            </button>
+                        ))}
+                    </div>
+                )}
+            </section>
             </div>
             <ContactForm />
             <Footer />

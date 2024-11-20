@@ -69,6 +69,15 @@ export default function Navbar() {
                         </li>
                         <li className="navbar-item">
                             <Link 
+                                className="navbar-link" 
+                                to="/team"
+                                onClick={() => setIsMenuOpen(false)}
+                            >
+                                Our Team
+                            </Link>
+                        </li>
+                        <li className="navbar-item">
+                            <Link 
                                 className="navbar-link navbar-link-login" 
                                 to="/login"
                                 onClick={() => setIsMenuOpen(false)}

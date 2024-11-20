@@ -1,0 +1,303 @@
+.subject-mgmt {
+    padding: var(--spacing-lg);
+    background-color: var(--neutral-gray);
+    min-height: 100%;
+  }
+  
+  /* Header Styles */
+  .subject-mgmt-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-xl);
+  }
+  
+  .subject-mgmt-header h2 {
+    color: var(--primary-dark);
+    font-size: 1.8rem;
+    margin: 0;
+    font-family: var(--font-primary);
+  }
+  
+  .subject-mgmt-add-btn {
+    background-color: var(--primary-dark);
+    color: var(--text-light);
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .subject-mgmt-add-btn:hover {
+    background-color: var(--primary-light);
+    transform: translateY(-2px);
+  }
+  
+  /* Grid Layout */
+  .subject-mgmt-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: var(--spacing-lg);
+  }
+  
+  /* Subject Card Styles */
+  .subject-mgmt-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: var(--spacing-lg);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .subject-mgmt-card:hover {
+    transform: translateY(-4px);
+  }
+  
+  .subject-mgmt-card h3 {
+    color: var(--primary-dark);
+    font-size: 1.3rem;
+    margin-bottom: var(--spacing-md);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 2px solid var(--accent-gold);
+  }
+  
+  .subject-mgmt-card-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .subject-mgmt-card-info div {
+    margin-bottom: var(--spacing-sm);
+  }
+  
+  .subject-mgmt-card-info span.label {
+    color: var(--text-dark);
+    font-weight: 500;
+    margin-right: var(--spacing-sm);
+  }
+  
+  .subject-mgmt-card-info span.value {
+    color: var(--primary-dark);
+    font-weight: 600;
+  }
+  
+  /* Modal Styles */
+  .subject-mgmt-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  .subject-mgmt-modal {
+    background-color: white;
+    border-radius: 8px;
+    padding: var(--spacing-xl);
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+  
+  .subject-mgmt-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .subject-mgmt-modal-header h3 {
+    color: var(--primary-dark);
+    margin: 0;
+    font-size: 1.5rem;
+  }
+  
+  .subject-mgmt-modal-close {
+    background: none;
+    border: none;
+    color: var(--text-dark);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: var(--spacing-sm);
+  }
+  
+  /* Form Styles */
+  .subject-mgmt-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+  }
+  
+  .subject-mgmt-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+  
+  .subject-mgmt-form-group label {
+    color: var(--primary-dark);
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+  
+  .subject-mgmt-form-group input,
+  .subject-mgmt-form-group select,
+  .subject-mgmt-form-group textarea {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 2px solid var(--neutral-gray);
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+  
+  .subject-mgmt-form-group input:focus,
+  .subject-mgmt-form-group select:focus,
+  .subject-mgmt-form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-light);
+  }
+  
+  .subject-mgmt-form-group textarea {
+    min-height: 100px;
+    resize: vertical;
+  }
+  
+  .subject-mgmt-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-lg);
+  }
+  
+  .subject-mgmt-modal-actions button {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .subject-mgmt-modal-actions button:first-child {
+    background-color: var(--neutral-gray);
+    color: var(--text-dark);
+  }
+  
+  .subject-mgmt-modal-actions button:last-child {
+    background-color: var(--primary-dark);
+    color: var(--text-light);
+  }
+  
+  .subject-mgmt-modal-actions button:hover {
+    transform: translateY(-2px);
+  }
+  
+  /* Status Badge */
+  .subject-mgmt-status {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+  
+  .subject-mgmt-status.active {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .subject-mgmt-status.inactive {
+    background-color: var(--accent-burgundy);
+    color: white;
+  }
+  
+  /* Alert Styles */
+  .subject-mgmt-alert {
+    position: fixed;
+    top: var(--spacing-lg);
+    right: var(--spacing-lg);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: 4px;
+    font-weight: 600;
+    z-index: 1100;
+    animation: slideIn 0.3s ease-out;
+  }
+  
+  .subject-mgmt-alert.success {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .subject-mgmt-alert.error {
+    background-color: var(--accent-burgundy);
+    color: white;
+  }
+  
+  @keyframes slideIn {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  /* Loading State */
+  .subject-mgmt-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    font-size: 1.2rem;
+    color: var(--primary-dark);
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 992px) {
+    .subject-mgmt-grid {
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .subject-mgmt-header {
+      flex-direction: column;
+      gap: var(--spacing-md);
+      text-align: center;
+    }
+  
+    .subject-mgmt-modal {
+      width: 95%;
+      padding: var(--spacing-lg);
+    }
+  
+    .subject-mgmt-card-info {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .subject-mgmt {
+      padding: var(--spacing-md);
+    }
+  
+    .subject-mgmt-modal-actions {
+      flex-direction: column;
+    }
+  
+    .subject-mgmt-header h2 {
+      font-size: 1.5rem;
+    }
+  }

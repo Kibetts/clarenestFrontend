@@ -1,125 +1,99 @@
+/* StudentDashboard.css */
 .student-dashboard {
   min-height: 100vh;
-  background-color: var(--neutral-gray);
+  background-color: #f8f9fa;
+  padding-bottom: 4rem;
 }
 
-.student-grid {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: var(--spacing-lg);
-  padding: var(--spacing-lg);
-  max-width: 1440px;
-  margin: 0 auto;
-}
-
-/* Loading, Error, and No Data States */
-.student-loading,
-.student-error,
-.student-no-data {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  color: var(--text-dark);
-}
-
-.student-error {
-  color: var(--accent-burgundy);
-}
-
-/* Header Styles */
 .student-header {
   background-color: var(--primary-dark);
-  padding: var(--spacing-lg) 0;
-  color: var(--text-light);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 2rem 0;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 .student-header-content {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 0 var(--spacing-lg);
+  padding: 0 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .student-welcome {
-  font-size: 2rem;
-  font-family: var(--font-primary);
+  font-size: 2.25rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: white;
   margin: 0;
 }
 
 .student-info {
   display: flex;
-  gap: var(--spacing-lg);
+  gap: 1.5rem;
   align-items: center;
 }
 
 .student-grade {
   background-color: var(--accent-gold);
-  padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
   font-weight: 600;
   color: var(--primary-dark);
 }
 
 .student-messages {
   background-color: var(--accent-burgundy);
-  padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
   font-weight: 600;
+  color: white;
 }
 
-/* Section Common Styles */
-[class*="student-section"] {
-  background-color: white;
-  border-radius: 8px;
-  padding: var(--spacing-lg);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.student-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 2rem;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+/* Schedule Section */
+.student-schedule-section {
+  grid-column: span 8;
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
 }
 
 .student-section-title {
-  color: var(--primary-dark);
   font-size: 1.5rem;
-  margin-bottom: var(--spacing-lg);
-  font-family: var(--font-primary);
-  position: relative;
-}
-
-.student-section-title::after {
-  content: '';
-  position: absolute;
-  bottom: -8px;
-  left: 0;
-  width: 40px;
-  height: 3px;
-  background-color: var(--accent-gold);
-}
-
-/* Schedule Section Styles */
-.student-schedule-section {
-  grid-column: span 8;
+  font-weight: 700;
+  color: var(--primary-dark);
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--accent-gold);
+  letter-spacing: -0.025em;
 }
 
 .student-timeline {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
+  gap: 1rem;
 }
 
 .student-timeline-item {
   display: flex;
-  gap: var(--spacing-lg);
-  padding: var(--spacing-md);
-  background-color: var(--neutral-gray);
-  border-radius: 4px;
-  transition: transform 0.3s ease;
-}
-
-.student-timeline-item:hover {
-  transform: translateX(5px);
+  gap: 1.5rem;
+  padding: 1.25rem;
+  background: linear-gradient(to right, rgba(var(--primary-dark-rgb), 0.02), rgba(var(--primary-dark-rgb), 0.05));
+  border-radius: 8px;
+  border-left: 4px solid var(--accent-gold);
 }
 
 .student-timeline-time {
@@ -134,44 +108,56 @@
 
 .student-timeline-subject {
   color: var(--primary-dark);
-  margin: 0 0 var(--spacing-sm);
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
 .student-timeline-tutor {
   color: var(--text-dark);
-  font-size: 0.9rem;
   margin: 0;
+  font-size: 0.9rem;
 }
 
-/* Upcoming Lessons Styles */
+/* Upcoming Lessons Section */
 .student-lessons-section {
   grid-column: span 4;
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 .student-lessons-grid {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
+  gap: 1rem;
 }
 
 .student-lesson-card {
-  background-color: var(--neutral-gray);
-  padding: var(--spacing-md);
-  border-radius: 4px;
+  background: linear-gradient(to right, #f8f9fa, white);
+  padding: 1.25rem;
+  border-radius: 8px;
   border-left: 4px solid var(--accent-gold);
+  transition: transform 0.2s ease;
+}
+
+.student-lesson-card:hover {
+  transform: translateY(-2px);
 }
 
 .student-lesson-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: 0.75rem;
 }
 
 .student-lesson-title {
   color: var(--primary-dark);
   margin: 0;
   font-size: 1.1rem;
+  font-weight: 600;
 }
 
 .student-lesson-time {
@@ -180,284 +166,196 @@
   opacity: 0.8;
 }
 
-.student-lesson-details {
-  font-size: 0.9rem;
-}
-
-.student-lesson-tutor,
-.student-lesson-duration {
-  margin: var(--spacing-sm) 0;
-  color: var(--text-dark);
-}
-
-/* Academic Progress Styles */
+/* Academic Progress Section */
 .student-progress-section {
   grid-column: span 6;
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 .student-progress-stats {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--spacing-lg);
-  margin-bottom: var(--spacing-xl);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .student-stat-card {
-  background-color: var(--neutral-gray);
-  padding: var(--spacing-lg);
+  background: linear-gradient(135deg, white, #f8f9fa);
+  padding: 1.5rem;
   border-radius: 8px;
   text-align: center;
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .student-stat-title {
   color: var(--primary-dark);
-  margin: 0 0 var(--spacing-md);
+  margin: 0 0 0.75rem;
   font-size: 1.1rem;
 }
 
 .student-grade-value,
 .student-attendance-value {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 700;
   color: var(--accent-gold);
+  line-height: 1;
+  margin: 0;
+}
+
+.student-grades {
+  margin-top: 2rem;
 }
 
 .student-grades-title {
   color: var(--primary-dark);
-  margin-bottom: var(--spacing-md);
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  font-weight: 600;
 }
 
 .student-grades-list {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-sm);
+  gap: 0.75rem;
 }
 
 .student-grade-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--spacing-sm);
-  background-color: var(--neutral-gray);
-  border-radius: 4px;
+  padding: 1rem;
+  background: linear-gradient(to right, #f8f9fa, white);
+  border-radius: 8px;
+  border-left: 3px solid var(--accent-gold);
 }
 
-.student-grade-subject {
-  color: var(--primary-dark);
-  font-weight: 500;
-}
-
-.student-grade-score {
-  color: var(--accent-gold);
-  font-weight: 600;
-}
-
-/* Tasks Section Styles */
+/* Tasks Section */
 .student-tasks-section {
   grid-column: span 6;
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 .student-tasks-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--spacing-lg);
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1.5rem;
 }
 
 .student-tasks-subtitle {
   color: var(--primary-dark);
   font-size: 1.2rem;
-  margin-bottom: var(--spacing-md);
-}
-
-.student-tasks-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-sm);
-}
-
-.student-task-item {
-  background-color: var(--neutral-gray);
-  padding: var(--spacing-md);
-  border-radius: 4px;
-  border-left: 4px solid var(--accent-burgundy);
-}
-
-.student-task-info {
-  margin-bottom: var(--spacing-sm);
-}
-
-.student-task-title {
-  color: var(--primary-dark);
-  margin: 0 0 var(--spacing-sm);
-  font-size: 1.1rem;
-}
-
-.student-task-subject {
-  color: var(--text-dark);
-  font-size: 0.9rem;
-  margin: 0;
-}
-
-.student-task-due {
-  font-size: 0.8rem;
-  color: var(--accent-burgundy);
+  margin-bottom: 1rem;
   font-weight: 600;
 }
 
-/* Materials Section Styles */
+.student-task-item {
+  background: linear-gradient(to right, #f8f9fa, white);
+  padding: 1.25rem;
+  border-radius: 8px;
+  border-left: 4px solid var(--accent-burgundy);
+  transition: transform 0.2s ease;
+}
+
+.student-task-item:hover {
+  transform: translateX(5px);
+}
+
+/* Materials Section */
 .student-materials-section {
   grid-column: span 8;
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 .student-materials-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: var(--spacing-md);
+  gap: 1.5rem;
 }
 
 .student-material-card {
-  background-color: var(--neutral-gray);
-  padding: var(--spacing-md);
-  border-radius: 4px;
+  background: linear-gradient(to right, #f8f9fa, white);
+  padding: 1.25rem;
+  border-radius: 8px;
   display: flex;
   align-items: flex-start;
-  gap: var(--spacing-md);
+  gap: 1rem;
+  transition: transform 0.2s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
-.student-material-icon {
-  font-size: 1.5rem;
+.student-material-card:hover {
+  transform: translateY(-2px);
 }
 
-.student-material-info {
-  flex: 1;
-}
-
-.student-material-title {
-  color: var(--primary-dark);
-  margin: 0 0 var(--spacing-sm);
-  font-size: 1.1rem;
-}
-
-.student-material-subject {
-  color: var(--text-dark);
-  font-size: 0.9rem;
-  margin: var(--spacing-sm) 0;
-}
-
-.student-material-date {
-  font-size: 0.8rem;
-  color: var(--text-dark);
-  opacity: 0.8;
-}
-
-/* Announcements Section Styles */
+/* Announcements Section */
 .student-announcements-section {
   grid-column: span 4;
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 .student-announcements-list {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-md);
+  gap: 1rem;
 }
 
 .student-announcement-card {
-  background-color: var(--neutral-gray);
-  padding: var(--spacing-md);
-  border-radius: 4px;
-}
-
-.student-announcement-header {
-  margin-bottom: var(--spacing-sm);
-}
-
-.student-announcement-date {
-  font-size: 0.8rem;
-  color: var(--text-dark);
-  opacity: 0.8;
-}
-
-.student-announcement-content {
-  color: var(--text-dark);
-  font-size: 0.9rem;
-  line-height: 1.5;
+  background: linear-gradient(to right, #f8f9fa, white);
+  padding: 1.25rem;
+  border-radius: 8px;
+  border-left: 4px solid var(--accent-gold);
 }
 
 /* Responsive Design */
 @media (max-width: 1200px) {
   .student-grid {
-      grid-template-columns: repeat(8, 1fr);
+    grid-template-columns: repeat(8, 1fr);
+    gap: 1.5rem;
+    padding: 0 1.5rem;
   }
 
   .student-schedule-section,
-  .student-materials-section {
-      grid-column: span 8;
-  }
-
-  .student-lessons-section,
-  .student-announcements-section {
-      grid-column: span 8;
-  }
-
+  .student-materials-section,
   .student-progress-section,
-  .student-tasks-section {
-      grid-column: span 8;
+  .student-tasks-section,
+  .student-announcements-section {
+    grid-column: span 8;
   }
 }
 
 @media (max-width: 768px) {
   .student-grid {
-      grid-template-columns: 1fr;
-      padding: var(--spacing-md);
+    grid-template-columns: 1fr;
+    padding: 0 1rem;
   }
 
   .student-header-content {
-      flex-direction: column;
-      gap: var(--spacing-md);
-      text-align: center;
-  }
-
-  .student-welcome {
-      font-size: 1.8rem;
+    flex-direction: column;
+    text-align: center;
+    gap: 1rem;
   }
 
   .student-info {
-      flex-direction: column;
-      gap: var(--spacing-md);
-  }
-
-  .student-tasks-container {
-      grid-template-columns: 1fr;
+    flex-direction: column;
   }
 
   .student-progress-stats {
-      grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 480px) {
-  .student-welcome {
-      font-size: 1.5rem;
-  }
-
-  .student-section-title {
-      font-size: 1.3rem;
+    grid-template-columns: 1fr;
   }
 
   .student-timeline-item {
-      flex-direction: column;
-      gap: var(--spacing-sm);
-  }
-
-  .student-material-card {
-      flex-direction: column;
-      text-align: center;
-  }
-
-  .student-material-icon {
-      margin: 0 auto;
+    flex-direction: column;
   }
 }

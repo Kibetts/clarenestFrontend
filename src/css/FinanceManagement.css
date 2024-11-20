@@ -503,3 +503,369 @@
       width: 40px;
   }
 }
+/* Add these to your existing CSS file */
+.finance-temp-access-section {
+  background-color: white;
+  border-radius: 8px;
+  padding: var(--spacing-lg);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.temp-access-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.temp-access-status.active {
+  background-color: #28a745;
+  color: white;
+}
+
+.temp-access-status.inactive {
+  background-color: #dc3545;
+  color: white;
+}
+
+.temp-access-controls {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: center;
+}
+
+.temp-access-input {
+  width: 100px;
+  padding: var(--spacing-sm);
+  border: 2px solid var(--neutral-gray);
+  border-radius: 4px;
+}
+
+.temp-access-grant-btn {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--accent-gold);
+  color: var(--primary-dark);
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.temp-access-grant-btn:disabled {
+  background-color: var(--neutral-gray);
+  cursor: not-allowed;
+}
+
+.student-fee-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-lg);
+}
+
+.student-fee-card {
+  background-color: var(--neutral-gray);
+  padding: var(--spacing-lg);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.student-fee-card h4 {
+  color: var(--primary-dark);
+  margin: 0 0 var(--spacing-sm);
+}
+
+.student-fee-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+}
+
+/* Reports Section Styles */
+.finance-reports {
+  background-color: white;
+  border-radius: 8px;
+  padding: var(--spacing-lg);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.report-summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+}
+
+.report-card {
+  background-color: var(--neutral-gray);
+  padding: var(--spacing-lg);
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.report-card h3 {
+  color: var(--primary-dark);
+  margin: 0 0 var(--spacing-md);
+  font-size: 1.1rem;
+}
+
+.report-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+}
+
+.payment-methods-breakdown {
+  background-color: var(--neutral-gray);
+  padding: var(--spacing-lg);
+  border-radius: 8px;
+  margin-bottom: var(--spacing-xl);
+}
+
+.payment-methods-breakdown h3 {
+  color: var(--primary-dark);
+  margin: 0 0 var(--spacing-lg);
+  font-size: 1.2rem;
+}
+
+.payment-methods-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+.payment-method-card {
+  background-color: white;
+  padding: var(--spacing-lg);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.payment-method-card h4 {
+  color: var(--primary-dark);
+  margin: 0 0 var(--spacing-md);
+  font-size: 1rem;
+  text-transform: capitalize;
+}
+
+.method-stats {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.method-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-xs) 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.method-stat:last-child {
+  border-bottom: none;
+}
+
+.method-stat span:first-child {
+  color: var(--text-dark);
+  font-size: 0.9rem;
+}
+
+.method-stat span:last-child {
+  font-weight: 600;
+  color: var(--primary-dark);
+}
+
+.grade-wise-collection {
+  background-color: var(--neutral-gray);
+  padding: var(--spacing-lg);
+  border-radius: 8px;
+}
+
+.grade-wise-collection h3 {
+  color: var(--primary-dark);
+  margin: 0 0 var(--spacing-lg);
+  font-size: 1.2rem;
+}
+
+.grade-collection-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.grade-collection-table th,
+.grade-collection-table td {
+  padding: var(--spacing-md);
+  text-align: left;
+  border-bottom: 1px solid var(--neutral-gray);
+}
+
+.grade-collection-table th {
+  background-color: var(--primary-dark);
+  color: white;
+  font-weight: 600;
+}
+
+.collection-rate-bar {
+  width: 100%;
+  height: 20px;
+  background-color: var(--neutral-gray);
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.collection-rate-fill {
+  height: 100%;
+  background-color: var(--accent-gold);
+  border-radius: 10px;
+  transition: width 0.3s ease;
+}
+
+.collection-rate-bar span {
+  position: absolute;
+  right: var(--spacing-sm);
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--primary-dark);
+}
+
+
+/* Add these new styles to your CSS file */
+.temp-access-section {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.temp-access-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.temp-access-summary-card {
+  background-color: var(--neutral-gray);
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.temp-access-summary-card h4 {
+  color: var(--primary-dark);
+  margin: 0 0 10px;
+  font-size: 1rem;
+}
+
+.temp-access-summary-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+}
+
+.temp-access-table-wrapper {
+  overflow-x: auto;
+}
+
+.temp-access-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.temp-access-table th,
+.temp-access-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--neutral-gray);
+}
+
+.temp-access-table th {
+  background-color: var(--primary-dark);
+  color: white;
+  font-weight: 600;
+}
+
+.fee-status-badge {
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.fee-status-badge.pending {
+  background-color: #ffd700;
+  color: var(--primary-dark);
+}
+
+.access-status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.access-status-badge.active {
+  background-color: #28a745;
+  color: white;
+}
+
+.access-status-badge.inactive {
+  background-color: #dc3545;
+  color: white;
+}
+
+.access-grant-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.access-days-input {
+  width: 80px;
+  padding: 6px 10px;
+  border: 2px solid var(--neutral-gray);
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.access-grant-button {
+  padding: 6px 12px;
+  background-color: var(--accent-gold);
+  color: var(--primary-dark);
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.access-grant-button:disabled {
+  background-color: var(--neutral-gray);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.access-grant-button:not(:disabled):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.no-students-message {
+  text-align: center;
+  color: var(--text-dark);
+  padding: 20px;
+  font-style: italic;
+}

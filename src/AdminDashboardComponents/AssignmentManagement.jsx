@@ -41,7 +41,7 @@ const AssignmentManagement = () => {
     };
 
     const fetchAssignments = async () => {
-        const response = await fetch('https://clarenest.onrender.com/api/assignments', {
+        const response = await fetch('http://localhost:5000/api/assignments', {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
@@ -52,18 +52,29 @@ const AssignmentManagement = () => {
     };
 
     const fetchClasses = async () => {
-        const response = await fetch('https://clarenest.onrender.com/api/lessons', {
-            headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }
-        });
-        if (!response.ok) throw new Error('Failed to fetch classes');
-        const data = await response.json();
-        setClasses(data.data.lessons);
+        try {
+            const response = await fetch('http://localhost:5000/api/lessons', {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            if (!response.ok) throw new Error('Failed to fetch classes');
+            const data = await response.json();
+            
+            // Create array of grade levels 1-12
+            const gradeLevels = Array.from({ length: 12 }, (_, i) => ({
+                _id: (i + 1).toString(),
+                name: `Grade ${i + 1}`
+            }));
+            
+            setClasses(gradeLevels);
+        } catch (error) {
+            console.error('Error fetching classes:', error);
+        }
     };
 
     const fetchSubmissions = async (assignmentId) => {
-        const response = await fetch(`https://clarenest.onrender.com/api/assignments/${assignmentId}`, {
+        const response = await fetch(`http://localhost:5000/api/assignments/${assignmentId}`, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
@@ -138,8 +149,8 @@ const AssignmentManagement = () => {
             });
 
             const url = modalMode === 'add'
-                ? 'https://clarenest.onrender.com/api/assignments'
-                : `https://clarenest.onrender.com/api/assignments/${selectedAssignment._id}`;
+                ? 'http://localhost:5000/api/assignments'
+                : `http://localhost:5000/api/assignments/${selectedAssignment._id}`;
 
             const response = await fetch(url, {
                 method: modalMode === 'add' ? 'POST' : 'PATCH',
@@ -166,7 +177,7 @@ const AssignmentManagement = () => {
         if (!window.confirm('Are you sure you want to delete this assignment?')) return;
 
         try {
-            const response = await fetch(`https://clarenest.onrender.com/api/assignments/${assignmentId}`, {
+            const response = await fetch(`http://localhost:5000/api/assignments/${assignmentId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -195,7 +206,7 @@ const AssignmentManagement = () => {
     const handleGradeSubmission = async (assignmentId, submissionId, grade, feedback) => {
         try {
             const response = await fetch(
-                `https://clarenest.onrender.com/api/assignments/${assignmentId}/submissions/${submissionId}`,
+                `http://localhost:5000/api/assignments/${assignmentId}/submissions/${submissionId}`,
                 {
                     method: 'PATCH',
                     headers: {

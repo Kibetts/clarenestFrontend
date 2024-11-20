@@ -12,7 +12,7 @@ const ParentDashboard = () => {
 
     const fetchDashboardData = async () => {
         try {
-            const response = await fetch('https://clarenest.onrender.com/api/dashboard/parent', {
+            const response = await fetch('http://localhost:5000/api/dashboard/parent', {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
@@ -156,9 +156,58 @@ const ParentDashboard = () => {
                         ))}
                     </div>
                 </section>
-            </div>
-        </div>
-    );
-};
+
+                <section className="parent-assessments-section">
+                <h2 className="parent-section-title">Distributed Assessments</h2>
+                <div className="parent-assessments-list">
+                    {dashboardData.pendingAssessments.map(assessment => (
+                        <div key={assessment.id} className="parent-assessment-card">
+                            <div className="assessment-info">
+                                <h3>{assessment.title}</h3>
+                                <p>Subject: {assessment.subject}</p>
+                                <p>Distributed by: {assessment.tutor}</p>
+                                <p>Date: {new Date(assessment.distributedAt).toLocaleDateString()}</p>
+                            </div>
+                            <button
+                                className="download-btn"
+                                onClick={async () => {
+                                    try {
+                                        const response = await fetch(
+                                            `http://localhost:5000/api/assessments/${assessment.id}/download`,
+                                            {
+                                                headers: {
+                                                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                                                }
+                                            }
+                                        );
+                                        
+                                        if (response.ok) {
+                                            const blob = await response.blob();
+                                            const url = window.URL.createObjectURL(blob);
+                                            const a = document.createElement('a');
+                                            a.href = url;
+                                            a.download = `assessment-${assessment.title}.pdf`;
+                                            document.body.appendChild(a);
+                                            a.click();
+                                            window.URL.revokeObjectURL(url);
+                                        } else {
+                                            throw new Error('Download failed');
+                                        }
+                                    } catch (error) {
+                                        console.error('Error downloading assessment:', error);
+                                        // Handle error (show message to user)
+                                    }
+                                }}
+                            >
+                                Download Assessment
+                            </button>
+                        </div>
+                    ))}
+                </div>
+            </section>
+                        </div>
+                    </div>
+                );
+            };
 
 export default ParentDashboard;

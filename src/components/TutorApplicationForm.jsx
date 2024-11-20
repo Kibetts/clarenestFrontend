@@ -43,6 +43,15 @@ function TutorApplication() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState(null);
     const [showConfirmation, setShowConfirmation] = useState(false);
+    
+    // Raw inputs state for comma-separated fields
+    const [rawInputs, setRawInputs] = useState({
+        academicQualifications: '',
+        availability: '',
+        technologySkills: '',
+        languagesSpoken: '',
+        certifications: ''
+    });
 
     const [formData, setFormData] = useState({
         personalInfo: {
@@ -59,6 +68,10 @@ function TutorApplication() {
             certifications: [],
             preferredGradeLevels: [],
             availability: []
+        },
+        additionalSkills: {
+            technologySkills: [],
+            languagesSpoken: []
         },
         documents: {
             cv: null,
@@ -99,9 +112,30 @@ function TutorApplication() {
                 }
             } else if (index !== null) {
                 newState[section][index][field] = value;
-            } else if (field === 'subjectsSpecialization' || field === 'preferredGradeLevels') {
-                const values = value.split(',').map(item => item.trim());
-                newState[section][field] = values;
+            } else if ([
+                'academicQualifications',
+                'availability',
+                'certifications',
+                'technologySkills',
+                'languagesSpoken'
+            ].includes(field)) {
+                // Update raw input for all comma-separated fields
+                setRawInputs(prev => ({
+                    ...prev,
+                    [field]: value
+                }));
+                // Convert to array, handling spaces after commas
+                const values = value
+                    .split(',')
+                    .map(item => item.trim())
+                    .filter(Boolean);
+                
+                // Handle fields in different sections
+                if (field === 'technologySkills' || field === 'languagesSpoken') {
+                    newState.additionalSkills[field] = values;
+                } else {
+                    newState.professionalInfo[field] = values;
+                }
             } else if (type === 'checkbox') {
                 newState[section][field] = checked;
             } else {
@@ -165,50 +199,57 @@ function TutorApplication() {
 
     const handleSubmit = async () => {
         if (!validateStep(currentStep)) return;
-
+    
         setIsSubmitting(true);
         setError(null);
-
+    
         try {
             const formDataToSend = new FormData();
-            const { documents, ...otherFormData } = formData;
             
-            // Append documents
-            if (documents.cv) {
-                formDataToSend.append('cv', documents.cv);
+            // Add documents
+            if (formData.documents.cv) {
+                formDataToSend.append('cv', formData.documents.cv);
             }
-            
-            if (documents.academicCertificates.length > 0) {
-                documents.academicCertificates.forEach(file => {
+            if (formData.documents.academicCertificates.length > 0) {
+                formData.documents.academicCertificates.forEach(file => {
                     formDataToSend.append('academicCertificates', file);
                 });
             }
-            
-            if (documents.governmentId) {
-                formDataToSend.append('governmentId', documents.governmentId);
+            if (formData.documents.governmentId) {
+                formDataToSend.append('governmentId', formData.documents.governmentId);
             }
-
-            // Append other form data
-            formDataToSend.append('application', JSON.stringify(otherFormData));
-
-            const response = await fetch('https://clarenest.onrender.com/api/applications/tutor', {
+    
+            // Create application data object without the documents
+            const applicationData = {
+                personalInfo: formData.personalInfo,
+                professionalInfo: formData.professionalInfo,
+                additionalSkills: formData.additionalSkills,
+                professionalReferences: formData.professionalReferences,
+                essay: formData.essay
+            };
+    
+            // Append application data as JSON string
+            formDataToSend.append('application', JSON.stringify(applicationData));
+    
+            const response = await fetch('http://localhost:5000/api/applications/tutor', {
                 method: 'POST',
                 body: formDataToSend
             });
-
-            const responseData = await response.json();
-
+    
             if (!response.ok) {
-                throw new Error(responseData.message || 'Failed to submit application');
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Failed to submit application');
             }
-
+    
+            setError(null);
+            setShowConfirmation(false);
             navigate('/application-submitted');
+    
         } catch (error) {
             console.error('Submission error:', error);
             setError(error.message || 'Failed to submit application. Please try again.');
         } finally {
             setIsSubmitting(false);
-            setShowConfirmation(false);
         }
     };
 
@@ -281,7 +322,7 @@ function TutorApplication() {
                             <label className="tutor-app-label">Academic Qualifications (comma-separated)</label>
                             <input
                                 type="text"
-                                value={formData.professionalInfo.academicQualifications.join(', ')}
+                                value={rawInputs.academicQualifications}
                                 onChange={(e) => handleInputChange(e, 'professionalInfo', 'academicQualifications')}
                                 className="tutor-app-input"
                                 placeholder="e.g., BSc Mathematics, MSc Physics"
@@ -361,7 +402,7 @@ function TutorApplication() {
                             <label className="tutor-app-label">Availability (comma-separated)</label>
                             <input
                                 type="text"
-                                value={formData.professionalInfo.availability.join(', ')}
+                                value={rawInputs.availability}
                                 onChange={(e) => handleInputChange(e, 'professionalInfo', 'availability')}
                                 className="tutor-app-input"
                                 placeholder="e.g., Monday 9-5, Tuesday 10-6"
@@ -370,10 +411,33 @@ function TutorApplication() {
                         </div>
 
                         <div className="tutor-app-field">
+                            <label className="tutor-app-label">Technology Skills (comma-separated)</label>
+                            <input
+                                type="text"
+                                value={rawInputs.technologySkills}
+                                onChange={(e) => handleInputChange(e, 'additionalSkills', 'technologySkills')}
+                                className="tutor-app-input"
+                                placeholder="e.g., MS Office, Python, Online Teaching Tools"
+                            />
+                        </div>
+
+                        <div className="tutor-app-field">
+                            <label className="tutor-app-label">Languages Spoken (comma-separated)</label>
+                            <input
+                                type="text"
+                                value={rawInputs.languagesSpoken}
+                                onChange={(e) => handleInputChange(e, 'additionalSkills', 'languagesSpoken')}
+                                className="tutor-app-input"
+                                placeholder="e.g., English, Spanish, French"
+                                required
+                            />
+                        </div>
+
+                        <div className="tutor-app-field">
                             <label className="tutor-app-label">Certifications (comma-separated)</label>
                             <input
                                 type="text"
-                                value={formData.professionalInfo.certifications.join(', ')}
+                                value={rawInputs.certifications}
                                 onChange={(e) => handleInputChange(e, 'professionalInfo', 'certifications')}
                                 className="tutor-app-input"
                                 placeholder="e.g., TEFL, CELTA"

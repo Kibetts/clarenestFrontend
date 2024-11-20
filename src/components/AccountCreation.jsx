@@ -14,9 +14,24 @@ const AccountCreation = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!token || !role) {
-            setError('Invalid account creation link');
+        if (!token) {
+            setError('Missing token in account creation link');
+            return;
         }
+        
+        if (!role) {
+            setError('Missing role in account creation link');
+            return;
+        }
+
+        const validRoles = ['student', 'tutor', 'parent'];
+        if (!validRoles.includes(role.toLowerCase())) {
+            setError(`Invalid role: ${role}. Expected one of: ${validRoles.join(', ')}`);
+            return;
+        }
+
+        // If we get here, clear any existing error
+        setError('');
     }, [token, role]);
 
     const validatePassword = (password) => {
@@ -28,12 +43,19 @@ const AccountCreation = () => {
         setLoading(true);
         setError('');
     
+        // Log initial values
+        console.log('Starting account creation with:', {
+            role,
+            token,
+            passwordLength: formData.password.length
+        });
+    
         if (formData.password !== formData.confirmPassword) {
             setError('Passwords do not match');
             setLoading(false);
             return;
         }
-
+    
         if (!validatePassword(formData.password)) {
             setError('Password must be at least 8 characters long');
             setLoading(false);
@@ -41,42 +63,59 @@ const AccountCreation = () => {
         }
     
         try {
-            // Update this endpoint construction
-            const endpoint = `https://clarenest.onrender.com/api/auth/create-${role.toLowerCase()}-account/${token}`;
+            let endpoint;
+            // Log the role being checked
+            console.log('Checking role:', role.toLowerCase());
             
-            console.log('Submitting to endpoint:', endpoint); // Debug log
+            if (role.toLowerCase() === 'parent') {
+                endpoint = `http://localhost:5000/api/parents/create-account/${token}`;
+            } else {
+                endpoint = `http://localhost:5000/api/auth/create-${role.toLowerCase()}-account/${token}`;
+            }
+            
+            console.log('Using endpoint:', endpoint);
+    
+            const requestBody = {
+                password: formData.password
+            };
+            console.log('Request body:', requestBody);
     
             const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json' // Add Accept header
+                    'Accept': 'application/json'
                 },
-                body: JSON.stringify({
-                    password: formData.password
-                })
+                body: JSON.stringify(requestBody)
             });
     
-            // First log the raw response
+            console.log('Response status:', response.status);
             const responseText = await response.text();
             console.log('Raw response:', responseText);
     
             let data;
             try {
                 data = JSON.parse(responseText);
+                console.log('Parsed response data:', data);
             } catch (error) {
                 console.error('Failed to parse response:', error);
                 throw new Error('Invalid server response format');
             }
     
             if (response.ok) {
-                alert('Account created successfully! Please check your email to verify your account.');
+                console.log('Account creation successful');
+                alert(data.message || 'Account created successfully! Please check your email to verify your account.');
                 navigate('/login');
             } else {
+                console.error('Server returned error:', data);
                 throw new Error(data.message || 'Failed to create account');
             }
         } catch (err) {
-            console.error('Account creation error:', err);
+            console.error('Account creation error:', {
+                error: err,
+                message: err.message,
+                stack: err.stack
+            });
             setError(err.message || 'Error creating account. Please try again.');
         } finally {
             setLoading(false);

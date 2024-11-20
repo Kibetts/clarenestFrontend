@@ -1,0 +1,297 @@
+.create-assignment-container {
+    padding: var(--spacing-xl);
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: var(--neutral-gray);
+    min-height: 100vh;
+}
+
+.create-assignment-header {
+    margin-bottom: var(--spacing-xl);
+}
+
+.create-assignment-header h2 {
+    color: var(--primary-dark);
+    font-size: 2rem;
+    font-family: var(--font-primary);
+}
+
+.create-assignment-form {
+    background-color: white;
+    padding: var(--spacing-xl);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.create-assignment-form-group {
+    margin-bottom: var(--spacing-lg);
+}
+
+.create-assignment-form-group label {
+    display: block;
+    margin-bottom: var(--spacing-sm);
+    color: var(--primary-dark);
+    font-weight: 600;
+    font-family: var(--font-primary);
+}
+
+.create-assignment-form-group input,
+.create-assignment-form-group textarea {
+    width: 100%;
+    padding: var(--spacing-md);
+    border: 2px solid var(--neutral-gray);
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.create-assignment-form-group input:focus,
+.create-assignment-form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-light);
+}
+
+.create-assignment-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg);
+}
+
+.create-assignment-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-xl);
+}
+
+.create-assignment-submit-btn,
+.create-assignment-cancel-btn {
+    padding: var(--spacing-md) var(--spacing-xl);
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.create-assignment-submit-btn {
+    background-color: var(--primary-dark);
+    color: var(--text-light);
+}
+
+.create-assignment-cancel-btn {
+    background-color: var(--neutral-gray);
+    color: var(--text-dark);
+}
+
+.create-assignment-submit-btn:hover {
+    background-color: var(--primary-light);
+    transform: translateY(-2px);
+}
+
+.create-assignment-cancel-btn:hover {
+    background-color: #e0e0e0;
+}
+
+.create-assignment-alert {
+    position: fixed;
+    top: var(--spacing-lg);
+    right: var(--spacing-lg);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: 4px;
+    font-weight: 600;
+    z-index: 1000;
+    animation: slideIn 0.3s ease-out;
+}
+
+.create-assignment-alert.success {
+    background-color: #28a745;
+    color: white;
+}
+
+.create-assignment-alert.error {
+    background-color: #dc3545;
+    color: white;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .create-assignment-container {
+        padding: var(--spacing-lg);
+    }
+
+    .create-assignment-form {
+        padding: var(--spacing-lg);
+    }
+
+    .create-assignment-form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .create-assignment-form-actions {
+        flex-direction: column-reverse;
+    }
+
+    .create-assignment-submit-btn,
+    .create-assignment-cancel-btn {
+        width: 100%;
+    }
+}.create-assignment-container {
+    padding: var(--spacing-xl);
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: var(--neutral-gray);
+    min-height: 100vh;
+}
+
+.create-assignment-header {
+    margin-bottom: var(--spacing-xl);
+}
+
+.create-assignment-header h2 {
+    color: var(--primary-dark);
+    font-size: 2rem;
+    font-family: var(--font-primary);
+}
+
+.create-assignment-form {
+    background-color: white;
+    padding: var(--spacing-xl);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.create-assignment-form-group {
+    margin-bottom: var(--spacing-lg);
+}
+
+.create-assignment-form-group label {
+    display: block;
+    margin-bottom: var(--spacing-sm);
+    color: var(--primary-dark);
+    font-weight: 600;
+    font-family: var(--font-primary);
+}
+
+.create-assignment-form-group input,
+.create-assignment-form-group textarea {
+    width: 100%;
+    padding: var(--spacing-md);
+    border: 2px solid var(--neutral-gray);
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.create-assignment-form-group input:focus,
+.create-assignment-form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-light);
+}
+
+.create-assignment-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg);
+}
+
+.create-assignment-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-xl);
+}
+
+.create-assignment-submit-btn,
+.create-assignment-cancel-btn {
+    padding: var(--spacing-md) var(--spacing-xl);
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.create-assignment-submit-btn {
+    background-color: var(--primary-dark);
+    color: var(--text-light);
+}
+
+.create-assignment-cancel-btn {
+    background-color: var(--neutral-gray);
+    color: var(--text-dark);
+}
+
+.create-assignment-submit-btn:hover {
+    background-color: var(--primary-light);
+    transform: translateY(-2px);
+}
+
+.create-assignment-cancel-btn:hover {
+    background-color: #e0e0e0;
+}
+
+.create-assignment-alert {
+    position: fixed;
+    top: var(--spacing-lg);
+    right: var(--spacing-lg);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: 4px;
+    font-weight: 600;
+    z-index: 1000;
+    animation: slideIn 0.3s ease-out;
+}
+
+.create-assignment-alert.success {
+    background-color: #28a745;
+    color: white;
+}
+
+.create-assignment-alert.error {
+    background-color: #dc3545;
+    color: white;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .create-assignment-container {
+        padding: var(--spacing-lg);
+    }
+
+    .create-assignment-form {
+        padding: var(--spacing-lg);
+    }
+
+    .create-assignment-form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .create-assignment-form-actions {
+        flex-direction: column-reverse;
+    }
+
+    .create-assignment-submit-btn,
+    .create-assignment-cancel-btn {
+        width: 100%;
+    }
+}

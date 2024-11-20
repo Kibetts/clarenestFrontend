@@ -1,7 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import '../css/TutorDashboard.css';
 
 const TutorDashboard = () => {
+
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [dashboardData, setDashboardData] = useState(null);
@@ -12,7 +16,7 @@ const TutorDashboard = () => {
 
     const fetchDashboardData = async () => {
         try {
-            const response = await fetch('https://clarenest.onrender.com/api/dashboard/tutor', {
+            const response = await fetch('http://localhost:5000/api/dashboard/tutor', {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
@@ -304,19 +308,31 @@ const TutorDashboard = () => {
             <aside className="tutor-actions-panel">
                 <h3 className="tutor-actions-title">Quick Actions</h3>
                 <div className="tutor-action-buttons">
-                    <button className="tutor-action-btn">
-                        Create Assignment
-                    </button>
-                    <button className="tutor-action-btn">
-                        Schedule Assessment
-                    </button>
-                    <button className="tutor-action-btn">
-                        Mark Attendance
-                    </button>
-                    <button className="tutor-action-btn">
-                        Send Message
-                    </button>
-                </div>
+    <button 
+        className="tutor-action-btn"
+        onClick={() => navigate('/tutor/create-assignment')}
+    >
+        Create Assignment
+    </button>
+    <button 
+        className="tutor-action-btn"
+        onClick={() => navigate('/tutor/schedule-assessment')}
+    >
+        Schedule Assessment
+    </button>
+    <button 
+        className="tutor-action-btn"
+        onClick={() => navigate('/tutor/mark-attendance')}
+    >
+        Mark Attendance
+    </button>
+    <button 
+        className="tutor-action-btn"
+        onClick={() => navigate('/tutor/messages')}
+    >
+        Send Message
+    </button>
+</div>
             </aside>
         </div>
     );

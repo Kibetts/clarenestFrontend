@@ -1,0 +1,267 @@
+:root {
+    --primary-dark: #1B3764;
+    --primary-light: #2F5D9E;
+    --accent-gold: #C4A484;
+    --accent-burgundy: #722F37;
+    --neutral-gray: #F5F5F5;
+    --text-dark: #2C3E50;
+    --text-light: #ECF0F1;
+}
+
+.p-6 {
+    padding: 1.5rem;
+}
+
+.max-w-7xl {
+    max-width: 80rem;
+    margin: 0 auto;
+}
+
+/* Mode Selector Styles */
+.mb-6 {
+    margin-bottom: 1.5rem;
+}
+
+.flex {
+    display: flex;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.text-2xl {
+    font-size: 1.5rem;
+    line-height: 2rem;
+}
+
+.font-bold {
+    font-weight: 700;
+}
+
+.gap-4 {
+    gap: 1rem;
+}
+
+/* Button Styles */
+.px-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.py-2 {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.rounded-lg {
+    border-radius: 0.5rem;
+}
+
+.bg-blue-600 {
+    background-color: var(--primary-dark);
+}
+
+.text-white {
+    color: var(--text-light);
+}
+
+.bg-gray-200 {
+    background-color: var(--neutral-gray);
+}
+
+/* Form Styles */
+.space-y-6 > * + * {
+    margin-top: 1.5rem;
+}
+
+.grid {
+    display: grid;
+}
+
+.gap-4 {
+    gap: 1rem;
+}
+
+.block {
+    display: block;
+}
+
+.mb-2 {
+    margin-bottom: 0.5rem;
+}
+
+.font-semibold {
+    font-weight: 600;
+}
+
+.w-full {
+    width: 100%;
+}
+
+/* Form Input Styles */
+.p-2 {
+    padding: 0.5rem;
+}
+
+.border {
+    border: 1px solid #e2e8f0;
+}
+
+.rounded {
+    border-radius: 0.25rem;
+}
+
+select.w-full,
+input.w-full {
+    background-color: white;
+    color: var(--text-dark);
+}
+
+/* Parent Selection Area */
+.max-h-60 {
+    max-height: 15rem;
+}
+
+.overflow-y-auto {
+    overflow-y: auto;
+}
+
+.p-4 {
+    padding: 1rem;
+}
+
+/* Question Form Styles */
+.space-y-4 > * + * {
+    margin-top: 1rem;
+}
+
+.p-4 {
+    padding: 1rem;
+}
+
+/* Alert Styles */
+.assignment-alert {
+    margin: 1rem 0;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    text-align: center;
+}
+
+.assignment-alert.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.assignment-alert.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Submit Button Styles */
+button[type="submit"] {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    background-color: var(--primary-dark);
+    color: var(--text-light);
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+button[type="submit"]:hover:not(:disabled) {
+    background-color: var(--primary-light);
+    transform: translateY(-2px);
+}
+
+button[type="submit"]:disabled {
+    background-color: #cbd5e0;
+    cursor: not-allowed;
+}
+
+/* Question Form Specific Styles */
+.question-form {
+    background-color: var(--neutral-gray);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+}
+
+.option-grid {
+    display: grid;
+    gap: 0.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .flex {
+        flex-direction: column;
+    }
+    
+    .gap-4 {
+        gap: 0.5rem;
+    }
+    
+    .px-4 {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Focus States */
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 3px rgba(47, 93, 158, 0.1);
+}
+
+/* Hover States */
+.option-label:hover {
+    background-color: rgba(27, 55, 100, 0.05);
+}
+
+/* Loading States */
+.loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+/* Empty State Styles */
+.empty-state {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-dark);
+}
+
+.empty-state-text {
+    margin-top: 1rem;
+    color: #666;
+}

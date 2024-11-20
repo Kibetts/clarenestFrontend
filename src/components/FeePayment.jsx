@@ -18,13 +18,13 @@ function FeePayment() {
     const fetchBalanceAndHistory = async () => {
         try {
             setLoading(true);
-            const balanceResponse = await fetch('/api/fee-payments/balance', {
+            const balanceResponse = await fetch('/api/fee-payment/balance', {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
             });
 
-            const historyResponse = await fetch('/api/fee-payments/history', {
+            const historyResponse = await fetch('/api/fee-payment/history', {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
@@ -55,7 +55,7 @@ function FeePayment() {
 
     const confirmPayment = async () => {
         try {
-            const response = await fetch('/api/fee-payments/record-payment', {
+            const response = await fetch('/api/fee-payment/record-payment', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

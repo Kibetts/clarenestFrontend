@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import '../css/Home.css';
 import childrenImage from '../img/children.webp';
+
 
 import { 
     faGraduationCap, 
@@ -51,28 +53,31 @@ const TransformCarousel = ({ features, activeFeature, setActiveFeature }) => {
 };
 
 export default function Home() {
+    const navigate = useNavigate();
+
     const [activeFeature, setActiveFeature] = useState(0);
     const [visibleSections, setVisibleSections] = useState(new Set());
 
     useEffect(() => {
         const stats = [
-            { selector: ".main-stat-number-1", endValue: 7 },
-            { selector: ".main-stat-number-2", endValue: 500 },
-            { selector: ".main-stat-number-3", endValue: 1000 },
-            { selector: ".main-stat-number-4", endValue: 100 }
+            { selector: ".main-stat-number-1", endValue: 7, suffix: "+" },
+            { selector: ".main-stat-number-2", endValue: 500, suffix: "+" },
+            { selector: ".main-stat-number-3", endValue: 1000, suffix: "+" },
+            { selector: ".main-stat-number-4", endValue: 100, suffix: "+" }
         ];
+        
 
-        function animateCountUp(element, endValue, duration = 1500) {
+        function animateCountUp(element, endValue, duration = 1500, suffix = '') {
             let startValue = 0;
             const increment = endValue / (duration / 50);
-
+        
             const counter = setInterval(() => {
                 startValue += increment;
                 if (startValue >= endValue) {
                     clearInterval(counter);
-                    element.innerText = endValue;
+                    element.innerText = endValue + suffix;
                 } else {
-                    element.innerText = Math.floor(startValue);
+                    element.innerText = Math.floor(startValue) + suffix;
                 }
             }, 50);
         }
@@ -91,7 +96,7 @@ export default function Home() {
                     if (section.id === 'main-stats-section') {
                         stats.forEach((stat) => {
                             const element = document.querySelector(stat.selector);
-                            if (element) animateCountUp(element, stat.endValue);
+                            if (element) animateCountUp(element, stat.endValue, 1500, stat.suffix);
                         });
                     }
                 }
@@ -154,7 +159,7 @@ export default function Home() {
                         <h1 className="main-hero-title">Elevate Your Education to International Standards</h1>
                         <p className="main-hero-subtitle">Experience world-class online education that transforms futures and opens doors to exceptional opportunities</p>
                         <div className="main-hero-cta">
-                            <button className="main-hero-button primary">Start Your Journey</button>
+                            <button className="main-hero-button primary"  onClick={() => navigate('/login')}>Start Your Journey</button>
                         </div>
                     </div>
                 </section>

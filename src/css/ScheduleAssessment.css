@@ -1,0 +1,226 @@
+.schedule-assessment-container {
+    padding: var(--spacing-xl);
+    max-width: 1000px;
+    margin: 0 auto;
+    background-color: var(--neutral-gray);
+    min-height: 100vh;
+}
+
+.schedule-assessment-header {
+    margin-bottom: var(--spacing-xl);
+}
+
+.schedule-assessment-header h2 {
+    color: var(--primary-dark);
+    font-size: 2rem;
+    font-family: var(--font-primary);
+}
+
+.schedule-assessment-form {
+    background-color: white;
+    padding: var(--spacing-xl);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.schedule-assessment-basic-info,
+.schedule-assessment-questions {
+    margin-bottom: var(--spacing-xl);
+}
+
+.schedule-assessment-basic-info h3,
+.schedule-assessment-questions h3 {
+    color: var(--primary-dark);
+    font-family: var(--font-primary);
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 2px solid var(--accent-gold);
+}
+
+.schedule-assessment-form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+}
+
+.schedule-assessment-form-group {
+    margin-bottom: var(--spacing-md);
+}
+
+.schedule-assessment-form-group label {
+    display: block;
+    margin-bottom: var(--spacing-sm);
+    color: var(--primary-dark);
+    font-weight: 600;
+    font-family: var(--font-primary);
+}
+
+.schedule-assessment-form-group input,
+.schedule-assessment-form-group select,
+.schedule-assessment-form-group textarea {
+    width: 100%;
+    padding: var(--spacing-md);
+    border: 2px solid var(--neutral-gray);
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.schedule-assessment-form-group input:focus,
+.schedule-assessment-form-group select:focus,
+.schedule-assessment-form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-light);
+}
+
+.schedule-assessment-question-card {
+    background-color: var(--neutral-gray);
+    padding: var(--spacing-lg);
+    border-radius: 8px;
+    margin-bottom: var(--spacing-lg);
+}
+
+.schedule-assessment-question-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+}
+
+.schedule-assessment-question-header h4 {
+    color: var(--primary-dark);
+    margin: 0;
+    font-family: var(--font-primary);
+}
+
+.schedule-assessment-remove-btn {
+    background-color: var(--accent-burgundy);
+    color: var(--text-light);
+    border: none;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.schedule-assessment-remove-btn:hover {
+    opacity: 0.9;
+}
+
+.schedule-assessment-options {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.schedule-assessment-option {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.schedule-assessment-add-btn {
+    width: 100%;
+    padding: var(--spacing-md);
+    background-color: var(--accent-gold);
+    color: var(--primary-dark);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    margin-top: var(--spacing-md);
+}
+
+.schedule-assessment-add-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.schedule-assessment-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-xl);
+}
+
+.schedule-assessment-submit-btn,
+.schedule-assessment-cancel-btn {
+    padding: var(--spacing-md) var(--spacing-xl);
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.schedule-assessment-submit-btn {
+    background-color: var(--primary-dark);
+    color: var(--text-light);
+}
+
+.schedule-assessment-cancel-btn {
+    background-color: var(--neutral-gray);
+    color: var(--text-dark);
+}
+
+.schedule-assessment-submit-btn:hover {
+    background-color: var(--primary-light);
+    transform: translateY(-2px);
+}
+
+.schedule-assessment-alert {
+    position: fixed;
+    top: var(--spacing-lg);
+    right: var(--spacing-lg);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: 4px;
+    font-weight: 600;
+    z-index: 1000;
+    animation: slideIn 0.3s ease-out;
+}
+
+.schedule-assessment-alert.success {
+    background-color: #28a745;
+    color: white;
+}
+
+.schedule-assessment-alert.error {
+    background-color: #dc3545;
+    color: white;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .schedule-assessment-container {
+        padding: var(--spacing-lg);
+    }
+
+    .schedule-assessment-form {
+        padding: var(--spacing-lg);
+    }
+
+    .schedule-assessment-form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .schedule-assessment-form-actions {
+        flex-direction: column-reverse;
+    }
+
+    .schedule-assessment-submit-btn,
+    .schedule-assessment-cancel-btn {
+        width: 100%;
+    }
+}

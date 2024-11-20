@@ -13,30 +13,34 @@ function Login() {
         setError('');
     
         try {
-            const response = await fetch('https://clarenest.onrender.com/api/auth/login', {
+            const response = await fetch('http://localhost:5000/api/auth/login', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
                 body: JSON.stringify({ email, password }),
-                credentials: 'include'
             });
     
             const data = await response.json();
+            console.log('Login response:', data); // For debugging
     
             if (!response.ok) {
                 throw new Error(data.message || 'Login failed');
             }
     
-            const token = data.token || data.data?.token;
-            const userRole = data.data?.user?.role || data.user?.role;
-    
-            if (!token || !userRole) {
-                throw new Error('Invalid response structure');
+            if (!data.token) {
+                throw new Error('No token received from server');
             }
     
-            localStorage.setItem('token', token);
-            localStorage.setItem('role', userRole);
+            // Store token and user data
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('userId', data.data.user.id);
+            localStorage.setItem('role', data.data.user.role);
     
-            switch (userRole) {
+            // Navigate based on role
+            const role = data.data.user.role;
+            switch (role) {
                 case 'student':
                     navigate('/dashboard/student');
                     break;
@@ -50,11 +54,11 @@ function Login() {
                     navigate('/dashboard/admin');
                     break;
                 default:
-                    navigate('/');
+                    throw new Error('Invalid user role');
             }
         } catch (err) {
             console.error('Login error:', err);
-            setError(err.message || 'Invalid email or password');
+            setError(err.message || 'Login failed. Please try again.');
         }
     };
 

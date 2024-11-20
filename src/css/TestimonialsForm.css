@@ -1,0 +1,207 @@
+/* TestimonialForm Modal Styles */
+.abt-page-testimonial-form {
+    background-color: white;
+    border-radius: 12px;
+    padding: var(--spacing-xl);
+    max-width: 500px;
+    width: 100%;
+    position: relative;
+    animation: abtFadeUp 0.5s ease-out;
+}
+
+.abt-page-testimonial-form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+    position: relative;
+}
+
+.abt-page-testimonial-form-header h3 {
+    color: var(--primary-dark);
+    font-family: var(--font-primary);
+    font-size: 1.75rem;
+    position: relative;
+}
+
+.abt-page-testimonial-form-header h3::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background-color: var(--accent-gold);
+    transition: width 0.3s ease;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    color: var(--text-dark);
+    font-size: 1.75rem;
+    padding: var(--spacing-xs);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-button:hover {
+    background-color: var(--neutral-gray);
+    transform: rotate(90deg);
+}
+
+/* Form Elements */
+.abt-page-testimonial-form form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.abt-page-testimonial-form input,
+.abt-page-testimonial-form textarea {
+    width: 100%;
+    padding: var(--spacing-md);
+    border: 2px solid var(--neutral-gray);
+    border-radius: 8px;
+    font-family: var(--font-secondary);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-color: white;
+    color: var(--text-dark);
+}
+
+.abt-page-testimonial-form input:focus,
+.abt-page-testimonial-form textarea:focus {
+    border-color: var(--primary-light);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(47, 93, 158, 0.1);
+}
+
+.abt-page-testimonial-form input::placeholder,
+.abt-page-testimonial-form textarea::placeholder {
+    color: #9ca3af;
+}
+
+/* Star Rating */
+.star-rating-container {
+    display: flex;
+    gap: var(--spacing-xs);
+    margin: var(--spacing-md) 0;
+}
+
+.star-rating-button {
+    background: none;
+    border: none;
+    padding: var(--spacing-xs);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.star-rating-button:hover {
+    transform: scale(1.1);
+}
+
+.star-rating-button svg {
+    width: 24px;
+    height: 24px;
+    transition: all 0.2s ease;
+}
+
+/* Error Message */
+.error-message {
+    background-color: #fee2e2;
+    color: #dc2626;
+    padding: var(--spacing-md);
+    border-radius: 8px;
+    font-family: var(--font-secondary);
+    margin-bottom: var(--spacing-md);
+    animation: abtFadeUp 0.3s ease-out;
+}
+
+/* Submit Button */
+.abt-page-testimonial-form .abt-page-learning-button {
+    margin-top: var(--spacing-md);
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.abt-page-testimonial-form .abt-page-learning-button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* Loading State */
+.abt-page-testimonial-form .abt-page-learning-button.loading {
+    position: relative;
+    cursor: wait;
+}
+
+.abt-page-testimonial-form .abt-page-learning-button.loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 200%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    from { transform: translateX(0); }
+    to { transform: translateX(50%); }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 640px) {
+    .abt-page-testimonial-form {
+        padding: var(--spacing-lg);
+        margin: var(--spacing-md);
+    }
+
+    .abt-page-testimonial-form-header h3 {
+        font-size: 1.5rem;
+    }
+
+    .star-rating-button svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+    .abt-page-testimonial-form input,
+    .abt-page-testimonial-form textarea {
+        border-width: 2px;
+        border-color: var(--primary-dark);
+    }
+
+    .error-message {
+        border: 2px solid #dc2626;
+    }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    .abt-page-testimonial-form,
+    .close-button,
+    .star-rating-button,
+    .abt-page-testimonial-form input,
+    .abt-page-testimonial-form textarea {
+        transition: none;
+        animation: none;
+    }
+}
