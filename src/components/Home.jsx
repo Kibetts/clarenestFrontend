@@ -60,7 +60,7 @@ export default function Home() {
 
     useEffect(() => {
         const stats = [
-            { selector: ".main-stat-number-1", endValue: 7, suffix: "+" },
+            { selector: ".main-stat-number-1", endValue: 7},
             { selector: ".main-stat-number-2", endValue: 500, suffix: "+" },
             { selector: ".main-stat-number-3", endValue: 1000, suffix: "+" },
             { selector: ".main-stat-number-4", endValue: 100, suffix: "+" }
@@ -272,7 +272,7 @@ export default function Home() {
                     <div className="main-cta-content main-slide-in-left">
                         <h2>Begin Your Academic Journey</h2>
                         <p>Join our next intake and transform your future prospects</p>
-                        <button className="main-cta-button">Apply Now</button>
+                        <button className="main-cta-button" onClick={() => navigate('/login')}>Apply Now</button>
                     </div>
                     <div className="main-cta-image main-slide-in-right">
                         <img src={childrenImage} alt="home-school life" />

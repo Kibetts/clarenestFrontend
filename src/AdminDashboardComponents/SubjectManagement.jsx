@@ -12,7 +12,6 @@ const SubjectManagement = () => {
         level: 'High School',
         gradeLevel: 9,
         tutor: '',
-        price: 50,
         enrollmentCapacity: 30,
         isActive: true
     });
@@ -79,8 +78,6 @@ const SubjectManagement = () => {
                     duration: 60,
                     level: 'High School',
                     gradeLevel: 9,
-                    tutor: '',
-                    price: 50,
                     enrollmentCapacity: 30,
                     isActive: true
                 });
@@ -116,9 +113,6 @@ const SubjectManagement = () => {
                             </div>
                             <div>
                                 <span className="font-semibold">Duration:</span> {subject.duration}min
-                            </div>
-                            <div>
-                                <span className="font-semibold">Price:</span> ${subject.price}
                             </div>
                             <div>
                                 <span className="font-semibold">Capacity:</span> {subject.enrollmentCapacity}
@@ -197,17 +191,6 @@ const SubjectManagement = () => {
                                             type="number"
                                             name="duration"
                                             value={formData.duration}
-                                            onChange={handleInputChange}
-                                            className="w-full border rounded p-2"
-                                            required
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-medium mb-1">Price</label>
-                                        <input
-                                            type="number"
-                                            name="price"
-                                            value={formData.price}
                                             onChange={handleInputChange}
                                             className="w-full border rounded p-2"
                                             required

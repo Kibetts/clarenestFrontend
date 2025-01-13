@@ -171,21 +171,38 @@ const ClassManagement = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!validateForm()) return;
-
+    
+        // Convert numeric grade to proper format with suffix
+        const formatGradeLevel = (grade) => {
+            const num = parseInt(grade);
+            if (num >= 1 && num <= 12) {
+                const suffix = num === 1 ? 'st' : 
+                              num === 2 ? 'nd' : 
+                              num === 3 ? 'rd' : 'th';
+                return `${num}${suffix}`;
+            }
+            return grade;
+        };
+    
         try {
+            const formattedData = {
+                ...formData,
+                gradeLevel: formatGradeLevel(formData.gradeLevel)
+            };
+    
             const url = modalMode === 'add'
                 ? 'http://localhost:5000/api/lessons'
                 : `http://localhost:5000/api/lessons/${selectedClass._id}`;
-
+    
             const response = await fetch(url, {
                 method: modalMode === 'add' ? 'POST' : 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify(formattedData)
             });
-
+    
             if (!response.ok) throw new Error('Failed to save class');
             
             showAlert(

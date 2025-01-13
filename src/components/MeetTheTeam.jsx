@@ -35,7 +35,7 @@ export default function MeetTheTeam() {
 
     const managementTeam = [
         {
-            name: "Sarah Johnson",
+            name: "Franisca Chepkirui",
             role: "Principal",
             image: "/api/placeholder/300/300",
             bio: "20+ years in education leadership, focused on innovative learning methods",
@@ -43,7 +43,7 @@ export default function MeetTheTeam() {
             twitter: "#"
         },
         {
-            name: "David Chen",
+            name: "francisca Chepkirui",
             role: "Academic Director",
             image: "/api/placeholder/300/300",
             bio: "PhD in Education Technology, pioneering digital learning solutions",
@@ -51,8 +51,8 @@ export default function MeetTheTeam() {
             twitter: "#"
         },
         {
-            name: "Maria Garcia",
-            role: "Student Affairs Head",
+            name: "Brian Kibet",
+            role: "IT Head",
             image: "/api/placeholder/300/300",
             bio: "Dedicated to creating inclusive and supportive learning environments",
             linkedin: "#",
@@ -62,8 +62,8 @@ export default function MeetTheTeam() {
 
     const tutors = [
         {
-            name: "Dr. Michael Brown",
-            subject: "Mathematics",
+            name: "Francisca Chepkirui",
+            subject: "English Literature",
             image: "/api/placeholder/300/300",
             bio: "Specializes in making complex concepts accessible and engaging",
             linkedin: "#",
@@ -78,8 +78,8 @@ export default function MeetTheTeam() {
             twitter: "#"
         },
         {
-            name: "James Taylor",
-            subject: "English Literature",
+            name: "Brian Kibet",
+            subject: "Introductory Coding",
             image: "/api/placeholder/300/300",
             bio: "Published author with creative writing expertise",
             linkedin: "#",

@@ -11,7 +11,7 @@ export default function Footer() {
                 <div className="footer-content">
                     <div className="footer-info">
                         <div className="footer-contact">
-                            <h3 className="footer-brand">Clarenest Online School</h3>
+                            <h3 className="footer-brand">Clarenest International School</h3>
                             <p className="footer-email">clarenestschool@outlook.com</p>
                             <p className="footer-phone">+254 720 944 056</p>
                         </div>

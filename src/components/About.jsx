@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import { Star } from 'lucide-react';
 import Navbar from "./Navbar";
 import Footer from "./Footer";
@@ -19,6 +20,7 @@ import '../css/About.css';
 
 
 export default function About() {
+    const navigate = useNavigate();
     const [visibleSections, setVisibleSections] = useState(new Set());
     const [testimonials, setTestimonials] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -175,7 +177,7 @@ export default function About() {
                         <h1 className="abt-page-learning-title">
                             Learn From The <br /> Experts
                         </h1>
-                        <button className="abt-page-learning-button abt-pulse">Start Learning</button>
+                        <button className="abt-page-learning-button abt-pulse" onClick={() => navigate('/login')}>Start Learning</button>
                     </div>
                     <div className="abt-page-learning-image-container abt-slide-in-right">
                         <img
