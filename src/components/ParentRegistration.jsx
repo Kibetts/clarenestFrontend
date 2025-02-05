@@ -7,6 +7,8 @@ const ParentRegistration = () => {
         name: '',
         email: '',
         phone: '',
+        password: '',
+        confirmPassword: '',
         relationship: 'Parent'
     });
     const [loading, setLoading] = useState(false);
@@ -21,10 +23,13 @@ const ParentRegistration = () => {
             ...prev,
             [name]: value
         }));
+        // Clear error when user starts typing
+        setError('');
     };
 
     const validateForm = () => {
-        if (!formData.name || !formData.email || !formData.phone || !formData.relationship) {
+        if (!formData.name || !formData.email || !formData.phone || 
+            !formData.password || !formData.confirmPassword || !formData.relationship) {
             setError('Please fill in all required fields');
             return false;
         }
@@ -41,6 +46,16 @@ const ParentRegistration = () => {
             return false;
         }
 
+        if (formData.password.length < 8) {
+            setError('Password must be at least 8 characters long');
+            return false;
+        }
+
+        if (formData.password !== formData.confirmPassword) {
+            setError('Passwords do not match');
+            return false;
+        }
+
         return true;
     };
 
@@ -50,29 +65,100 @@ const ParentRegistration = () => {
         setShowConfirmation(true);
     };
 
+    // const confirmSubmission = async () => {
+    //     try {
+    //         setLoading(true);
+    //         setError('');
+
+    //         const response = await fetch(`${process.env.REACT_APP_API_URL || 'https://clarenest-6bd4.onrender.com'}/api/parents/register/${studentId}`, {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //                 'Accept': 'application/json'
+    //             },
+    //             body: JSON.stringify({
+    //                 name: formData.name,
+    //                 email: formData.email,
+    //                 phone: formData.phone,
+    //                 password: formData.password,
+    //                 relationship: formData.relationship
+    //             }),
+    //             credentials: 'include'
+    //         });
+
+    //         const data = await response.json();
+
+    //         if (!response.ok) {
+    //             throw new Error(data.message || 'Registration failed');
+    //         }
+
+    //         // Attempt automatic login after successful registration
+    //         const loginResponse = await fetch(`${process.env.REACT_APP_API_URL || 'https://clarenest-6bd4.onrender.com'}/api/auth/login`, {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json'
+    //             },
+    //             body: JSON.stringify({
+    //                 email: formData.email,
+    //                 password: formData.password
+    //             }),
+    //             credentials: 'include'
+    //         });
+
+    //         const loginData = await loginResponse.json();
+
+    //         if (loginResponse.ok) {
+    //             // Store token in localStorage
+    //             localStorage.setItem('token', loginData.token);
+    //             navigate('/parent-dashboard');
+    //         } else {
+    //             navigate('/login');
+    //         }
+    //     } catch (err) {
+    //         setError(err.message || 'Error registering parent account. Please try again.');
+    //     } finally {
+    //         setLoading(false);
+    //         setShowConfirmation(false);
+    //     }
+    // };
+
     const confirmSubmission = async () => {
         try {
             setLoading(true);
             setError('');
-
-            const response = await fetch(`http://localhost:5000/api/parents/register/${studentId}`, {
+    
+            const response = await fetch(`${process.env.REACT_APP_API_URL || 'https://clarenest-6bd4.onrender.com'}/api/parents/register/${studentId}`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify({
+                    name: formData.name,
+                    email: formData.email,
+                    phone: formData.phone,
+                    password: formData.password,
+                    relationship: formData.relationship
+                })
             });
-
+    
             const data = await response.json();
-
-            if (response.ok) {
-                alert('Registration successful! Please check your email to verify your account.');
-                navigate('/');
+    
+            if (!response.ok) {
+                throw new Error(data.message || 'Registration failed');
+            }
+    
+            // Store token from registration response
+            if (data.data && data.data.token) {
+                localStorage.setItem('token', data.data.token);
+                // Navigate to dashboard directly since we already have the token
+                navigate('/parent-dashboard');
             } else {
-                setError(data.message || 'Error registering parent account');
+                // Fallback to login if no token
+                navigate('/login');
             }
         } catch (err) {
-            setError('Error registering parent account. Please try again.');
+            setError(err.message || 'Error registering parent account. Please try again.');
         } finally {
             setLoading(false);
             setShowConfirmation(false);
@@ -129,6 +215,34 @@ const ParentRegistration = () => {
                                 required
                                 disabled={loading}
                                 placeholder="+1234567890"
+                            />
+                        </div>
+
+                        <div className="parent-reg-field">
+                            <label className="parent-reg-label">Password</label>
+                            <input
+                                type="password"
+                                name="password"
+                                className="parent-reg-input"
+                                value={formData.password}
+                                onChange={handleInputChange}
+                                required
+                                disabled={loading}
+                                minLength={8}
+                            />
+                        </div>
+
+                        <div className="parent-reg-field">
+                            <label className="parent-reg-label">Confirm Password</label>
+                            <input
+                                type="password"
+                                name="confirmPassword"
+                                className="parent-reg-input"
+                                value={formData.confirmPassword}
+                                onChange={handleInputChange}
+                                required
+                                disabled={loading}
+                                minLength={8}
                             />
                         </div>
 

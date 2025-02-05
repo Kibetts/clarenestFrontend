@@ -39,7 +39,7 @@ const AssessmentDistribution = () => {
 
     const fetchAssessments = async () => {
         try {
-            const response = await fetch('http://localhost:5000/api/assessments', {
+            const response = await fetch('https://clarenest-6bd4.onrender.com/api/assessments', {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
@@ -54,7 +54,7 @@ const AssessmentDistribution = () => {
 
     const fetchParents = async () => {
         try {
-            const response = await fetch('http://localhost:5000/api/parents', {
+            const response = await fetch('https://clarenest-6bd4.onrender.com/api/parents', {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
@@ -69,7 +69,7 @@ const AssessmentDistribution = () => {
 
     const fetchSubjects = async () => {
         try {
-            const response = await fetch('http://localhost:5000/api/subjects', {
+            const response = await fetch('https://clarenest-6bd4.onrender.com/api/subjects', {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
@@ -87,7 +87,7 @@ const AssessmentDistribution = () => {
         setLoading(true);
 
         try {
-            const response = await fetch('http://localhost:5000/api/assessments/distribute', {
+            const response = await fetch('https://clarenest-6bd4.onrender.com/api/assessments/distribute', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -115,7 +115,7 @@ const AssessmentDistribution = () => {
         setLoading(true);
 
         try {
-            const response = await fetch('http://localhost:5000/api/assessments', {
+            const response = await fetch('https://clarenest-6bd4.onrender.com/api/assessments', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

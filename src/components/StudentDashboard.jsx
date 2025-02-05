@@ -38,7 +38,7 @@
 //                 throw new Error('No authentication token found');
 //             }
     
-//             const response = await fetch('http://localhost:5000/api/dashboard/student', {
+//             const response = await fetch('https://clarenest-6bd4.onrender.com/api/dashboard/student', {
 //                 method: 'GET',
 //                 headers: {
 //                     'Authorization': `Bearer ${token}`,
@@ -337,6 +337,7 @@ import '../css/StudentDashboard.css';
 const StudentDashboard = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [activeNavItem, setActiveNavItem] = useState('dashboard');
     const [dashboardData, setDashboardData] = useState({
         student: {
             name: '',
@@ -362,7 +363,7 @@ const StudentDashboard = () => {
 
     const fetchDashboardData = async () => {
         try {
-            const response = await fetch('http://localhost:5000/api/dashboard/student', {
+            const response = await fetch('https://clarenest-6bd4.onrender.com/api/dashboard/student', {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
                     'Content-Type': 'application/json'
@@ -375,7 +376,6 @@ const StudentDashboard = () => {
             }
 
             const data = await response.json();
-            console.log('Fetched dashboard data:', data);
             setDashboardData(data.data);
             setLoading(false);
         } catch (err) {
@@ -392,6 +392,17 @@ const StudentDashboard = () => {
             minute: '2-digit' 
         });
     };
+
+    const navigationItems = [
+        { id: 'dashboard', label: 'Dashboard', icon: '🏠' },
+        { id: 'courses', label: 'Courses & Materials', icon: '📚' },
+        { id: 'assignments', label: 'Assignments', icon: '📝' },
+        { id: 'grades', label: 'Grades', icon: '📊' },
+        { id: 'calendar', label: 'Calendar', icon: '📅' },
+        { id: 'attendance', label: 'Attendance', icon: '✓' },
+        { id: 'messages', label: 'Messages', icon: '💬' },
+        { id: 'settings', label: 'Settings', icon: '⚙️' }
+    ];
 
     const renderSchedule = () => {
         const todaySchedule = dashboardData.dashboard.schedule[0];
@@ -416,11 +427,89 @@ const StudentDashboard = () => {
         ));
     };
 
+    const renderMainContent = () => {
+        switch (activeNavItem) {
+            case 'dashboard':
+                return (
+                    <>
+                        <section className="student-schedule-section">
+                            <h2 className="student-section-title">
+                                <span className="section-icon">📅</span>
+                                Today's Schedule
+                            </h2>
+                            <div className="student-timeline">
+                                {renderSchedule()}
+                            </div>
+                        </section>
+
+                        <section className="student-progress-section">
+                            <h2 className="student-section-title">
+                                <span className="section-icon">📚</span>
+                                Enrolled Subjects
+                            </h2>
+                            <div className="student-materials-grid">
+                                {dashboardData.dashboard.enrollments.map((enrollment) => (
+                                    <div key={enrollment._id} className="student-material-card">
+                                        <h3 className="student-material-title">
+                                            {enrollment.subject.title}
+                                        </h3>
+                                        <p className="student-material-info">
+                                            Tutor: {enrollment.subject.tutor?.name || 'Not assigned'}
+                                        </p>
+                                    </div>
+                                ))}
+                            </div>
+                        </section>
+
+                        <section className="student-attendance-section">
+                            <h2 className="student-section-title">
+                                <span className="section-icon">📍</span>
+                                Attendance
+                            </h2>
+                            <div className="student-stat-card">
+                                <h3 className="student-stat-title">Overall Attendance</h3>
+                                <span className="student-attendance-value">
+                                    {dashboardData.dashboard.attendance.percentage.toFixed(1)}%
+                                </span>
+                                <div className="attendance-graph">
+                                    <div className="graph-bars">
+                                        <div className="graph-bar-container">
+                                            <div 
+                                                className="graph-bar"
+                                                style={{ 
+                                                    height: `${dashboardData.dashboard.attendance.percentage}%` 
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </>
+                );
+            case 'courses':
+                return (
+                    <div className="student-content-section">
+                        <h2 className="student-section-title">My Courses</h2>
+                        {/* Add courses content here */}
+                    </div>
+                );
+            // Add other cases for different navigation items
+            default:
+                return (
+                    <div className="student-content-section">
+                        <h2 className="student-section-title">Section Under Development</h2>
+                    </div>
+                );
+        }
+    };
+
     if (loading) return (
         <div className="student-loading">
             <div className="loading-spinner"></div>
         </div>
     );
+
     if (error) return (
         <div className="student-error">
             <span className="error-icon">⚠️</span>
@@ -429,94 +518,40 @@ const StudentDashboard = () => {
     );
 
     return (
-        <div className="student-dashboard">
-            <header className="student-header">
-                <div className="student-header-content">
-                    <h1 className="student-welcome">Welcome, {dashboardData.student?.name}</h1>
-                    <div className="student-info">
-                        <span className="student-grade">Grade {dashboardData.student?.grade}</span>
-                        <span className="student-messages">
-                            {dashboardData.dashboard?.unreadMessages || 0} new messages
-                        </span>
-                    </div>
+        <div className="student-dashboard-container">
+            <nav className="student-sidebar">
+                <div className="sidebar-header">
+                    <h2>Student Portal</h2>
+                    <p className="student-name">{dashboardData.student?.name}</p>
                 </div>
-            </header>
+                <ul className="sidebar-nav">
+                    {navigationItems.map(item => (
+                        <li 
+                            key={item.id}
+                            className={`sidebar-nav-item ${activeNavItem === item.id ? 'active' : ''}`}
+                            onClick={() => setActiveNavItem(item.id)}
+                        >
+                            <span className="nav-icon">{item.icon}</span>
+                            <span className="nav-label">{item.label}</span>
+                        </li>
+                    ))}
+                </ul>
+            </nav>
 
-            <div className="student-grid">
-                <section className="student-schedule-section">
-                    <h2 className="student-section-title">
-                        <span className="section-icon">📅</span>
-                        Today's Schedule
-                    </h2>
-                    <div className="student-timeline">
-                        {renderSchedule()}
-                    </div>
-                </section>
-
-                <section className="student-progress-section">
-                    <h2 className="student-section-title">
-                        <span className="section-icon">📊</span>
-                        Enrolled Subjects
-                    </h2>
-                    <div className="student-materials-grid">
-                        {dashboardData.dashboard.enrollments.map((enrollment) => (
-                            <div key={enrollment._id} className="student-material-card">
-                                <h3 className="student-material-title">
-                                    {enrollment.subject.title}
-                                </h3>
-                                <p className="student-material-info">
-                                    Tutor: {enrollment.subject.tutor?.name || 'Not assigned'}
-                                </p>
-                            </div>
-                        ))}
-                    </div>
-                </section>
-
-                <section className="student-attendance-section">
-                    <h2 className="student-section-title">
-                        <span className="section-icon">📍</span>
-                        Attendance
-                    </h2>
-                    <div className="student-stat-card">
-                        <h3 className="student-stat-title">Overall Attendance</h3>
-                        <span className="student-attendance-value">
-                            {dashboardData.dashboard.attendance.percentage.toFixed(1)}%
-                        </span>
-                        <div className="attendance-graph">
-                            <div className="graph-bars">
-                                <div className="graph-bar-container">
-                                    <div 
-                                        className="graph-bar"
-                                        style={{ 
-                                            height: `${dashboardData.dashboard.attendance.percentage}%` 
-                                        }}
-                                    />
-                                </div>
-                            </div>
+            <main className="student-main-content">
+                <header className="student-header">
+                    <div className="student-header-content">
+                        <h1 className="student-welcome">Welcome, {dashboardData.student?.name}</h1>
+                        <div className="student-info">
+                            <span className="student-grade">Grade {dashboardData.student?.grade}</span>
                         </div>
                     </div>
-                </section>
+                </header>
 
-                <section className="student-tasks-section">
-                    <h2 className="student-section-title">
-                        <span className="section-icon">📝</span>
-                        Upcoming Tasks
-                    </h2>
-                    <div className="student-tasks-container">
-                        {dashboardData.dashboard.activeAssignments.map((assignment) => (
-                            <div key={assignment._id} className="student-task-item">
-                                <div className="student-task-info">
-                                    <h4 className="student-task-title">{assignment.title}</h4>
-                                    <p>{assignment.subject.title}</p>
-                                </div>
-                                <div className="student-task-due">
-                                    Due: {new Date(assignment.dueDate).toLocaleDateString()}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </section>
-            </div>
+                <div className="student-content-grid">
+                    {renderMainContent()}
+                </div>
+            </main>
         </div>
     );
 };

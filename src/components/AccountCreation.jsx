@@ -68,9 +68,9 @@ const AccountCreation = () => {
             console.log('Checking role:', role.toLowerCase());
             
             if (role.toLowerCase() === 'parent') {
-                endpoint = `http://localhost:5000/api/parents/create-account/${token}`;
+                endpoint = `https://clarenest-6bd4.onrender.com/api/parents/create-account/${token}`;
             } else {
-                endpoint = `http://localhost:5000/api/auth/create-${role.toLowerCase()}-account/${token}`;
+                endpoint = `https://clarenest-6bd4.onrender.com/api/auth/create-${role.toLowerCase()}-account/${token}`;
             }
             
             console.log('Using endpoint:', endpoint);

@@ -49,7 +49,7 @@ function App() {
   useEffect(() => {
     const updateStatus = async () => {
       try {
-        await fetch('http://localhost:5000/api/users/heartbeat', {
+        await fetch('https://clarenest-6bd4.onrender.com/api/users/heartbeat', {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`

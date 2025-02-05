@@ -14,7 +14,7 @@ const CreateAssignment = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:5000/api/assignments', {
+            const response = await fetch('https://clarenest-6bd4.onrender.com/api/assignments', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

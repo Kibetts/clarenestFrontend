@@ -38,18 +38,18 @@ const FinanceManagement = () => {
         try {
             setLoading(true);
             const [dashboardResponse, studentsResponse, paymentsResponse] = await Promise.all([
-                fetch('http://localhost:5000/api/dashboard/admin', {
+                fetch('https://clarenest-6bd4.onrender.com/api/dashboard/admin', {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`,
                         'Content-Type': 'application/json'
                     }
                 }),
-                fetch('http://localhost:5000/api/users?role=student', {
+                fetch('https://clarenest-6bd4.onrender.com/api/users?role=student', {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`
                     }
                 }),
-                fetch('http://localhost:5000/api/fee-payment/payments', {
+                fetch('https://clarenest-6bd4.onrender.com/api/fee-payment/payments', {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`
                     }
@@ -104,7 +104,7 @@ const FinanceManagement = () => {
                 throw new Error('Please enter a valid payment amount');
             }
 
-            const response = await fetch('http://localhost:5000/api/fee-payment/record-payment', {
+            const response = await fetch('https://clarenest-6bd4.onrender.com/api/fee-payment/record-payment', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -139,7 +139,7 @@ const FinanceManagement = () => {
 
     const handleGrantTemporaryAccess = async (studentId, duration) => {
         try {
-            const response = await fetch('http://localhost:5000/api/fee-payment/grant-temporary-access', {
+            const response = await fetch('https://clarenest-6bd4.onrender.com/api/fee-payment/grant-temporary-access', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

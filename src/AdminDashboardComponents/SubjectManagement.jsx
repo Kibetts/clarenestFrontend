@@ -23,7 +23,7 @@ const SubjectManagement = () => {
 
     const fetchSubjects = async () => {
         try {
-            const response = await fetch('http://localhost:5000/api/subjects', {
+            const response = await fetch('https://clarenest-6bd4.onrender.com/api/subjects', {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
@@ -37,7 +37,7 @@ const SubjectManagement = () => {
 
     const fetchTutors = async () => {
         try {
-            const response = await fetch('http://localhost:5000/api/tutors', {
+            const response = await fetch('https://clarenest-6bd4.onrender.com/api/tutors', {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
@@ -60,7 +60,7 @@ const SubjectManagement = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('http://localhost:5000/api/subjects', {
+            const response = await fetch('https://clarenest-6bd4.onrender.com/api/subjects', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

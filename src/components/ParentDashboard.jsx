@@ -12,7 +12,7 @@ const ParentDashboard = () => {
 
     const fetchDashboardData = async () => {
         try {
-            const response = await fetch('http://localhost:5000/api/dashboard/parent', {
+            const response = await fetch('https://clarenest-6bd4.onrender.com/api/dashboard/parent', {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
@@ -173,7 +173,7 @@ const ParentDashboard = () => {
                                 onClick={async () => {
                                     try {
                                         const response = await fetch(
-                                            `http://localhost:5000/api/assessments/${assessment.id}/download`,
+                                            `https://clarenest-6bd4.onrender.com/api/assessments/${assessment.id}/download`,
                                             {
                                                 headers: {
                                                     'Authorization': `Bearer ${localStorage.getItem('token')}`

@@ -1,46 +1,112 @@
 :root {
   --primary-dark: #1a237e;
-  --primary-dark-rgb: 26, 35, 126;
+  --primary-light: #534bae;
   --accent-gold: #ffd700;
   --accent-burgundy: #800020;
   --text-dark: #2c3e50;
   --background-light: #f8f9fa;
+  --sidebar-width: 280px;
+  --header-height: 80px;
 }
 
-.student-dashboard {
+.student-dashboard-container {
+  display: flex;
   min-height: 100vh;
   background-color: var(--background-light);
-  padding-bottom: 4rem;
+}
+
+/* Sidebar Styles */
+.student-sidebar {
+  width: var(--sidebar-width);
+  background-color: white;
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  position: fixed;
+  height: 100vh;
+  overflow-y: auto;
+  padding: 2rem 0;
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-header {
+  padding: 0 1.5rem 1.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-header h2 {
+  color: var(--primary-dark);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.student-name {
+  color: var(--text-dark);
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.sidebar-nav {
+  list-style: none;
+  padding: 1rem 0;
+}
+
+.sidebar-nav-item {
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.sidebar-nav-item:hover {
+  background-color: rgba(26, 35, 126, 0.05);
+}
+
+.sidebar-nav-item.active {
+  background-color: rgba(26, 35, 126, 0.1);
+  border-left: 4px solid var(--primary-dark);
+}
+
+.nav-icon {
+  margin-right: 1rem;
+  font-size: 1.2rem;
+}
+
+.nav-label {
+  color: var(--text-dark);
+  font-weight: 500;
+}
+
+/* Main Content Styles */
+.student-main-content {
+  flex: 1;
+  margin-left: var(--sidebar-width);
+  min-height: 100vh;
+  background-color: var(--background-light);
 }
 
 .student-header {
-  background-color: var(--primary-dark);
-  padding: 2rem 0;
-  margin-bottom: 2rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .student-header-content {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 0 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .student-welcome {
-  font-size: 2.25rem;
+  font-size: 1.8rem;
   font-weight: 700;
-  letter-spacing: -0.025em;
-  color: white;
+  color: var(--primary-dark);
   margin: 0;
-}
-
-.student-info {
-  display: flex;
-  gap: 1.5rem;
-  align-items: center;
 }
 
 .student-grade {
@@ -51,44 +117,35 @@
   color: var(--primary-dark);
 }
 
-.student-messages {
-  background-color: var(--accent-burgundy);
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  font-weight: 600;
-  color: white;
-}
-
-.student-grid {
+.student-content-grid {
+  max-width: 1440px;
+  margin: 2rem auto;
+  padding: 0 2rem;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: 2rem;
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 0 2rem;
 }
 
+/* Section Styles */
 .student-schedule-section {
   grid-column: span 8;
   background: white;
   border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .student-progress-section,
-.student-attendance-section,
-.student-tasks-section {
+.student-attendance-section {
   grid-column: span 4;
   background: white;
   border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .student-section-title {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: var(--primary-dark);
   margin-bottom: 1.5rem;
@@ -99,6 +156,7 @@
   gap: 0.5rem;
 }
 
+/* Timeline Styles */
 .student-timeline {
   display: flex;
   flex-direction: column;
@@ -109,7 +167,7 @@
   display: flex;
   gap: 1.5rem;
   padding: 1.25rem;
-  background: linear-gradient(to right, rgba(var(--primary-dark-rgb), 0.02), rgba(var(--primary-dark-rgb), 0.05));
+  background: linear-gradient(to right, rgba(26, 35, 126, 0.02), rgba(26, 35, 126, 0.05));
   border-radius: 8px;
   border-left: 4px solid var(--accent-gold);
 }
@@ -136,6 +194,7 @@
   color: var(--text-dark);
 }
 
+/* Materials Grid */
 .student-materials-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -143,10 +202,16 @@
 }
 
 .student-material-card {
-  background: rgba(var(--primary-dark-rgb), 0.02);
+  background: rgba(26, 35, 126, 0.02);
   padding: 1rem;
   border-radius: 8px;
-  border: 1px solid rgba(var(--primary-dark-rgb), 0.1);
+  border: 1px solid rgba(26, 35, 126, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.student-material-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .student-material-title {
@@ -156,72 +221,34 @@
   color: var(--primary-dark);
 }
 
-.student-tasks-container {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.student-task-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
-  background: rgba(var(--primary-dark-rgb), 0.02);
-  border-radius: 8px;
-  border: 1px solid rgba(var(--primary-dark-rgb), 0.1);
-}
-
-.student-task-title {
-  font-size: 1rem;
-  font-weight: 600;
-  margin: 0 0 0.25rem;
-  color: var(--primary-dark);
-}
-
-.student-task-due {
+.student-material-info {
   font-size: 0.875rem;
-  color: var(--accent-burgundy);
+  color: var(--text-dark);
+  margin: 0;
 }
 
-.student-loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-}
-
-.loading-spinner {
-  width: 50px;
-  height: 50px;
-  border: 4px solid rgba(var(--primary-dark-rgb), 0.1);
-  border-top: 4px solid var(--accent-gold);
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.student-error {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  color: var(--accent-burgundy);
-  gap: 1rem;
+/* Attendance and Stats */
+.student-stat-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 8px;
   text-align: center;
-  padding: 2rem;
 }
 
-.error-icon {
-  font-size: 3rem;
+.student-stat-title {
+  font-size: 1rem;
+  color: var(--text-dark);
+  margin-bottom: 1rem;
 }
 
-/* Attendance graph styles */
+.student-attendance-value {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--primary-dark);
+  display: block;
+  margin-bottom: 1rem;
+}
+
 .attendance-graph {
   margin-top: 1rem;
   height: 200px;
@@ -251,9 +278,58 @@
   min-height: 4px;
 }
 
+/* Loading and Error States */
+.student-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: var(--background-light);
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(26, 35, 126, 0.1);
+  border-top: 4px solid var(--accent-gold);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.student-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  color: var(--accent-burgundy);
+  gap: 1rem;
+  text-align: center;
+  padding: 2rem;
+  background-color: var(--background-light);
+}
+
+.error-icon {
+  font-size: 3rem;
+}
+
+/* Content Section Styles */
+.student-content-section {
+  grid-column: 1 / -1;
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 /* Responsive Design */
 @media (max-width: 1200px) {
-  .student-grid {
+  .student-content-grid {
       grid-template-columns: repeat(8, 1fr);
       gap: 1.5rem;
       padding: 0 1.5rem;
@@ -264,16 +340,51 @@
   }
 
   .student-progress-section,
-  .student-attendance-section,
-  .student-tasks-section {
+  .student-attendance-section {
       grid-column: span 4;
   }
 }
 
-@media (max-width: 768px) {
-  .student-grid {
-      grid-template-columns: 1fr;
+@media (max-width: 992px) {
+  .student-sidebar {
+      width: 80px;
+      padding: 1rem 0;
+  }
+
+  .sidebar-header {
+      padding: 0 0.5rem 1rem;
+      text-align: center;
+  }
+
+  .sidebar-header h2,
+  .student-name,
+  .nav-label {
+      display: none;
+  }
+
+  .nav-icon {
+      margin: 0;
+      font-size: 1.5rem;
+  }
+
+  .student-main-content {
+      margin-left: 80px;
+  }
+
+  .student-content-grid {
       padding: 0 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .student-content-grid {
+      grid-template-columns: 1fr;
+  }
+
+  .student-schedule-section,
+  .student-progress-section,
+  .student-attendance-section {
+      grid-column: 1 / -1;
   }
 
   .student-header-content {
@@ -282,15 +393,8 @@
       gap: 1rem;
   }
 
-  .student-info {
-      flex-direction: column;
-  }
-
-  .student-schedule-section,
-  .student-progress-section,
-  .student-attendance-section,
-  .student-tasks-section {
-      grid-column: span 1;
+  .student-welcome {
+      font-size: 1.5rem;
   }
 
   .student-timeline-item {
@@ -301,19 +405,9 @@
   .student-timeline-time {
       min-width: auto;
   }
-
-  .student-materials-grid {
-      grid-template-columns: 1fr;
-  }
 }
 
-/* Style overrides for better visual hierarchy */
-.student-section-title {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
+/* Utility Classes */
 .section-icon {
   font-size: 1.25rem;
   color: var(--accent-gold);
@@ -323,39 +417,17 @@
   text-align: center;
   padding: 2rem;
   color: var(--text-dark);
-  background: rgba(var(--primary-dark-rgb), 0.02);
+  background: rgba(26, 35, 126, 0.02);
   border-radius: 8px;
   font-style: italic;
 }
 
-.student-stat-card {
-  background: white;
-  padding: 1.5rem;
-  border-radius: 8px;
-  text-align: center;
+/* Animation */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-.student-stat-title {
-  font-size: 1rem;
-  color: var(--text-dark);
-  margin-bottom: 1rem;
-}
-
-.student-attendance-value {
-  font-size: 2rem;
-  font-weight: bold;
-  color: var(--primary-dark);
-  display: block;
-  margin-bottom: 1rem;
-}
-
-/* Enhancement for better readability */
-.student-task-info {
-  flex: 1;
-}
-
-.student-material-info {
-  color: var(--text-dark);
-  font-size: 0.9rem;
-  margin: 0;
+.student-dashboard-container {
+  animation: fadeIn 0.3s ease-in;
 }
