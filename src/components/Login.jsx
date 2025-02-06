@@ -15,6 +15,7 @@ function Login() {
         try {
             const response = await fetch('${process.env.BACKEND_URL}/api/auth/login', {
                 method: 'POST',
+                credentials: 'include',
                 headers: { 
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
@@ -26,6 +27,11 @@ function Login() {
             console.log('Login response:', data); // For debugging
     
             if (!response.ok) {
+                if (response.status === 401) {
+                    localStorage.removeItem('token');
+                    setError('Session expired. Please login again.');
+                    return;
+                }
                 throw new Error(data.message || 'Login failed');
             }
     
@@ -37,7 +43,8 @@ function Login() {
             localStorage.setItem('token', data.token);
             localStorage.setItem('userId', data.data.user.id);
             localStorage.setItem('role', data.data.user.role);
-    
+
+           
             // Navigate based on role
             const role = data.data.user.role;
             switch (role) {
