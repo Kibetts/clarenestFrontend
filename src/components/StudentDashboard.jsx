@@ -38,7 +38,7 @@
 //                 throw new Error('No authentication token found');
 //             }
     
-//             const response = await fetch('https://clarenest-6bd4.onrender.com/api/dashboard/student', {
+//             const response = await fetch('${process.env.BACKEND_URL}/api/dashboard/student', {
 //                 method: 'GET',
 //                 headers: {
 //                     'Authorization': `Bearer ${token}`,
@@ -363,7 +363,7 @@ const StudentDashboard = () => {
 
     const fetchDashboardData = async () => {
         try {
-            const response = await fetch('https://clarenest-6bd4.onrender.com/api/dashboard/student', {
+            const response = await fetch('${process.env.BACKEND_URL}/api/dashboard/student', {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
                     'Content-Type': 'application/json'

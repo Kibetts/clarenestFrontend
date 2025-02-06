@@ -49,7 +49,7 @@ const MessageCenter = () => {
     // In MessageCenter.jsx
 const fetchMessages = async () => {
     try {
-        const response = await fetch('https://clarenest-6bd4.onrender.com/api/messages', {
+        const response = await fetch('${process.env.BACKEND_URL}/api/messages', {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 'Content-Type': 'application/json'
@@ -65,7 +65,7 @@ const fetchMessages = async () => {
 };
 
     const fetchUsers = async () => {
-        const response = await fetch('https://clarenest-6bd4.onrender.com/api/users', {
+        const response = await fetch('${process.env.BACKEND_URL}/api/users', {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
@@ -76,7 +76,7 @@ const fetchMessages = async () => {
     };
 
     const fetchAnnouncements = async () => {
-        const response = await fetch('https://clarenest-6bd4.onrender.com/api/notifications?type=Announcement', {
+        const response = await fetch('${process.env.BACKEND_URL}/api/notifications?type=Announcement', {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
@@ -95,7 +95,7 @@ const fetchMessages = async () => {
         if (!messageText.trim() || !selectedUser) return;
 
         try {
-            const response = await fetch('https://clarenest-6bd4.onrender.com/api/messages', {
+            const response = await fetch('${process.env.BACKEND_URL}/api/messages', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -126,7 +126,7 @@ const fetchMessages = async () => {
         }
 
         try {
-            const response = await fetch('https://clarenest-6bd4.onrender.com/api/notifications', {
+            const response = await fetch('${process.env.BACKEND_URL}/api/notifications', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -157,7 +157,7 @@ const fetchMessages = async () => {
 
     const handleMarkAsRead = async (messageId) => {
         try {
-            const response = await fetch(`https://clarenest-6bd4.onrender.com/api/messages/${messageId}/read`, {
+            const response = await fetch(`${process.env.BACKEND_URL}/api/messages/${messageId}/read`, {
                 method: 'PATCH',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`

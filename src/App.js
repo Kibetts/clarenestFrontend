@@ -49,7 +49,7 @@ function App() {
   useEffect(() => {
     const updateStatus = async () => {
       try {
-        await fetch('https://clarenest-6bd4.onrender.com/api/users/heartbeat', {
+        await fetch('${process.env.BACKEND_URL}/api/users/heartbeat', {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -100,3 +100,7 @@ function App() {
 }
 
 export default App;
+
+
+
+

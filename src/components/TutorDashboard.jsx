@@ -15,7 +15,7 @@ const TutorDashboard = () => {
 
     const fetchDashboardData = async () => {
         try {
-            const response = await fetch('https://clarenest-6bd4.onrender.com/api/dashboard/tutor', {
+            const response = await fetch('${process.env.BACKEND_URL}/api/dashboard/tutor', {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }

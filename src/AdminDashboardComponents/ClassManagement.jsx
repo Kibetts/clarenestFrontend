@@ -45,7 +45,7 @@ const ClassManagement = () => {
     };
 
     const fetchClasses = async () => {
-        const response = await fetch('https://clarenest-6bd4.onrender.com/api/lessons', {
+        const response = await fetch('${process.env.BACKEND_URL}/api/lessons', {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
@@ -56,7 +56,7 @@ const ClassManagement = () => {
     };
 
     const fetchTutors = async () => {
-        const response = await fetch('https://clarenest-6bd4.onrender.com/api/tutors', {
+        const response = await fetch('${process.env.BACKEND_URL}/api/tutors', {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
@@ -67,7 +67,7 @@ const ClassManagement = () => {
     };
 
     const fetchSubjects = async () => {
-        const response = await fetch('https://clarenest-6bd4.onrender.com/api/subjects', {
+        const response = await fetch('${process.env.BACKEND_URL}/api/subjects', {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
@@ -191,8 +191,8 @@ const ClassManagement = () => {
             };
     
             const url = modalMode === 'add'
-                ? 'https://clarenest-6bd4.onrender.com/api/lessons'
-                : `https://clarenest-6bd4.onrender.com/api/lessons/${selectedClass._id}`;
+                ? '${process.env.BACKEND_URL}/api/lessons'
+                : `${process.env.BACKEND_URL}/api/lessons/${selectedClass._id}`;
     
             const response = await fetch(url, {
                 method: modalMode === 'add' ? 'POST' : 'PATCH',
@@ -220,7 +220,7 @@ const ClassManagement = () => {
         if (!window.confirm('Are you sure you want to delete this class?')) return;
 
         try {
-            const response = await fetch(`https://clarenest-6bd4.onrender.com/api/lessons/${classId}`, {
+            const response = await fetch(`${process.env.BACKEND_URL}/api/lessons/${classId}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`

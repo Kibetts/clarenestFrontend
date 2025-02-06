@@ -105,7 +105,7 @@ const AdminDashboard = () => {
     // Fetch dashboard data
     const fetchDashboardData = async () => {
         try {
-            const response = await fetch('https://clarenest-6bd4.onrender.com/api/dashboard/admin', {
+            const response = await fetch('${process.env.BACKEND_URL}/api/dashboard/admin', {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
                     'Content-Type': 'application/json'
