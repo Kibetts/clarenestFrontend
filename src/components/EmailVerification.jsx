@@ -14,7 +14,7 @@ const EmailVerification = () => {
 
     const verifyEmail = async () => {
         try {
-            const response = await fetch(`${process.env.BACKEND_URL}/api/auth/verify-email/${token}`, {
+            const response = await fetch(`https://clarenest-6bd4.onrender.com/api/auth/verify-email/${token}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'

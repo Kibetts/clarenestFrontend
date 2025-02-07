@@ -30,7 +30,7 @@ const UserManagement = () => {
 
     const fetchUsers = async () => {
         try {
-            const response = await fetch('${process.env.BACKEND_URL}/api/users', {
+            const response = await fetch('https://clarenest-6bd4.onrender.com/api/users', {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,
                     'Content-Type': 'application/json'
@@ -105,8 +105,8 @@ const UserManagement = () => {
 
         try {
             const url = modalMode === 'add' 
-                ? '${process.env.BACKEND_URL}/api/users'
-                : `${process.env.BACKEND_URL}/api/users/${selectedUser._id}`;
+                ? 'https://clarenest-6bd4.onrender.com/api/users'
+                : `https://clarenest-6bd4.onrender.com/api/users/${selectedUser._id}`;
 
             const response = await fetch(url, {
                 method: modalMode === 'add' ? 'POST' : 'PATCH',
@@ -135,7 +135,7 @@ const UserManagement = () => {
       if (!window.confirm('Are you sure you want to delete this user?')) return;
 
       try {
-          const response = await fetch(`${process.env.BACKEND_URL}/api/users/${userId}`, {
+          const response = await fetch(`https://clarenest-6bd4.onrender.com/api/users/${userId}`, {
               method: 'DELETE',
               headers: {
                   'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -154,7 +154,7 @@ const UserManagement = () => {
   const handleUpdateFeeStatus = async (userId, feesPaid) => {
       try {
           const response = await fetch(
-              `${process.env.BACKEND_URL}/api/users/${userId}/update-fee-status`,
+              `https://clarenest-6bd4.onrender.com/api/users/${userId}/update-fee-status`,
               {
                   method: 'PATCH',
                   headers: {

@@ -50,7 +50,7 @@ const ScheduleAssessment = () => {
                 questions: questions
             };
 
-            const response = await fetch('${process.env.BACKEND_URL}/api/assessments', {
+            const response = await fetch('https://clarenest-6bd4.onrender.com/api/assessments', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
