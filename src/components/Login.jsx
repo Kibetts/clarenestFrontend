@@ -13,7 +13,7 @@
 //         setError('');
     
 //         try {
-//             const response = await fetch('https://clarenest-6bd4.onrender.com/api/auth/login', {
+//             const response = await fetch('http://localhost:5000/api/auth/login', {
 //                 method: 'POST',
 //                 credentials: 'include',
 //                 headers: { 
@@ -128,20 +128,22 @@ function Login() {
         setError('');
     
         try {
-            const response = await fetch('https://clarenest-6bd4.onrender.com/api/auth/login', {
+            const response = await fetch('http://localhost:5000/api/auth/login', {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 },
                 body: JSON.stringify({ email, password }),
+                credentials: 'include'
             });
     
-            const data = await response.json();
-    
             if (!response.ok) {
-                throw new Error(data.message || 'Login failed');
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Login failed');
             }
+    
+            const data = await response.json();
     
             if (!data.token) {
                 throw new Error('No token received from server');

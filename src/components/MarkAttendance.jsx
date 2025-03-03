@@ -22,7 +22,7 @@ const MarkAttendance = () => {
 
     const fetchClasses = async () => {
         try {
-            const response = await fetch('https://clarenest-6bd4.onrender.com/api/lessons', {
+            const response = await fetch('http://localhost:5000/api/lessons', {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
@@ -42,7 +42,7 @@ const MarkAttendance = () => {
     const fetchStudents = async () => {
         try {
             setLoading(true);
-            const response = await fetch(`https://clarenest-6bd4.onrender.com/api/lessons/${selectedClass}/students`, {
+            const response = await fetch(`http://localhost:5000/api/lessons/${selectedClass}/students`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
@@ -79,7 +79,7 @@ const MarkAttendance = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch('https://clarenest-6bd4.onrender.com/api/attendances', {
+            const response = await fetch('http://localhost:5000/api/attendances', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

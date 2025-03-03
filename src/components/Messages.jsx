@@ -26,7 +26,7 @@ const Messages = () => {
 
     const fetchMessages = async () => {
         try {
-            const response = await fetch('https://clarenest-6bd4.onrender.com/api/messages', {
+            const response = await fetch('http://localhost:5000/api/messages', {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
@@ -45,7 +45,7 @@ const Messages = () => {
 
     const fetchRecipients = async () => {
         try {
-            const response = await fetch('https://clarenest-6bd4.onrender.com/api/users', {
+            const response = await fetch('http://localhost:5000/api/users', {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
@@ -65,7 +65,7 @@ const Messages = () => {
         if (!newMessage.trim() || !selectedRecipient) return;
 
         try {
-            const response = await fetch('https://clarenest-6bd4.onrender.com/api/messages', {
+            const response = await fetch('http://localhost:5000/api/messages', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -111,7 +111,7 @@ const Messages = () => {
 
     const markAsRead = async (messageId) => {
         try {
-            await fetch(`https://clarenest-6bd4.onrender.com/api/messages/${messageId}/read`, {
+            await fetch(`http://localhost:5000/api/messages/${messageId}/read`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`

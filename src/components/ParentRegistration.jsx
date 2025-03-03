@@ -70,7 +70,7 @@ const ParentRegistration = () => {
     //         setLoading(true);
     //         setError('');
 
-    //         const response = await fetch(`${process.env.REACT_APP_API_URL || 'https://clarenest-6bd4.onrender.com'}/api/parents/register/${studentId}`, {
+    //         const response = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/parents/register/${studentId}`, {
     //             method: 'POST',
     //             headers: {
     //                 'Content-Type': 'application/json',
@@ -93,7 +93,7 @@ const ParentRegistration = () => {
     //         }
 
     //         // Attempt automatic login after successful registration
-    //         const loginResponse = await fetch(`${process.env.REACT_APP_API_URL || 'https://clarenest-6bd4.onrender.com'}/api/auth/login`, {
+    //         const loginResponse = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/auth/login`, {
     //             method: 'POST',
     //             headers: {
     //                 'Content-Type': 'application/json'
@@ -127,7 +127,7 @@ const ParentRegistration = () => {
             setLoading(true);
             setError('');
     
-            const response = await fetch(`${process.env.REACT_APP_API_URL || 'https://clarenest-6bd4.onrender.com'}/api/parents/register/${studentId}`, {
+            const response = await fetch(`${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/parents/register/${studentId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

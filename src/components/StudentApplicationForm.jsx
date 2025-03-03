@@ -158,7 +158,7 @@ function StudentApplicationForm() {
         try {
             const preparedData = prepareFormData(formData);
             
-            const response = await fetch('https://clarenest-6bd4.onrender.com/api/applications/student', {
+            const response = await fetch('http://localhost:5000/api/applications/student', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

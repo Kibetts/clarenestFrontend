@@ -29,6 +29,7 @@ import CreateAssignment from "./components/CreateAssignment"
 import ScheduleAssessment from "./components/ScheduleAssessment"
 import MarkAttendance  from "./components/MarkAttendance"
 import Messages  from "./components/Messages"
+import StudentsPerformanceDetails from "./components/StudentsPerformanceDetails"
 
 
 const theme = createTheme({
@@ -49,7 +50,7 @@ function App() {
   useEffect(() => {
     const updateStatus = async () => {
       try {
-        await fetch('https://clarenest-6bd4.onrender.com/api/users/heartbeat', {
+        await fetch('http://localhost:5000/api/users/heartbeat', {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -92,6 +93,10 @@ function App() {
         <Route path="/tutor/schedule-assessment" element={<ScheduleAssessment />} />
         <Route path="/tutor/mark-attendance" element={<MarkAttendance />} />
         <Route path="/tutor/messages" element={<Messages />} />
+        <Route path="/tutor/performance/student/:studentId/subject/:subjectId" element={<StudentsPerformanceDetails />}
+                 
+         
+/>
       </Routes>
     </Router>
     </LocalizationProvider>
